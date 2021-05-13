@@ -40,6 +40,10 @@ tasks.register('integrationTest', Test) {
 check.dependsOn integrationTest
 
 dependencies {
+    implementation "javax.xml.bind:jaxb-api:2.3.1"
+    implementation "org.glassfish.jersey.core:jersey-client:2.34"
+    implementation "org.glassfish.jersey.media:jersey-media-json-jackson:2.34"
+    implementation "org.glassfish.jersey.inject:jersey-hk2:2.34"
     implementation "org.slf4j:slf4j-api:1.7.30"
     runtimeOnly "ch.qos.logback:logback-classic:1.2.3"
     testImplementation "junit:junit:4.12"
