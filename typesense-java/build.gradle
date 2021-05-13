@@ -1,0 +1,49 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+
+repositories {
+    mavenCentral()
+}
+
+group = 'org.typesense'
+version = '0.1.0-SNAPSHOT'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+jar {
+    archiveBaseName = 'typesense-java'
+}
+
+sourceSets {
+    integrationTest {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+        java.srcDir file('src/integration-test/java')
+        resources.srcDir file('src/integration-test/resources')
+    }
+}
+
+configurations {
+    integrationTestImplementation.extendsFrom implementation
+    integrationTestRuntimeOnly.extendsFrom runtimeOnly
+}
+
+tasks.register('integrationTest', Test) {
+    description = 'Runs integration tests (assumes running Docker image or local server)'
+    group = 'verification'
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+    outputs.upToDateWhen { false }
+    shouldRunAfter test
+}
+
+check.dependsOn integrationTest
+
+dependencies {
+    implementation "org.slf4j:slf4j-api:1.7.30"
+    runtimeOnly "ch.qos.logback:logback-classic:1.2.3"
+    testImplementation "junit:junit:4.12"
+    testImplementation "org.hamcrest:hamcrest-all:1.3"
+    integrationTestImplementation "junit:junit:4.12"
+    integrationTestImplementation "org.hamcrest:hamcrest-all:1.3"
+}

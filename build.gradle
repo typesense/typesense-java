@@ -1,0 +1,10 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+
+repositories {
+    mavenCentral()
+}
+
+group = 'org.typesense'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
