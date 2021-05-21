@@ -3,7 +3,6 @@ package org.typesense.model;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 class Node{
 

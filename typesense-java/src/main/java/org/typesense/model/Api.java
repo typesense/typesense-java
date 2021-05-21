@@ -28,28 +28,20 @@ Interface for the lambda functions
 
 public class Api {
 
-    private Configuration configuration;
-    private List<Node> nodes;
+    private final Configuration configuration;
+    private final List<Node> nodes;
 
     private static int nodeIndex=0;
 
     private static final String API_KEY_HEADER = "X-TYPESENSE-API-KEY";
     private static final Logger logger = LoggerFactory.getLogger(TypesenseClient.class);
-    private Client client;
+    private final Client client;
+    private final String apiKey;
 
-    public Api(){
-        ClientConfig clientConfig = new ClientConfig();
-        if (logger.isTraceEnabled()) {
-            clientConfig = clientConfig.register(new LoggingInterceptor());
-        }
-        // TODO: SET_METHOD_WORKAROUND Generates an illegal reflective access operation for the patch op
-        this.client = ClientBuilder.newClient(clientConfig)
-                .register(JacksonFeature.class)
-                .property(HttpUrlConnectorProvider.SET_METHOD_WORKAROUND, true);
-    }
     public Api(Configuration configuration) {
         this.configuration = configuration;
         this.nodes = configuration.nodes;
+        this.apiKey = configuration.apiKey;
 
         ClientConfig clientConfig = new ClientConfig();
         if (logger.isTraceEnabled()) {
@@ -102,10 +94,10 @@ public class Api {
          * which is passed as a parameter to makeRequest function
          * and returns T as the response entity.
          * This is similar for all type of requests.
-          */
+         */
         RequestHandler<T> r =  (String REST_URI) -> this.client.target(REST_URI)
                  .request(MediaType.APPLICATION_JSON)
-                 .header("X-TYPESENSE-API-KEY","xyz")
+                 .header(API_KEY_HEADER,apiKey)
                  .get(resourceClass);
 
          return makeRequest(endpoint,r);
@@ -115,7 +107,7 @@ public class Api {
 
         RequestHandler<T> r =  (String REST_URI) -> this.client.target(REST_URI)
                 .request(MediaType.APPLICATION_JSON)
-                .header("X-TYPESENSE-API-KEY","xyz")
+                .header(API_KEY_HEADER,apiKey)
                 .put(Entity.json(body),resourceClass);
 
         return makeRequest(endpoint,r);
@@ -125,7 +117,7 @@ public class Api {
 
         RequestHandler<T> r =  (String REST_URI) -> this.client.target(REST_URI)
                 .request(MediaType.APPLICATION_JSON)
-                .header("X-TYPESENSE-API-KEY","xyz")
+                .header(API_KEY_HEADER,apiKey)
                 .post(Entity.json(body),resourceClass);
 
         return makeRequest(endpoint,r);
@@ -134,7 +126,7 @@ public class Api {
     <T> T delete(String endpoint,  Class<T> resourceClass){
         RequestHandler<T> r =  (String REST_URI) -> this.client.target(REST_URI)
                 .request(MediaType.APPLICATION_JSON)
-                .header("X-TYPESENSE-API-KEY","xyz")
+                .header(API_KEY_HEADER,apiKey)
                 .delete(resourceClass);
 
         return makeRequest(endpoint,r);
@@ -151,7 +143,6 @@ public class Api {
     <T> T makeRequest(String endpoint, RequestHandler requestHandler){
         int num_tries = 0;
 
-        Response response;
         T responseBody;
 
         while(num_tries < this.configuration.numRetries){
