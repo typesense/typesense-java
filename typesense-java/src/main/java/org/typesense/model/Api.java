@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.typesense.TypesenseClient;
 import org.typesense.interceptor.LoggingInterceptor;
+import org.typesense.resources.Node;
+import org.typesense.resources.RequestHandler;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -18,13 +20,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.*;
 
-
-/**
-Interface for the lambda functions
-*/
- interface RequestHandler<T>{
-     T handleRequest(String URI);
-}
 
 public class Api {
 
@@ -113,7 +108,7 @@ public class Api {
         return makeRequest(endpoint,r);
     }
 
-    <T> T post(String endpoint, T body, Class<T> resourceClass){
+    <T, R> T post(String endpoint, R body, Class<T> resourceClass){
 
         RequestHandler<T> r =  (String REST_URI) -> this.client.target(REST_URI)
                 .request(MediaType.APPLICATION_JSON)

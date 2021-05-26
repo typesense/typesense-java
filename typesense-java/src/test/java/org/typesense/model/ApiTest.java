@@ -3,6 +3,8 @@ package org.typesense.model;
 import junit.framework.TestCase;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.typesense.api.CollectionSchema;
+import org.typesense.resources.Node;
 
 
 import java.time.Duration;
@@ -46,7 +48,8 @@ public class ApiTest extends TestCase {
     public void testGet() {
         Api api = new Api(configuration);
 
-        Document d = api.get("/collections/intbooks/documents/Odyssey",Document.class);
-        System.out.println(d);
+        CollectionSchema c = api.get("/collections/intbooks",CollectionSchema.class);
+
+        System.out.println(c);
     }
 }

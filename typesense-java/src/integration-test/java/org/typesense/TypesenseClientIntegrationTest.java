@@ -16,14 +16,14 @@ import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
-
+/*
 public class TypesenseClientIntegrationTest {
 
     private static final String TEST_COLLECTION_NAME = "intbooks";
 
     private static final Logger logger = LoggerFactory.getLogger(TypesenseClientIntegrationTest.class);
 
-    private static final int APPLICATION_PORT = 8108;
+    private static final int APPLICATION_PORT = 3001;
     private static final String API_KEY = "xyz";
     private static final String BASE_URL = "http://localhost:" + APPLICATION_PORT;
 
@@ -200,3 +200,4 @@ public class TypesenseClientIntegrationTest {
         return UUID.randomUUID().toString().replace("-", "");
     }
 }
+*/

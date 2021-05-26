@@ -1,47 +1,29 @@
 package org.typesense.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.typesense.api.CollectionResponse;
 
 public class Collection {
 
-    public Collection() {
-        this(null);
+    private final Configuration configuration;
+
+    private final Api api;
+
+    private final String name;
+
+    private final String endpoint;
+
+    Collection(String name, Api api, Configuration configuration){
+        this.name =name;
+        this.api = api;
+        this.configuration = configuration;
+        this.endpoint = Collections.RESOURCE_PATH + this.name;
     }
 
-    public Collection(String name) {
-        this.name = name;
-        this.fields = new ArrayList<>();
+    public CollectionResponse retrieve(){
+        return this.api.get(endpoint, CollectionResponse.class);
     }
 
-    @JsonProperty("name")
-    public String name;
-
-    @JsonProperty("fields")
-    public List<CollectionField> fields;
-
-    @JsonProperty("default_sorting_field")
-    public String defaultSortingField;
-
-    @JsonProperty(value = "num_documents", required = false)
-    public int numberOfDocuments = 0;
-
-    @JsonProperty(value = "num_memory_shards", required = false)
-    public int numberOfMemoryShards = 1;
-
-    @JsonProperty("created_at")
-    public long createdAt;
-
-    public CollectionField addField(String name, String type, boolean facet, boolean optional, boolean index) {
-        CollectionField field = new CollectionField();
-        field.name = name;
-        field.type = type;
-        field.facet = facet;
-        field.optional = optional;
-        field.index = index;
-        fields.add(field);
-        return field;
+    public CollectionResponse delete(){
+        return this.api.delete(endpoint,CollectionResponse.class);
     }
 }
