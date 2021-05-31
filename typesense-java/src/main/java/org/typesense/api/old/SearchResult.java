@@ -1,6 +1,7 @@
-package org.typesense.model;
+package org.typesense.api.old;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.typesense.api.old.Hit;
 
 import java.util.List;
 import java.util.Map;
@@ -30,4 +31,18 @@ public class SearchResult {
 
     @JsonProperty("search_time_ms")
     public int searchTimeMs;
+
+    @Override
+    public String toString() {
+        return "SearchResult{" +
+                "facetCounts=" + facetCounts +
+                ", found=" + found +
+                ", tookMs=" + tookMs +
+                ", hits=" + hits +
+                ", page=" + page +
+                ", outOf=" + outOf +
+                ", requestParams=" + requestParams +
+                ", searchTimeMs=" + searchTimeMs +
+                '}';
+    }
 }

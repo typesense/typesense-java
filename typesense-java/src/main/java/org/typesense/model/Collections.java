@@ -6,10 +6,10 @@ import org.typesense.api.CollectionSchema;
 public class Collections {
 
     private static Api api;
-    public final static String RESOURCE_PATH = "/collections/";
+    public final static String RESOURCE_PATH = "/collections";
 
-    public Collections(Api api1){
-        api = api1;
+    public Collections(Api api){
+        this.api = api;
     }
 
     public CollectionResponse create(CollectionSchema c){

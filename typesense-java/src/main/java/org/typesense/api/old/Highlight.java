@@ -1,4 +1,4 @@
-package org.typesense.model;
+package org.typesense.api.old;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -14,4 +14,13 @@ public class Highlight {
 
     @JsonProperty("matched_tokens")
     public List<String> matchedTokens;
+
+    @Override
+    public String toString() {
+        return "Highlight{" +
+                "field='" + field + '\'' +
+                ", snippet='" + snippet + '\'' +
+                ", matchedTokens=" + matchedTokens +
+                '}';
+    }
 }

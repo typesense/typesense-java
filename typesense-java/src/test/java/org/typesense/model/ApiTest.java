@@ -4,6 +4,7 @@ import junit.framework.TestCase;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.typesense.api.CollectionSchema;
+import org.typesense.api.old.TestDoc;
 import org.typesense.resources.Node;
 
 
@@ -29,7 +30,7 @@ public class ApiTest extends TestCase {
     public void testDelete(){
         Api api = new Api(configuration);
 
-        Document book = api.delete("/collections/intbooks/documents/Odyssey",Document.class);
+        TestDoc book = api.delete("/collections/intbooks/documents/Odyssey", TestDoc.class);
         System.out.println(book);
 
     }
@@ -38,8 +39,8 @@ public class ApiTest extends TestCase {
     public void testPost(){
         Api api = new Api(configuration);
 
-        Document book = Document.createBook("Odyssey", new String[]{"Homer"}, "url", 1000, 3, 4);
-        Document d = api.post("/collections/intbooks/documents", book, Document.class);
+        TestDoc book = TestDoc.createBook("Odyssey", new String[]{"Homer"}, "url", 1000, 3, 4);
+        TestDoc d = api.post("/collections/intbooks/documents", book, TestDoc.class);
 
         System.out.println(d);
     }
@@ -50,6 +51,16 @@ public class ApiTest extends TestCase {
 
         CollectionSchema c = api.get("/collections/intbooks",CollectionSchema.class);
 
-        System.out.println(c);
+        //System.out.println(c);
+        assertNotNull(c);
+    }
+
+    @Test
+    public void testGetDocument(){
+        Api api = new Api(configuration);
+
+        HashMap<String,Object> hm = api.get("/collections/intbooks/documents/5");
+
+        System.out.println(hm);
     }
 }

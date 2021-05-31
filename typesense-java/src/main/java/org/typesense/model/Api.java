@@ -3,19 +3,25 @@ package org.typesense.model;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.HttpUrlConnectorProvider;
 import org.glassfish.jersey.jackson.JacksonFeature;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.typesense.TypesenseClient;
+import org.typesense.api.SearchParameters;
 import org.typesense.interceptor.LoggingInterceptor;
 import org.typesense.resources.Node;
 import org.typesense.resources.RequestHandler;
 
+
+
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.*;
@@ -82,7 +88,7 @@ public class Api {
         node.lastAccessTimestamp = LocalDateTime.now();
     }
 
-    <T> T get(String endpoint, Class<T> resourceClass){
+    <T> T get(String endpoint, Class<T> resourceClass, SearchParameters searchParameters){
 
         /**
          * Lambda function which implements the RequestHandler interface
@@ -90,12 +96,32 @@ public class Api {
          * and returns T as the response entity.
          * This is similar for all type of requests.
          */
+        RequestHandler<T> r =  (String REST_URI) -> populateSearchParameters(this.client.target(REST_URI),searchParameters)
+                .request(MediaType.APPLICATION_JSON)
+                .header(API_KEY_HEADER,apiKey)
+                .get(resourceClass);
+
+        return makeRequest(endpoint,r);
+    }
+
+    <T> T get(String endpoint, Class<T> resourceClass){
         RequestHandler<T> r =  (String REST_URI) -> this.client.target(REST_URI)
                  .request(MediaType.APPLICATION_JSON)
                  .header(API_KEY_HEADER,apiKey)
                  .get(resourceClass);
 
          return makeRequest(endpoint,r);
+    }
+
+    <T> T get(String endpoint){
+        RequestHandler r =  (String REST_URI) -> this.client.target(REST_URI)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .header(API_KEY_HEADER,apiKey)
+                .get();
+
+        Response response = makeRequest(endpoint,r);
+
+        return handleResponse(response);
     }
 
     <T> T put(String endpoint, T body, Class<T> resourceClass){
@@ -118,6 +144,31 @@ public class Api {
         return makeRequest(endpoint,r);
     }
 
+    <T> T post(String endpoint, T body){
+
+        RequestHandler r =  (String REST_URI) -> this.client.target(REST_URI)
+                .request(MediaType.APPLICATION_JSON)
+                .header(API_KEY_HEADER,apiKey)
+                .post(Entity.json(body));
+
+        Response response = makeRequest(endpoint,r);
+
+        return handleResponse(response);
+    }
+
+    <T> T delete(String endpoint,  HashMap<String, String> queryParameters){
+        RequestHandler r =  (String REST_URI) -> populateQueryParameters(this.client.target(REST_URI),queryParameters)
+                .request(MediaType.APPLICATION_JSON)
+                .header(API_KEY_HEADER,apiKey)
+                .delete();
+
+
+        Response response = makeRequest(endpoint,r);
+
+        return handleResponse(response);
+    }
+
+
     <T> T delete(String endpoint,  Class<T> resourceClass){
         RequestHandler<T> r =  (String REST_URI) -> this.client.target(REST_URI)
                 .request(MediaType.APPLICATION_JSON)
@@ -125,6 +176,17 @@ public class Api {
                 .delete(resourceClass);
 
         return makeRequest(endpoint,r);
+    }
+
+    <T> T delete(String endpoint){
+        RequestHandler r =  (String REST_URI) -> this.client.target(REST_URI)
+                .request(MediaType.APPLICATION_JSON)
+                .header(API_KEY_HEADER,apiKey)
+                .delete();
+
+        Response response = makeRequest(endpoint,r);
+
+        return handleResponse(response);
     }
 
     /**
@@ -145,7 +207,7 @@ public class Api {
 
             Node node = this.getNode();
 
-            String URI = "http://localhost:3001";
+            String URI = node.baseUrl;
                     //node.baseUrl;
             try{
                 String url = URI + endpoint;
@@ -159,4 +221,58 @@ public class Api {
         }
         return  null;
     }
+
+    /**
+     * Appends search query parameters to the request URL.
+     *
+     * @param client a WebTarget target instance.
+     * @param parameters a SearchParameters instance.
+     * @return a WebTarget with the relevant search parameters added.
+     */
+    private WebTarget populateSearchParameters(WebTarget client, SearchParameters parameters) {
+        for (Map.Entry<String, String> entry : parameters.getParameters().entrySet()) {
+            client = client.queryParam(entry.getKey(), entry.getValue());
+        }
+        return client;
+    }
+
+    /**
+     * Adds query parameters to the http request
+     * @param client WebTarget object pointing to the required endpoint
+     * @param queryParameters Map of the query parameters
+     * @return WebTarget with the query parameters added
+     */
+
+    private WebTarget populateQueryParameters(WebTarget client, HashMap<String, String> queryParameters) {
+        for (Map.Entry<String, String> entry : queryParameters.entrySet()) {
+            client = client.queryParam(entry.getKey(), entry.getValue());
+        }
+        return client;
+    }
+
+    /**
+     * Function to create a map from the json response
+     * @param response Jersey Response object
+     * @param <T>
+     * @return HashMap containing the response
+     */
+
+    private<T> T handleResponse(Response response){
+
+        ObjectMapper mapper = new ObjectMapper();
+        String json = response.readEntity(String.class);
+
+        try {
+            HashMap<String, Object> map = mapper.readValue(json, HashMap.class);
+            return (T)map;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 }
+
+

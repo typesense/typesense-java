@@ -1,6 +1,9 @@
 package org.typesense.model;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.typesense.api.CollectionResponse;
 import org.typesense.api.CollectionSchema;
 import org.typesense.api.Field;
@@ -9,17 +12,16 @@ import org.typesense.resources.Node;
 import java.time.Duration;
 import java.util.ArrayList;
 
+
 public class CollectionsTest extends TestCase {
 
-    public CollectionSchema collectionSchema = new CollectionSchema();
-    public Collections collections;
-    public  Client client;
+    public Client client;
 
     public void setUp() throws Exception {
         super.setUp();
 
         ArrayList<Node> nodes = new ArrayList<>();
-        nodes.add(new Node("http","localhost","port"));
+        nodes.add(new Node("http","localhost","8108"));
 
         Configuration configuration = new Configuration(nodes,Duration.ofSeconds(3),"xyz");
 
@@ -27,21 +29,25 @@ public class CollectionsTest extends TestCase {
 
     }
 
-    public void testRetrieveAll() {
+    @Test
+    public void testRetrieveAllCollections() {
         CollectionResponse[] collectionResponses = client.collections().retrieve();
         for(CollectionResponse c:collectionResponses)
             System.out.println(c);
     }
 
+    @Test
     public void testRetrieveSingleCollection(){
         System.out.println(client.collections("Countries").retrieve());
     }
 
-    public void testDelete(){
+    @Test
+    public void testDeleteCollection(){
         System.out.println(client.collections("Countries").delete());
     }
 
-    public void testCreate(){
+    @Test
+    public void testCreateCollection(){
 
         ArrayList<Field> fields = new ArrayList<>();
         fields.add(new Field().name("countryName").type(Field.TypeEnum.STRING));

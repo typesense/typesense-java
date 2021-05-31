@@ -1,13 +1,12 @@
 //Copy of org.typesense.TypesenseIntegrationBook.java created for testing purposes.
 
-package org.typesense.model;
+package org.typesense.api.old;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.typesense.TypesenseClient;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Document {
+public class TestDoc {
 
     @JsonProperty("id")
     public String id;
@@ -45,10 +44,10 @@ public class Document {
         return String.format("%s: %s - %s - %s", id, title, publicationYear,authorsstr);
     }
 
-    public static Document createBook(
+    public static TestDoc createBook(
             String title, String[] authors, String imageUrl,
             int publicationYear, int ratingsCount, float averageRating) {
-        Document book = new Document();
+        TestDoc book = new TestDoc();
         book.id = title;
         book.title = title;
         book.authors = authors;

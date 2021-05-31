@@ -7,8 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.typesense.interceptor.LoggingInterceptor;
 import org.typesense.model.Collection;
-import org.typesense.model.SearchParameters;
-import org.typesense.model.SearchResult;
+import org.typesense.api.SearchParameters;
+import org.typesense.api.old.SearchResult;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;

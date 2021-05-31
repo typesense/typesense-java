@@ -23,7 +23,7 @@ public class TypesenseClientIntegrationTest {
 
     private static final Logger logger = LoggerFactory.getLogger(TypesenseClientIntegrationTest.class);
 
-    private static final int APPLICATION_PORT = 3001;
+    private static final int APPLICATION_PORT = 8108;
     private static final String API_KEY = "xyz";
     private static final String BASE_URL = "http://localhost:" + APPLICATION_PORT;
 

@@ -1,4 +1,4 @@
-package org.typesense.model;
+package org.typesense.api;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,17 +1,17 @@
-package org.typesense.model;
+package org.typesense.api.old;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Collection2 {
+public class TestCollection {
 
-    public Collection2() {
+    public TestCollection() {
         this(null);
     }
 
-    public Collection2(String name) {
+    public TestCollection(String name) {
         this.name = name;
         this.fields = new ArrayList<>();
     }

@@ -1,4 +1,4 @@
-package org.typesense.model;
+package org.typesense.api.old;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
