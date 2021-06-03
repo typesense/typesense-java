@@ -134,6 +134,17 @@ public class Api {
         return makeRequest(endpoint,r);
     }
 
+    <T,R> T put(String endpoint, R body){
+        RequestHandler r =  (String REST_URI) -> this.client.target(REST_URI)
+                .request(MediaType.APPLICATION_JSON)
+                .header(API_KEY_HEADER,apiKey)
+                .put(Entity.json(body));
+
+        Response response = makeRequest(endpoint,r);
+
+        return handleResponse(response);
+    }
+
     <T, R> T post(String endpoint, R body, Class<T> resourceClass){
 
         RequestHandler<T> r =  (String REST_URI) -> this.client.target(REST_URI)

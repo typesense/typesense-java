@@ -21,7 +21,7 @@ public class CollectionsTest extends TestCase {
         super.setUp();
 
         ArrayList<Node> nodes = new ArrayList<>();
-        nodes.add(new Node("http","localhost","8108"));
+        nodes.add(new Node("http","localhost","3001"));
 
         Configuration configuration = new Configuration(nodes,Duration.ofSeconds(3),"xyz");
 
