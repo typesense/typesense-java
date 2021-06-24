@@ -124,7 +124,7 @@ public class Api {
         return handleResponse(response);
     }
 
-    <T> T put(String endpoint, T body, Class<T> resourceClass){
+    <T,R> T put(String endpoint, R body, Class<T> resourceClass){
 
         RequestHandler<T> r =  (String REST_URI) -> this.client.target(REST_URI)
                 .request(MediaType.APPLICATION_JSON)
