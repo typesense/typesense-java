@@ -13,6 +13,9 @@ public class Client {
     private Aliases aliases;
     private HashMap<String, Alias> individualAliases;
 
+    private Keys keys;
+    private HashMap<String, Key> individualKeys;
+
     Client(Configuration configuration){
         this.configuration = configuration;
         this.api = new Api(configuration);
@@ -20,6 +23,8 @@ public class Client {
         this.individualCollections = new HashMap<>();
         this.aliases = new Aliases(this.api);
         this.individualAliases = new HashMap<>();
+        this.keys = new Keys(this.api);
+        this.individualKeys = new HashMap<>();
     }
 
     public Collection collections(String name){
@@ -51,6 +56,21 @@ public class Client {
 
         ret_val = this.individualAliases.get(name);
 
+        return ret_val;
+    }
+
+    public Keys keys(){
+        return this.keys;
+    }
+
+    public Key keys(String id){
+        Key ret_val;
+
+        if(!this.individualKeys.containsKey(id)){
+            this.individualKeys.put(id, new Key(id, this.api));
+        }
+
+        ret_val = this.individualKeys.get(id);
         return ret_val;
     }
 }
