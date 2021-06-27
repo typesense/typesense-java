@@ -167,6 +167,30 @@ public class Api {
         return handleResponse(response);
     }
 
+    <T> T post(String endpoint, HashMap<String, String> queryParameters){
+
+        RequestHandler r =  (String REST_URI) -> populateQueryParameters(this.client.target(REST_URI), queryParameters)
+                .request(MediaType.APPLICATION_JSON)
+                .header(API_KEY_HEADER,apiKey)
+                .post(Entity.json(null));
+
+        Response response = makeRequest(endpoint,r);
+
+        return handleResponse(response);
+    }
+
+    <T> T post(String endpoint){
+
+        RequestHandler r =  (String REST_URI) -> this.client.target(REST_URI)
+                .request(MediaType.APPLICATION_JSON)
+                .header(API_KEY_HEADER,apiKey)
+                .post(Entity.json(null));
+
+        Response response = makeRequest(endpoint,r);
+
+        return handleResponse(response);
+    }
+
     <T> T delete(String endpoint,  HashMap<String, String> queryParameters){
         RequestHandler r =  (String REST_URI) -> populateQueryParameters(this.client.target(REST_URI),queryParameters)
                 .request(MediaType.APPLICATION_JSON)

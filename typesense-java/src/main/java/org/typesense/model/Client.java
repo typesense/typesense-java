@@ -16,6 +16,11 @@ public class Client {
     private Keys keys;
     private HashMap<String, Key> individualKeys;
 
+    public Health health;
+    public Operations operations;
+    public Metrics metrics;
+    public Debug debug;
+
     Client(Configuration configuration){
         this.configuration = configuration;
         this.api = new Api(configuration);
@@ -25,6 +30,10 @@ public class Client {
         this.individualAliases = new HashMap<>();
         this.keys = new Keys(this.api);
         this.individualKeys = new HashMap<>();
+        this.health = new Health(this.api);
+        this.operations = new Operations(this.api);
+        this.metrics = new Metrics(this.api);
+        this.debug = new Debug(this.api);
     }
 
     public Collection collections(String name){
