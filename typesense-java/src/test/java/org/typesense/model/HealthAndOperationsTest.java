@@ -41,6 +41,6 @@ public class HealthAndOperationsTest extends TestCase {
     }
 
     public void testDebug(){
-        System.out.println(this.client.debug.retrieve();
+        System.out.println(this.client.debug.retrieve());
     }
 }

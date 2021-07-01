@@ -11,6 +11,7 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.typesense.TypesenseClient;
+import org.typesense.api.MultiSearchResponse;
 import org.typesense.api.SearchParameters;
 import org.typesense.interceptor.LoggingInterceptor;
 import org.typesense.resources.Node;
@@ -177,6 +178,18 @@ public class Api {
         Response response = makeRequest(endpoint,r);
 
         return handleResponse(response);
+    }
+
+    <T> T post(String endpoint, HashMap<String , List<HashMap<String,String>>> body, HashMap<String, String> queryParameters, Class<T> resourceClass){
+
+        RequestHandler r =  (String REST_URI) -> populateQueryParameters(this.client.target(REST_URI), queryParameters)
+                .request(MediaType.APPLICATION_JSON)
+                .header(API_KEY_HEADER,apiKey)
+                .post(Entity.json(body), resourceClass);
+
+        return makeRequest(endpoint,r);
+
+        //return handleResponse(response);
     }
 
     <T> T post(String endpoint){

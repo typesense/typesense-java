@@ -20,6 +20,7 @@ public class Client {
     public Operations operations;
     public Metrics metrics;
     public Debug debug;
+    public MultiSearch multiSearch;
 
     Client(Configuration configuration){
         this.configuration = configuration;
@@ -34,6 +35,7 @@ public class Client {
         this.operations = new Operations(this.api);
         this.metrics = new Metrics(this.api);
         this.debug = new Debug(this.api);
+        this.multiSearch = new MultiSearch(this.api);
     }
 
     public Collection collections(String name){

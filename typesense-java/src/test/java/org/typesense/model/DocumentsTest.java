@@ -17,7 +17,7 @@ public class DocumentsTest extends TestCase {
         super.setUp();
 
         ArrayList<Node> nodes = new ArrayList<>();
-        nodes.add(new Node("http","localhost","8108"));
+        nodes.add(new Node("http","localhost","3001"));
 
         Configuration configuration = new Configuration(nodes, Duration.ofSeconds(3),"xyz");
 
@@ -96,7 +96,7 @@ public class DocumentsTest extends TestCase {
     @Test
     public void testSearchDocuments(){
         SearchParameters searchParameters = new SearchParameters()
-                                                .query("")
+                                                .query("h")
                                                 .queryBy("title");
         org.typesense.api.SearchResult searchResult = client.collections("intbooks").documents().search(searchParameters);
 
