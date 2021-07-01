@@ -46,7 +46,7 @@ public class DocumentsTest extends TestCase {
 
         System.out.println(client.collections("intbooks").documents().create(hmap));
 
-        authors = new String[]{"jk rowling", "william"};
+        authors = new String[]{"jk", "Rowling"};
         hmap.put("title","harry potter");
         hmap.put("authors",authors);
         hmap.put("image_url","fgfg");

@@ -11,8 +11,10 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.typesense.TypesenseClient;
+import org.typesense.api.ErrorResponse;
 import org.typesense.api.SearchParameters;
 import org.typesense.interceptor.LoggingInterceptor;
+import org.typesense.model.exceptions.*;
 import org.typesense.resources.Node;
 import org.typesense.resources.RequestHandler;
 
@@ -38,11 +40,13 @@ public class Api {
     private static final Logger logger = LoggerFactory.getLogger(TypesenseClient.class);
     private final Client client;
     private final String apiKey;
+    private final Duration retryInterval;
 
     public Api(Configuration configuration) {
         this.configuration = configuration;
         this.nodes = configuration.nodes;
         this.apiKey = configuration.apiKey;
+        this.retryInterval = configuration.retryInterval;
 
         ClientConfig clientConfig = new ClientConfig();
         if (logger.isTraceEnabled()) {
@@ -86,6 +90,27 @@ public class Api {
     void setNodeHealthStatus(Node node, boolean status){
         node.isHealthy = status;
         node.lastAccessTimestamp = LocalDateTime.now();
+    }
+
+    private TypesenseError getException(Response response){
+        ErrorResponse errorResponse = response.readEntity(ErrorResponse.class);
+        String message = errorResponse.message;
+        int status_code = response.getStatus();
+
+        if(status_code == 400)
+            return new RequestMalformed(message,status_code);
+        else if(status_code == 401)
+            return new RequestUnauthorized(message,status_code);
+        else if(status_code == 404)
+            return new ObjectNotFound(message,status_code);
+        else if(status_code == 409)
+            return new ObjectAlreadyExists(message,status_code);
+        else if(status_code == 422)
+            return new ObjectUnprocessable(message,status_code);
+        else if(status_code >=500 && status_code <= 599)
+            return new ServerError(message,status_code);
+        else
+            return new HttpError(message,status_code);
     }
 
     <T> T get(String endpoint, Class<T> resourceClass, SearchParameters searchParameters){
@@ -232,7 +257,7 @@ public class Api {
 
     <T> T makeRequest(String endpoint, RequestHandler requestHandler, Class<T> resourceClass){
         int num_tries = 0;
-
+        Logger logger = LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
         Response response;
 
         while(num_tries < this.configuration.numRetries){
@@ -245,11 +270,31 @@ public class Api {
             try{
                 String url = URI + endpoint;
                 response =  requestHandler.handleRequest(url);
-                
-                return handleResponse(response,resourceClass);
+
+                if(response.getStatus()<500){
+                    this.setNodeHealthStatus(node,true);
+                }
+
+                if(response.getStatus()>=200 && response.getStatus()<300){
+                    return handleResponse(response,resourceClass);
+                }
+
+                if(response.getStatus()>=400){
+                    throw getException(response);
+                }
             }
-            catch(Exception e){
-                System.out.println(e);
+            catch(ServerError|HttpError e){
+                this.setNodeHealthStatus(node,false);
+                logger.trace("Request to " + node.host + " failed because: " + e.message);
+                logger.trace("Sleeping for "+ this.retryInterval.getSeconds() + "s and then retrying request");
+                try {
+                    Thread.sleep(this.retryInterval.getSeconds());
+                } catch (InterruptedException interruptedException) {
+                    interruptedException.printStackTrace();
+                }
+            } catch (TypesenseError typesenseError) {
+                typesenseError.printStackTrace();
+                return null;
             }
         }
         return  null;
