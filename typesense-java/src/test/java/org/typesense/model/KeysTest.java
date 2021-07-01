@@ -58,6 +58,6 @@ public class KeysTest extends TestCase {
     }
 
     public void testDelete(){
-        System.out.println(this.client.keys("3").delete());
+        System.out.println(this.client.keys("6").delete());
     }
 }

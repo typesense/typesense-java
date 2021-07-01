@@ -5,7 +5,7 @@ import org.typesense.api.CollectionSchema;
 
 public class Collections {
 
-    private static Api api;
+    private final Api api;
     public final static String RESOURCE_PATH = "/collections";
 
     public Collections(Api api){
@@ -13,7 +13,7 @@ public class Collections {
     }
 
     public CollectionResponse create(CollectionSchema c){
-        return this.api.post(this.RESOURCE_PATH, c, CollectionResponse.class);
+        return this.api.post(RESOURCE_PATH, c, CollectionResponse.class);
     }
 
     public CollectionResponse[] retrieve(){

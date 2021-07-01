@@ -11,7 +11,6 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.typesense.TypesenseClient;
-import org.typesense.api.MultiSearchResponse;
 import org.typesense.api.SearchParameters;
 import org.typesense.interceptor.LoggingInterceptor;
 import org.typesense.resources.Node;
@@ -97,21 +96,21 @@ public class Api {
          * and returns T as the response entity.
          * This is similar for all type of requests.
          */
-        RequestHandler<T> r =  (String REST_URI) -> populateSearchParameters(this.client.target(REST_URI),searchParameters)
+        RequestHandler r =  (String REST_URI) -> populateSearchParameters(this.client.target(REST_URI),searchParameters)
                 .request(MediaType.APPLICATION_JSON)
                 .header(API_KEY_HEADER,apiKey)
-                .get(resourceClass);
+                .get();
 
-        return makeRequest(endpoint,r);
+        return makeRequest(endpoint,r,resourceClass);
     }
 
     <T> T get(String endpoint, Class<T> resourceClass){
-        RequestHandler<T> r =  (String REST_URI) -> this.client.target(REST_URI)
+        RequestHandler r =  (String REST_URI) -> this.client.target(REST_URI)
                  .request(MediaType.APPLICATION_JSON)
                  .header(API_KEY_HEADER,apiKey)
-                 .get(resourceClass);
+                 .get();
 
-         return makeRequest(endpoint,r);
+         return makeRequest(endpoint,r,resourceClass);
     }
 
     <T> T get(String endpoint){
@@ -120,22 +119,20 @@ public class Api {
                 .header(API_KEY_HEADER,apiKey)
                 .get();
 
-        Response response = makeRequest(endpoint,r);
-
-        return handleResponse(response);
+        return makeRequest(endpoint,r,null);
     }
 
     <T,R> T put(String endpoint, R body, Class<T> resourceClass){
 
-        RequestHandler<T> r =  (String REST_URI) -> this.client.target(REST_URI)
+        RequestHandler r =  (String REST_URI) -> this.client.target(REST_URI)
                 .request(MediaType.APPLICATION_JSON)
                 .header(API_KEY_HEADER,apiKey)
-                .put(Entity.json(body),resourceClass);
+                .put(Entity.json(body));
 
-        return makeRequest(endpoint,r);
+        return makeRequest(endpoint,r,resourceClass);
     }
 
-    <T,R> T put(String endpoint, R body){
+/*    <T,R> T put(String endpoint, R body){
         RequestHandler r =  (String REST_URI) -> this.client.target(REST_URI)
                 .request(MediaType.APPLICATION_JSON)
                 .header(API_KEY_HEADER,apiKey)
@@ -144,16 +141,16 @@ public class Api {
         Response response = makeRequest(endpoint,r);
 
         return handleResponse(response);
-    }
+    }*/
 
     <T, R> T post(String endpoint, R body, Class<T> resourceClass){
 
-        RequestHandler<T> r =  (String REST_URI) -> this.client.target(REST_URI)
+        RequestHandler r =  (String REST_URI) -> this.client.target(REST_URI)
                 .request(MediaType.APPLICATION_JSON)
                 .header(API_KEY_HEADER,apiKey)
-                .post(Entity.json(body),resourceClass);
+                .post(Entity.json(body));
 
-        return makeRequest(endpoint,r);
+        return makeRequest(endpoint,r,resourceClass);
     }
 
     <T> T post(String endpoint, T body){
@@ -163,9 +160,7 @@ public class Api {
                 .header(API_KEY_HEADER,apiKey)
                 .post(Entity.json(body));
 
-        Response response = makeRequest(endpoint,r);
-
-        return handleResponse(response);
+        return makeRequest(endpoint,r,null);
     }
 
     <T> T post(String endpoint, HashMap<String, String> queryParameters){
@@ -175,9 +170,7 @@ public class Api {
                 .header(API_KEY_HEADER,apiKey)
                 .post(Entity.json(null));
 
-        Response response = makeRequest(endpoint,r);
-
-        return handleResponse(response);
+        return makeRequest(endpoint,r,null);
     }
 
     <T> T post(String endpoint, HashMap<String , List<HashMap<String,String>>> body, HashMap<String, String> queryParameters, Class<T> resourceClass){
@@ -185,11 +178,9 @@ public class Api {
         RequestHandler r =  (String REST_URI) -> populateQueryParameters(this.client.target(REST_URI), queryParameters)
                 .request(MediaType.APPLICATION_JSON)
                 .header(API_KEY_HEADER,apiKey)
-                .post(Entity.json(body), resourceClass);
+                .post(Entity.json(body));
 
-        return makeRequest(endpoint,r);
-
-        //return handleResponse(response);
+        return makeRequest(endpoint,r,resourceClass);
     }
 
     <T> T post(String endpoint){
@@ -199,9 +190,7 @@ public class Api {
                 .header(API_KEY_HEADER,apiKey)
                 .post(Entity.json(null));
 
-        Response response = makeRequest(endpoint,r);
-
-        return handleResponse(response);
+        return makeRequest(endpoint,r,null);
     }
 
     <T> T delete(String endpoint,  HashMap<String, String> queryParameters){
@@ -211,19 +200,17 @@ public class Api {
                 .delete();
 
 
-        Response response = makeRequest(endpoint,r);
-
-        return handleResponse(response);
+        return makeRequest(endpoint,r,null);
     }
 
 
     <T> T delete(String endpoint,  Class<T> resourceClass){
-        RequestHandler<T> r =  (String REST_URI) -> this.client.target(REST_URI)
+        RequestHandler r =  (String REST_URI) -> this.client.target(REST_URI)
                 .request(MediaType.APPLICATION_JSON)
                 .header(API_KEY_HEADER,apiKey)
-                .delete(resourceClass);
+                .delete();
 
-        return makeRequest(endpoint,r);
+        return makeRequest(endpoint,r, resourceClass);
     }
 
     <T> T delete(String endpoint){
@@ -232,9 +219,7 @@ public class Api {
                 .header(API_KEY_HEADER,apiKey)
                 .delete();
 
-        Response response = makeRequest(endpoint,r);
-
-        return handleResponse(response);
+        return makeRequest(endpoint,r,null);
     }
 
     /**
@@ -245,10 +230,10 @@ public class Api {
      * @return http response
      */
 
-    <T> T makeRequest(String endpoint, RequestHandler requestHandler){
+    <T> T makeRequest(String endpoint, RequestHandler requestHandler, Class<T> resourceClass){
         int num_tries = 0;
 
-        T responseBody;
+        Response response;
 
         while(num_tries < this.configuration.numRetries){
             num_tries += 1;
@@ -256,12 +241,12 @@ public class Api {
             Node node = this.getNode();
 
             String URI = node.baseUrl;
-                    //node.baseUrl;
+
             try{
                 String url = URI + endpoint;
-                responseBody = (T) requestHandler.handleRequest(url);
-
-                return responseBody;
+                response =  requestHandler.handleRequest(url);
+                
+                return handleResponse(response,resourceClass);
             }
             catch(Exception e){
                 System.out.println(e);
@@ -305,19 +290,23 @@ public class Api {
      * @return HashMap containing the response
      */
 
-    private<T> T handleResponse(Response response){
+    <T> T handleResponse(Response response, Class<T> resourceClass){
 
-        ObjectMapper mapper = new ObjectMapper();
-        String json = response.readEntity(String.class);
+        if(resourceClass == null){
+            ObjectMapper mapper = new ObjectMapper();
+            String json = response.readEntity(String.class);
 
-        try {
-            HashMap<String, Object> map = mapper.readValue(json, HashMap.class);
-            return (T)map;
-
-        } catch (Exception e) {
-            e.printStackTrace();
+            try {
+                HashMap<String, Object> map = mapper.readValue(json, HashMap.class);
+                return (T)map;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
+        else{
+            return response.readEntity(resourceClass);
+        }
         return null;
     }
 
