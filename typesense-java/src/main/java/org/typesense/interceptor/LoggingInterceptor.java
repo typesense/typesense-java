@@ -21,7 +21,7 @@ public class LoggingInterceptor implements PreInvocationInterceptor, PostInvocat
 
     @Override
     public void beforeRequest(ClientRequestContext requestContext) {
-     /*   if (logger.isTraceEnabled()) {
+        if (logger.isTraceEnabled()) {
             try {
                 String json = objectMapper.writeValueAsString(requestContext.getEntity());
                 logger.trace("REQUEST URI    : " + requestContext.getUri().toString());
@@ -30,17 +30,17 @@ public class LoggingInterceptor implements PreInvocationInterceptor, PostInvocat
             } catch (JsonProcessingException ex) {
                 throw new RuntimeException(ex);
             }
-        }*/
+        }
     }
 
     @Override
     public void afterRequest(ClientRequestContext requestContext, ClientResponseContext responseContext) {
-        /*if (logger.isTraceEnabled()) {
+        if (logger.isTraceEnabled()) {
             logger.trace("RESPONSE STATUS: " + responseContext.getStatus()
                     + "/" + responseContext.getStatusInfo());
             // TODO: Consuming the below input stream closes it for subsequent clients
             //logger.trace("RESPONSE BODY: " + inputStreamToString(responseContext.getEntityStream()));
-        }*/
+        }
     }
 
     @Override

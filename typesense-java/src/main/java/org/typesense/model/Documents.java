@@ -1,7 +1,9 @@
 package org.typesense.model;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.typesense.api.SearchParameters;
+import org.typesense.api.SearchResult;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Documents {
@@ -30,8 +32,28 @@ public class Documents {
         return this.api.delete(getEndPoint("/"), queryParameters);
     }
 
-    public HashMap<String, Object> export(){
-        return  this.api.get(getEndPoint("export"));
+    public String export(){
+        return  this.api.get(getEndPoint("export"),String.class);
+    }
+
+    public String import_(String document, HashMap<String, String> queryParameters){
+            return this.api.post(this.getEndPoint("import"),document, queryParameters,String.class);
+    }
+
+    public String import_(ArrayList<HashMap<String, Object>> documents, HashMap<String, String> queryParameters){
+        ObjectMapper mapper = new ObjectMapper();
+        String json="";
+        for(int i=0;i<documents.size();i++){
+            HashMap<String, Object> document = documents.get(i);
+            try {
+                //Convert Map to JSON
+                json = json.concat(mapper.writeValueAsString(document) + "\n");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        json = json.trim();
+        return this.api.post(this.getEndPoint("import"),json,queryParameters,String.class);
     }
 
     public String getEndPoint(String target){

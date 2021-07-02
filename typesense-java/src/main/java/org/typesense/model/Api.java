@@ -188,6 +188,16 @@ public class Api {
         return makeRequest(endpoint,r,null);
     }
 
+    <T,R> T post(String endpoint, R body, HashMap<String, String> queryParameters, Class<T> resourceClass){
+
+        RequestHandler r =  (String REST_URI) -> populateQueryParameters(this.client.target(REST_URI), queryParameters)
+                .request(MediaType.APPLICATION_JSON)
+                .header(API_KEY_HEADER,apiKey)
+                .post(Entity.json(body));
+
+        return makeRequest(endpoint,r,resourceClass);
+    }
+
     <T> T post(String endpoint, HashMap<String, String> queryParameters){
 
         RequestHandler r =  (String REST_URI) -> populateQueryParameters(this.client.target(REST_URI), queryParameters)
@@ -322,8 +332,10 @@ public class Api {
      */
 
     private WebTarget populateQueryParameters(WebTarget client, HashMap<String, String> queryParameters) {
-        for (Map.Entry<String, String> entry : queryParameters.entrySet()) {
-            client = client.queryParam(entry.getKey(), entry.getValue());
+        if(queryParameters!=null){
+            for (Map.Entry<String, String> entry : queryParameters.entrySet()) {
+                client = client.queryParam(entry.getKey(), entry.getValue());
+            }
         }
         return client;
     }

@@ -1,7 +1,6 @@
 package org.typesense.model;
 
 import junit.framework.TestCase;
-import org.junit.Test;
 import org.typesense.api.SearchParameters;
 import org.typesense.resources.Node;
 
@@ -24,12 +23,10 @@ public class DocumentsTest extends TestCase {
         this.client = new Client(configuration);
     }
 
-    @Test
     public void testRetrieveDocument(){
         System.out.println(client.collections("intbooks").documents("1").retrieve());
     }
 
-    @Test
     public void testCreateDocument(){
 
         String[] authors = {"shakspeare","william"};
@@ -60,20 +57,17 @@ public class DocumentsTest extends TestCase {
         System.out.println(client.collections("intbooks").documents().create(hmap));
     }
 
-    @Test
     public void testDeleteDocument(){
         System.out.println(client.collections("intbooks").documents("1").delete());
     }
 
-    @Test
     public void testDeleteDocumentByQuery(){
         HashMap<String, String> queryParameters= new HashMap<>();
         queryParameters.put("filter_by", "publication_year:=2001");
         System.out.println(client.collections("intbooks").documents().delete(queryParameters));
     }
 
-    @Test
-    public void testUpdateDocumet(){
+    public void testUpdateDocument(){
         String[] authors = {"Shakespeare","william"};
         HashMap<String , Object> document = new HashMap<>();
         document.put("title","Romeo and juliet");
@@ -88,18 +82,45 @@ public class DocumentsTest extends TestCase {
         System.out.println(client.collections("intbooks").documents("1").update(document));
     }
 
-    @Test
     public void testExportDocuments(){
-        System.out.println(client.collections("intbooks").documents().export());
+        System.out.println(client.collections("Countries").documents().export());
     }
 
-    @Test
     public void testSearchDocuments(){
         SearchParameters searchParameters = new SearchParameters()
-                                                .query("h")
-                                                .queryBy("title");
-        org.typesense.api.SearchResult searchResult = client.collections("intbooks").documents().search(searchParameters);
+                                                .query("i")
+                                                .queryBy("countryName")
+                                                .page(1);
+        org.typesense.api.SearchResult searchResult = client.collections("Countries").documents().search(searchParameters);
 
         System.out.println(searchResult);
+    }
+
+    public void testImport(){
+        HashMap<String, Object> document1 = new HashMap<>();
+        HashMap<String, Object> document2 = new HashMap<>();
+        HashMap<String, String> queryParameters = new HashMap<>();
+        ArrayList<HashMap<String, Object>> documentList = new ArrayList<>();
+
+        document1.put("countryName","India");
+        document1.put("capital","Delhi");
+        document1.put("gdp",23);
+        document2.put("countryName","Us");
+        document2.put("capital","Washington");
+        document2.put("gdp",233);
+
+        documentList.add(document1);
+        documentList.add(document2);
+
+        queryParameters.put("action","create");
+        System.out.println(this.client.collections("Countries").documents().import_(documentList, queryParameters));
+    }
+
+    public void testImportAsString(){
+        HashMap<String, String> queryParameters = new HashMap<>();
+        queryParameters.put("action","create");
+        String documentList = "{\"countryName\": \"India\", \"capital\": \"Washington\", \"gdp\": 5215}\n" +
+                "{\"countryName\": \"Iran\", \"capital\": \"London\", \"gdp\": 5215}";
+        System.out.println(this.client.collections("Countries").documents().import_(documentList, queryParameters));
     }
 }
