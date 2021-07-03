@@ -6,6 +6,7 @@ import org.typesense.resources.Node;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class KeysTest extends TestCase {
@@ -59,5 +60,11 @@ public class KeysTest extends TestCase {
 
     public void testDelete(){
         System.out.println(this.client.keys("6").delete());
+    }
+
+    public void testScopedKey(){
+        HashMap<String, Object> parameters = new HashMap<>();
+        parameters.put("filter_by", "company_id:124");
+        System.out.println(this.client.keys().generate_scoped_search_key("B9qqshFAliUDq7dsgRyrXB5WPhOIpgG9",parameters));
     }
 }
