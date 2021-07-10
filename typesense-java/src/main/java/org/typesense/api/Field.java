@@ -42,7 +42,7 @@ public class Field   {
         }
     }
 
-    private TypeEnum type = null;
+    private String type = null;
 
     private Boolean optional = false;
 
@@ -74,14 +74,14 @@ public class Field   {
         if (type == null) {
             return null;
         }
-        return type.getValue();
+        return type;
     }
 
-    public void setType(TypeEnum type) {
+    public void setType(String type) {
         this.type = type;
     }
 
-    public Field type(TypeEnum type) {
+    public Field type(String type) {
         this.type = type;
         return this;
     }

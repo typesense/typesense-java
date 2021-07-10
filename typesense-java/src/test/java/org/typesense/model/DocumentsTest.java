@@ -1,12 +1,18 @@
 package org.typesense.model;
 
 import junit.framework.TestCase;
+import org.typesense.api.CollectionResponse;
+import org.typesense.api.CollectionSchema;
+import org.typesense.api.Field;
 import org.typesense.api.SearchParameters;
 import org.typesense.resources.Node;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class DocumentsTest extends TestCase {
 
@@ -83,7 +89,7 @@ public class DocumentsTest extends TestCase {
     }
 
     public void testExportDocuments(){
-        System.out.println(client.collections("Countries").documents().export());
+        System.out.println(client.collections("books").documents().export());
     }
 
     public void testSearchDocuments(){
@@ -122,5 +128,29 @@ public class DocumentsTest extends TestCase {
         String documentList = "{\"countryName\": \"India\", \"capital\": \"Washington\", \"gdp\": 5215}\n" +
                 "{\"countryName\": \"Iran\", \"capital\": \"London\", \"gdp\": 5215}";
         System.out.println(this.client.collections("Countries").documents().import_(documentList, queryParameters));
+    }
+
+    public void testImportFromFile() throws FileNotFoundException {
+        ArrayList<Field> fields = new ArrayList<>();
+        fields.add(new Field().name("title").type("string"));
+        fields.add(new Field().name("authors").type("string[]"));
+        fields.add(new Field().name("image_url").type("string"));
+        fields.add(new Field().name("publication_year").type("int32"));
+        fields.add(new Field().name("ratings_count").type("int32"));
+        fields.add(new Field().name("average_rating").type("float"));
+        fields.add(new Field().name("publication_year_facet").type("string").facet(true));
+        fields.add(new Field().name("authors_facet").type("string[]").facet(true));
+
+        CollectionSchema collectionSchema = new CollectionSchema();
+        collectionSchema.name("books").fields(fields).defaultSortingField("ratings_count");
+
+        CollectionResponse cr = client.collections().create(collectionSchema);
+
+        File myObj = new File("/home/shiva/Desktop/typesense-java/typesense-java/src/test/java/org/typesense/model/books.jsonl");
+        Scanner myReader = new Scanner(myObj);
+        while (myReader.hasNextLine()) {
+            String data = myReader.nextLine();
+            this.client.collections("books").documents().create(data);
+        }
     }
 }

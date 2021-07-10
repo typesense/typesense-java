@@ -19,6 +19,9 @@ public class KeysTest extends TestCase {
         ArrayList<Node> nodes = new ArrayList<>();
         nodes.add(new Node("http","localhost","3001"));
 
+        /**
+         * @param
+         */
         Configuration configuration = new Configuration(nodes, Duration.ofSeconds(3),"xyz");
 
         this.client = new Client(configuration);

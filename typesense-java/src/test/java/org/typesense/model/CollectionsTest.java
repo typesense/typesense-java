@@ -38,7 +38,7 @@ public class CollectionsTest extends TestCase {
 
     @Test
     public void testRetrieveSingleCollection(){
-        System.out.println(client.collections("Countries").retrieve());
+        System.out.println(client.collections("books").retrieve());
     }
 
     @Test
@@ -50,9 +50,9 @@ public class CollectionsTest extends TestCase {
     public void testCreateCollection(){
 
         ArrayList<Field> fields = new ArrayList<>();
-        fields.add(new Field().name("countryName").type(Field.TypeEnum.STRING));
-        fields.add(new Field().name("capital").type(Field.TypeEnum.STRING));
-        fields.add(new Field().name("gdp").type(Field.TypeEnum.INT32).facet(true));
+        fields.add(new Field().name("countryName").type("string"));
+        fields.add(new Field().name("capital").type("string"));
+        fields.add(new Field().name("gdp").type("int32").facet(true));
 
         CollectionSchema collectionSchema = new CollectionSchema();
         collectionSchema.name("Countries").fields(fields).defaultSortingField("gdp");

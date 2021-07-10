@@ -16,6 +16,13 @@ public class Configuration {
     public String apiKey;
     public boolean sendApiKeyAsQueryParam;
 
+    /**
+     *
+     * @param nodes List of Nodes
+     * @param connectionTimeout Duration in seconds
+     * @param apiKey String describing the apiKey
+     */
+
     public Configuration(List<Node> nodes, Duration connectionTimeout, String apiKey) {
         this.nodes = nodes;
         this.connectionTimeout = connectionTimeout;

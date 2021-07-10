@@ -24,6 +24,10 @@ public class Documents {
         return this.api.post(getEndPoint("/"), document);
     }
 
+    public String create(String document){
+        return this.api.post(getEndPoint("/"),document,null,String.class);
+    }
+
     public org.typesense.api.SearchResult search(SearchParameters searchParameters){
         return this.api.get(getEndPoint("search"), org.typesense.api.SearchResult.class, searchParameters);
     }
