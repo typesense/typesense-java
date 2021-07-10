@@ -6,20 +6,20 @@ public class Override {
 
     private String collectionName;
     private String overrideId;
-    private Api api;
+    private ApiCall apiCall;
 
-    public Override(String collectionName, String overrideId, Api api) {
+    public Override(String collectionName, String overrideId, ApiCall apiCall) {
         this.collectionName = collectionName;
         this.overrideId = overrideId;
-        this.api = api;
+        this.apiCall = apiCall;
     }
 
     public SearchOverride retrieve(){
-        return this.api.get(this.getEndpoint(), SearchOverride.class);
+        return this.apiCall.get(this.getEndpoint(), SearchOverride.class);
     }
 
     public SearchOverride delete(){
-        return this.api.delete(this.getEndpoint(), SearchOverride.class);
+        return this.apiCall.delete(this.getEndpoint(), SearchOverride.class);
     }
 
     public String getEndpoint(){

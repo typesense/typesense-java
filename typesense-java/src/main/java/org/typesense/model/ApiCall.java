@@ -29,7 +29,7 @@ import javax.ws.rs.core.Response;
 import java.util.*;
 
 
-public class Api {
+public class ApiCall {
 
     private final Configuration configuration;
     private final List<Node> nodes;
@@ -42,7 +42,7 @@ public class Api {
     private final String apiKey;
     private final Duration retryInterval;
 
-    public Api(Configuration configuration) {
+    public ApiCall(Configuration configuration) {
         this.configuration = configuration;
         this.nodes = configuration.nodes;
         this.apiKey = configuration.apiKey;

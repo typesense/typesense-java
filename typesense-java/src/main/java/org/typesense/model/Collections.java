@@ -5,19 +5,19 @@ import org.typesense.api.CollectionSchema;
 
 public class Collections {
 
-    private final Api api;
+    private final ApiCall apiCall;
     public final static String RESOURCE_PATH = "/collections";
 
-    public Collections(Api api){
-        this.api = api;
+    public Collections(ApiCall apiCall){
+        this.apiCall = apiCall;
     }
 
     public CollectionResponse create(CollectionSchema c){
-        return this.api.post(RESOURCE_PATH, c, CollectionResponse.class);
+        return this.apiCall.post(RESOURCE_PATH, c, CollectionResponse.class);
     }
 
     public CollectionResponse[] retrieve(){
-        return this.api.get(RESOURCE_PATH,CollectionResponse[].class);
+        return this.apiCall.get(RESOURCE_PATH,CollectionResponse[].class);
     }
 
 }

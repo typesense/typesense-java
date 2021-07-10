@@ -4,14 +4,14 @@ import java.util.HashMap;
 
 public class Metrics {
 
-    private Api api;
+    private ApiCall apiCall;
     public static final String RESOURCEPATH = "/metrics.json";
 
-    public Metrics(Api api) {
-        this.api = api;
+    public Metrics(ApiCall apiCall) {
+        this.apiCall = apiCall;
     }
 
     public HashMap<String, String> retrieve(){
-        return this.api.get(RESOURCEPATH);
+        return this.apiCall.get(RESOURCEPATH);
     }
 }

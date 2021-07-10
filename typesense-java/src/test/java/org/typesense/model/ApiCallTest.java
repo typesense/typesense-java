@@ -11,7 +11,7 @@ import org.typesense.resources.Node;
 import java.time.Duration;
 import java.util.*;
 
-public class ApiTest extends TestCase {
+public class ApiCallTest extends TestCase {
 
     Configuration configuration;
 
@@ -28,28 +28,28 @@ public class ApiTest extends TestCase {
 
     @Test
     public void testDelete(){
-        Api api = new Api(configuration);
+        ApiCall apiCall = new ApiCall(configuration);
 
-        TestDoc book = api.delete("/collections/intbooks/documents/Odyssey", TestDoc.class);
+        TestDoc book = apiCall.delete("/collections/intbooks/documents/Odyssey", TestDoc.class);
         System.out.println(book);
 
     }
 
     @Test
     public void testPost(){
-        Api api = new Api(configuration);
+        ApiCall apiCall = new ApiCall(configuration);
 
         TestDoc book = TestDoc.createBook("Odyssey", new String[]{"Homer"}, "url", 1000, 3, 4);
-        TestDoc d = api.post("/collections/intbooks/documents", book, TestDoc.class);
+        TestDoc d = apiCall.post("/collections/intbooks/documents", book, TestDoc.class);
 
         System.out.println(d);
     }
 
     @Test
     public void testGet() {
-        Api api = new Api(configuration);
+        ApiCall apiCall = new ApiCall(configuration);
 
-        CollectionSchema c = api.get("/collections/intbooks",CollectionSchema.class);
+        CollectionSchema c = apiCall.get("/collections/intbooks",CollectionSchema.class);
 
         //System.out.println(c);
         assertNotNull(c);
@@ -57,9 +57,9 @@ public class ApiTest extends TestCase {
 
     @Test
     public void testGetDocument(){
-        Api api = new Api(configuration);
+        ApiCall apiCall = new ApiCall(configuration);
 
-        HashMap<String,Object> hm = api.get("/collections/intbooks/documents/5");
+        HashMap<String,Object> hm = apiCall.get("/collections/intbooks/documents/5");
 
         System.out.println(hm);
     }

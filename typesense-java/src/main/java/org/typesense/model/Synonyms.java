@@ -7,20 +7,20 @@ import org.typesense.api.SearchSynonymsResponse;
 public class Synonyms {
 
     private String collectionName;
-    private Api api;
+    private ApiCall apiCall;
     public final static String RESOURCEPATH = "/synonyms";
 
-    public Synonyms(String collectionName, Api api) {
+    public Synonyms(String collectionName, ApiCall apiCall) {
         this.collectionName = collectionName;
-        this.api = api;
+        this.apiCall = apiCall;
     }
 
     public SearchSynonym upsert(String synonymId, SearchSynonymSchema searchSynonymSchema){
-        return this.api.put(getEndpoint(synonymId), searchSynonymSchema,SearchSynonym.class);
+        return this.apiCall.put(getEndpoint(synonymId), searchSynonymSchema,SearchSynonym.class);
     }
 
     public SearchSynonymsResponse retrieve(){
-        return this.api.get(this.getEndpoint(null),SearchSynonymsResponse.class);
+        return this.apiCall.get(this.getEndpoint(null),SearchSynonymsResponse.class);
     }
 
     public String getEndpoint(String operation){

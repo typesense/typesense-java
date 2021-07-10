@@ -5,27 +5,27 @@ import java.util.HashMap;
 public class Document {
     private String collectionName;
     private String documentId;
-    private Api api;
+    private ApiCall apiCall;
     private final String endpoint;
 
-    Document(String collectionName, String documentId, Api api) {
+    Document(String collectionName, String documentId, ApiCall apiCall) {
         this.collectionName = collectionName;
         this.documentId = documentId;
-        this.api = api;
+        this.apiCall = apiCall;
 
         this.endpoint = Collections.RESOURCE_PATH + "/" +  this.collectionName + Documents.RESOURCE_PATH + "/" + this.documentId;
     }
 
     HashMap<String,Object> retrieve(){
-        return this.api.get(endpoint);
+        return this.apiCall.get(endpoint);
     }
 
     HashMap<String, Object> delete(){
-        return this.api.delete(this.endpoint);
+        return this.apiCall.delete(this.endpoint);
     }
 
     HashMap<String , Object> update(HashMap<String, Object> document){
-        return this.api.post(this.endpoint, document);
+        return this.apiCall.post(this.endpoint, document);
     }
 
 }

@@ -9,19 +9,19 @@ public class Overrides {
     public static String RESOURCEPATH = "/overrides";
 
     private String collectionName;
-    private Api api;
+    private ApiCall apiCall;
 
-    public Overrides(String collectionName, Api api) {
+    public Overrides(String collectionName, ApiCall apiCall) {
         this.collectionName = collectionName;
-        this.api = api;
+        this.apiCall = apiCall;
     }
 
     public SearchOverride upsert(String overrideId, SearchOverrideSchema searchOverrideSchema){
-        return this.api.put(getEndpoint(overrideId), searchOverrideSchema, SearchOverride.class);
+        return this.apiCall.put(getEndpoint(overrideId), searchOverrideSchema, SearchOverride.class);
     }
 
     public SearchOverridesResponse retrieve(){
-        return this.api.get(this.getEndpoint(null), SearchOverridesResponse.class);
+        return this.apiCall.get(this.getEndpoint(null), SearchOverridesResponse.class);
     }
 
     public String getEndpoint(String operation){

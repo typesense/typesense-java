@@ -7,14 +7,14 @@ import java.util.List;
 
 public class MultiSearch {
 
-    private Api api;
+    private ApiCall apiCall;
     public static final String RESOURCEPATH = "/multi_search";
 
-    public MultiSearch(Api api) {
-        this.api = api;
+    public MultiSearch(ApiCall apiCall) {
+        this.apiCall = apiCall;
     }
 
     public MultiSearchResponse perform(HashMap<String , List<HashMap<String,String>>> multiSearchParameters, HashMap<String, String> common_params){
-        return this.api.post(MultiSearch.RESOURCEPATH, multiSearchParameters, common_params, MultiSearchResponse.class);
+        return this.apiCall.post(MultiSearch.RESOURCEPATH, multiSearchParameters, common_params, MultiSearchResponse.class);
     }
 }

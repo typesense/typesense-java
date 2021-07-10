@@ -6,20 +6,20 @@ public class Synonym {
 
     private String collectionName;
     private String synonymId;
-    private Api api;
+    private ApiCall apiCall;
 
-    public Synonym(String collectionName, String synonymId, Api api) {
+    public Synonym(String collectionName, String synonymId, ApiCall apiCall) {
         this.collectionName = collectionName;
         this.synonymId = synonymId;
-        this.api = api;
+        this.apiCall = apiCall;
     }
 
     public SearchSynonym retrieve(){
-        return this.api.get(this.getEndpoint(), SearchSynonym.class);
+        return this.apiCall.get(this.getEndpoint(), SearchSynonym.class);
     }
 
     public SearchSynonym delete(){
-        return this.api.delete(this.getEndpoint(), SearchSynonym.class);
+        return this.apiCall.delete(this.getEndpoint(), SearchSynonym.class);
     }
 
     public String getEndpoint(){

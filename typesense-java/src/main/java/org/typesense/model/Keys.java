@@ -15,18 +15,18 @@ import java.util.HashMap;
 public class Keys {
 
     public static final String RESOURCEPATH = "/keys";
-    private Api api;
+    private ApiCall apiCall;
 
-    public Keys(Api api) {
-        this.api = api;
+    public Keys(ApiCall apiCall) {
+        this.apiCall = apiCall;
     }
 
     public ApiKey create(ApiKeySchema apiKeySchema){
-        return this.api.post(Keys.RESOURCEPATH, apiKeySchema, ApiKey.class);
+        return this.apiCall.post(Keys.RESOURCEPATH, apiKeySchema, ApiKey.class);
     }
 
     public ApiKeysResponse retrieve(){
-        return this.api.get(Keys.RESOURCEPATH, ApiKeysResponse.class);
+        return this.apiCall.get(Keys.RESOURCEPATH, ApiKeysResponse.class);
     }
 
     public String generate_scoped_search_key(String searchKey, HashMap<String, Object> parameters){

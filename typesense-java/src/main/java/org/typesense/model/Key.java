@@ -5,19 +5,19 @@ import org.typesense.api.ApiKey;
 public class Key {
 
     private String id;
-    private Api api;
+    private ApiCall apiCall;
 
-    public Key(String id, Api api) {
+    public Key(String id, ApiCall apiCall) {
         this.id = id;
-        this.api = api;
+        this.apiCall = apiCall;
     }
 
     public ApiKey retrieve(){
-        return this.api.get(this.getEndpoint(), ApiKey.class);
+        return this.apiCall.get(this.getEndpoint(), ApiKey.class);
     }
 
     public ApiKey delete(){
-        return this.api.delete(this.getEndpoint(), ApiKey.class);
+        return this.apiCall.delete(this.getEndpoint(), ApiKey.class);
     }
 
     private String getEndpoint(){

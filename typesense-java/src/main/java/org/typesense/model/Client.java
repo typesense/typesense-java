@@ -5,7 +5,7 @@ import java.util.HashMap;
 public class Client {
     private Configuration configuration;
 
-    private Api api;
+    private ApiCall apiCall;
 
     private Collections collections;
     private HashMap<String, Collection> individualCollections;
@@ -24,25 +24,25 @@ public class Client {
 
     Client(Configuration configuration){
         this.configuration = configuration;
-        this.api = new Api(configuration);
-        collections = new Collections(api);
+        this.apiCall = new ApiCall(configuration);
+        collections = new Collections(apiCall);
         this.individualCollections = new HashMap<>();
-        this.aliases = new Aliases(this.api);
+        this.aliases = new Aliases(this.apiCall);
         this.individualAliases = new HashMap<>();
-        this.keys = new Keys(this.api);
+        this.keys = new Keys(this.apiCall);
         this.individualKeys = new HashMap<>();
-        this.health = new Health(this.api);
-        this.operations = new Operations(this.api);
-        this.metrics = new Metrics(this.api);
-        this.debug = new Debug(this.api);
-        this.multiSearch = new MultiSearch(this.api);
+        this.health = new Health(this.apiCall);
+        this.operations = new Operations(this.apiCall);
+        this.metrics = new Metrics(this.apiCall);
+        this.debug = new Debug(this.apiCall);
+        this.multiSearch = new MultiSearch(this.apiCall);
     }
 
     public Collection collections(String name){
         Collection ret_val;
 
         if(!this.individualCollections.containsKey(name)){
-            individualCollections.put(name,new Collection(name,this.api,this.configuration));
+            individualCollections.put(name,new Collection(name,this.apiCall,this.configuration));
         }
 
         ret_val = individualCollections.get(name);
@@ -62,7 +62,7 @@ public class Client {
         Alias ret_val;
 
         if(!this.individualAliases.containsKey(name)){
-            this.individualAliases.put(name,new Alias(this.api, name));
+            this.individualAliases.put(name,new Alias(this.apiCall, name));
         }
 
         ret_val = this.individualAliases.get(name);
@@ -78,7 +78,7 @@ public class Client {
         Key ret_val;
 
         if(!this.individualKeys.containsKey(id)){
-            this.individualKeys.put(id, new Key(id, this.api));
+            this.individualKeys.put(id, new Key(id, this.apiCall));
         }
 
         ret_val = this.individualKeys.get(id);

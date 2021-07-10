@@ -1,7 +1,6 @@
 package org.typesense.model;
 
 import org.typesense.api.CollectionResponse;
-import org.typesense.api.SearchSynonym;
 
 import java.util.HashMap;
 
@@ -9,7 +8,7 @@ public class Collection {
 
     private final Configuration configuration;
 
-    private final Api api;
+    private final ApiCall apiCall;
 
     private final String name;
 
@@ -24,25 +23,25 @@ public class Collection {
 
     private final String endpoint;
 
-    Collection(String name, Api api, Configuration configuration){
+    Collection(String name, ApiCall apiCall, Configuration configuration){
         this.name =name;
-        this.api = api;
+        this.apiCall = apiCall;
         this.configuration = configuration;
         this.endpoint = Collections.RESOURCE_PATH + "/" + this.name;
-        this.documents = new Documents(this.name, this.api, this.configuration);
+        this.documents = new Documents(this.name, this.apiCall, this.configuration);
         this.individualDocuments = new HashMap<String, Document>();
-        this.synonyms = new Synonyms(this.name, this.api);
+        this.synonyms = new Synonyms(this.name, this.apiCall);
         this.individualSynonyms = new HashMap<String, Synonym>();
-        this.overrides = new Overrides(this.name, this.api);
+        this.overrides = new Overrides(this.name, this.apiCall);
         this.individualOverrides = new HashMap<String, Override>();
     }
 
     public CollectionResponse retrieve(){
-        return this.api.get(endpoint, CollectionResponse.class);
+        return this.apiCall.get(endpoint, CollectionResponse.class);
     }
 
     public CollectionResponse delete(){
-        return this.api.delete(endpoint,CollectionResponse.class);
+        return this.apiCall.delete(endpoint,CollectionResponse.class);
     }
 
     public Documents documents(){
@@ -53,7 +52,7 @@ public class Collection {
         Document ret_val;
 
         if(!this.individualDocuments.containsKey(documentId)){
-            this.individualDocuments.put(documentId,new Document(this.name, documentId, this.api));
+            this.individualDocuments.put(documentId,new Document(this.name, documentId, this.apiCall));
         }
 
         ret_val = this.individualDocuments.get(documentId);
@@ -68,7 +67,7 @@ public class Collection {
         Synonym ret_val;
 
         if(!this.individualSynonyms.containsKey(synonymId)){
-            this.individualSynonyms.put(synonymId, new Synonym(this.name, synonymId, this.api));
+            this.individualSynonyms.put(synonymId, new Synonym(this.name, synonymId, this.apiCall));
         }
 
         ret_val = this.individualSynonyms.get(synonymId);
@@ -83,7 +82,7 @@ public class Collection {
         Override ret_val;
 
         if(!this.individualOverrides.containsKey(overrideId)){
-            this.individualOverrides.put(overrideId, new Override(this.name, overrideId, this.api));
+            this.individualOverrides.put(overrideId, new Override(this.name, overrideId, this.apiCall));
         }
 
         ret_val = this.individualOverrides.get(overrideId);
