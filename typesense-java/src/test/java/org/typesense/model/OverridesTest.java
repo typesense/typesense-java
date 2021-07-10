@@ -36,7 +36,7 @@ public class OverridesTest extends TestCase {
         List<SearchOverrideExclude> searchOverrideExcludes = new ArrayList<>();
         searchOverrideExcludes.add(new SearchOverrideExclude().id("287"));
 
-        searchOverrideSchema.rule(new SearchOverrideRule().query("apple").match(SearchOverrideRule.MatchEnum.EXACT))
+        searchOverrideSchema.rule(new SearchOverrideRule().query("apple").match("exact"))
                             .includes(searchOverrideIncludes)
                             .excludes(searchOverrideExcludes);
 

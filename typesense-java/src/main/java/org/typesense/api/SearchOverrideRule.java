@@ -49,7 +49,7 @@ public class SearchOverrideRule   {
  /**
    * Indicates whether the match on the query term should be `exact` or `contains`. If we want to match all queries that contained the word `apple`, we will use the `contains` match instead.   
   **/
-  private MatchEnum match = null;
+  String match = null;
  /**
    * Indicates what search queries should be overridden
    * @return query
@@ -77,14 +77,14 @@ public class SearchOverrideRule   {
     if (match == null) {
       return null;
     }
-    return match.getValue();
+    return match;
   }
 
-  public void setMatch(MatchEnum match) {
+  public void setMatch(String match) {
     this.match = match;
   }
 
-  public SearchOverrideRule match(MatchEnum match) {
+  public SearchOverrideRule match(String match) {
     this.match = match;
     return this;
   }
