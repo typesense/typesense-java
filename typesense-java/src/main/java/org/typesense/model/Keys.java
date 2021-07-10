@@ -29,7 +29,7 @@ public class Keys {
         return this.apiCall.get(Keys.RESOURCEPATH, ApiKeysResponse.class);
     }
 
-    public String generate_scoped_search_key(String searchKey, HashMap<String, Object> parameters){
+    public String generateScopedSearchKey(String searchKey, HashMap<String, Object> parameters){
         ObjectMapper mapper = new ObjectMapper();
         String params = "";
         try {
