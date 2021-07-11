@@ -23,12 +23,13 @@ public class SynonymsTest extends TestCase {
     }
 
     public void testUpsert(){
+        //Multi-way
         SearchSynonymSchema synonym = new SearchSynonymSchema();
         synonym.addSynonymsItem("blazer").addSynonymsItem("coat").addSynonymsItem("jacket");
-        synonym.root("blazer");
 
         System.out.println(this.client.collections("intbooks").synonyms().upsert("coat-synonyms",synonym));
 
+        //One-way
         synonym.addSynonymsItem("dictionary").addSynonymsItem("guide").addSynonymsItem("encyclopedia");
         synonym.root("books");
 
