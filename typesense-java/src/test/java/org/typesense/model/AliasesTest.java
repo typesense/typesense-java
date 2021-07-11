@@ -2,6 +2,7 @@ package org.typesense.model;
 
 import junit.framework.TestCase;
 import org.typesense.api.CollectionAlias;
+import org.typesense.api.CollectionAliasSchema;
 import org.typesense.api.CollectionAliasesResponse;
 import org.typesense.resources.Node;
 
@@ -25,15 +26,15 @@ public class AliasesTest extends TestCase {
     }
 
     public void testUpsert() {
-        CollectionAlias collectionAlias = new CollectionAlias();
-        collectionAlias.name("companies").collectionName("companies_june11");
+        CollectionAliasSchema collectionAliasSchema = new CollectionAliasSchema();
+        collectionAliasSchema.collectionName("companies_june11");
 
-        System.out.println(this.client.aliases().upsert("companies", collectionAlias));
+        System.out.println(this.client.aliases().upsert("companies", collectionAliasSchema));
 
 
-        collectionAlias.name("books").collectionName("books_june11");
+        collectionAliasSchema.collectionName("books_june11");
 
-        System.out.println(this.client.aliases().upsert("books", collectionAlias));
+        System.out.println(this.client.aliases().upsert("books", collectionAliasSchema));
     }
 
     public void testRetrieveAll() {

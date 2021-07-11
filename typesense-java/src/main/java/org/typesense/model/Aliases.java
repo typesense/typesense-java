@@ -1,6 +1,7 @@
 package org.typesense.model;
 
 import org.typesense.api.CollectionAlias;
+import org.typesense.api.CollectionAliasSchema;
 import org.typesense.api.CollectionAliasesResponse;
 
 public class Aliases {
@@ -13,8 +14,8 @@ public class Aliases {
     }
 
 
-    public CollectionAlias upsert(String name, CollectionAlias collectionAlias){
-        return this.apiCall.put(RESOURCE_PATH + "/" + name, collectionAlias, CollectionAlias.class);
+    public CollectionAlias upsert(String name, CollectionAliasSchema collectionAliasSchema){
+        return this.apiCall.put(RESOURCE_PATH + "/" + name, collectionAliasSchema, CollectionAlias.class);
     }
 
     public CollectionAliasesResponse retrieve(){
