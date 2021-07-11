@@ -39,15 +39,15 @@ public class Client {
     }
 
     public Collection collections(String name){
-        Collection ret_val;
+        Collection retVal;
 
         if(!this.individualCollections.containsKey(name)){
             individualCollections.put(name,new Collection(name,this.apiCall,this.configuration));
         }
 
-        ret_val = individualCollections.get(name);
+        retVal = individualCollections.get(name);
 
-        return ret_val;
+        return retVal;
     }
 
     public Collections collections(){
@@ -59,15 +59,15 @@ public class Client {
     }
 
     public Alias aliases(String name){
-        Alias ret_val;
+        Alias retVal;
 
         if(!this.individualAliases.containsKey(name)){
             this.individualAliases.put(name,new Alias(this.apiCall, name));
         }
 
-        ret_val = this.individualAliases.get(name);
+        retVal = this.individualAliases.get(name);
 
-        return ret_val;
+        return retVal;
     }
 
     public Keys keys(){
@@ -75,13 +75,13 @@ public class Client {
     }
 
     public Key keys(String id){
-        Key ret_val;
+        Key retVal;
 
         if(!this.individualKeys.containsKey(id)){
             this.individualKeys.put(id, new Key(id, this.apiCall));
         }
 
-        ret_val = this.individualKeys.get(id);
-        return ret_val;
+        retVal = this.individualKeys.get(id);
+        return retVal;
     }
 }

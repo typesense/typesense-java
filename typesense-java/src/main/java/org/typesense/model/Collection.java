@@ -49,14 +49,14 @@ public class Collection {
     }
 
     public Document documents(String documentId){
-        Document ret_val;
+        Document retVal;
 
         if(!this.individualDocuments.containsKey(documentId)){
             this.individualDocuments.put(documentId,new Document(this.name, documentId, this.apiCall));
         }
 
-        ret_val = this.individualDocuments.get(documentId);
-        return  ret_val;
+        retVal = this.individualDocuments.get(documentId);
+        return  retVal;
     }
 
     public Synonyms synonyms(){
@@ -64,14 +64,14 @@ public class Collection {
     }
 
     public Synonym synonyms(String synonymId){
-        Synonym ret_val;
+        Synonym retVal;
 
         if(!this.individualSynonyms.containsKey(synonymId)){
             this.individualSynonyms.put(synonymId, new Synonym(this.name, synonymId, this.apiCall));
         }
 
-        ret_val = this.individualSynonyms.get(synonymId);
-        return  ret_val;
+        retVal = this.individualSynonyms.get(synonymId);
+        return  retVal;
     }
 
     public Overrides overrides(){
@@ -79,13 +79,13 @@ public class Collection {
     }
 
     public Override overrides(String overrideId){
-        Override ret_val;
+        Override retVal;
 
         if(!this.individualOverrides.containsKey(overrideId)){
             this.individualOverrides.put(overrideId, new Override(this.name, overrideId, this.apiCall));
         }
 
-        ret_val = this.individualOverrides.get(overrideId);
-        return ret_val;
+        retVal = this.individualOverrides.get(overrideId);
+        return retVal;
     }
 }
