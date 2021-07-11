@@ -2,7 +2,6 @@ package org.typesense.api;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.typesense.api.CollectionSchema;
 
 public class CollectionResponse extends CollectionSchema {
 

@@ -2,7 +2,6 @@ package org.typesense.api.old;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
-import org.typesense.api.old.Highlight;
 
 import java.util.List;
 

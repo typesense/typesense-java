@@ -1,7 +1,6 @@
 package org.typesense.api.old;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.typesense.api.old.Hit;
 
 import java.util.List;
 import java.util.Map;

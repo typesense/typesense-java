@@ -8,7 +8,6 @@ import org.typesense.resources.Node;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class AliasesTest extends TestCase {
 
