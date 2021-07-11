@@ -1,9 +1,11 @@
 package org.typesense.model;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.typesense.api.SearchParameters;
+import org.typesense.api.SearchResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Documents {
 
@@ -27,7 +29,18 @@ public class Documents {
         return this.apiCall.post(getEndPoint("/"),document,null,String.class);
     }
 
-    public org.typesense.api.SearchResult search(SearchParameters searchParameters){
+    public String create(HashMap<String, Object> document, HashMap<String, String> queryParameters){
+        return this.apiCall.post(getEndPoint("/"),document,queryParameters,String.class);
+    }
+
+    public HashMap<String, Object> upsert(HashMap<String, Object> document){
+        HashMap<String, String > queryParameters = new HashMap<>();
+        queryParameters.put("action", "upsert");
+
+        return this.apiCall.post(getEndPoint("/"),document,queryParameters,HashMap.class);
+    }
+
+    public SearchResult search(SearchParameters searchParameters){
         return this.apiCall.get(getEndPoint("search"), org.typesense.api.SearchResult.class, searchParameters);
     }
 

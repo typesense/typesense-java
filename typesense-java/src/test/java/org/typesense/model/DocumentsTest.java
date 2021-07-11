@@ -63,6 +63,15 @@ public class DocumentsTest extends TestCase {
         System.out.println(client.collections("intbooks").documents().create(hmap));
     }
 
+    public void testUpsertDocument(){
+        HashMap<String, Object> document = new HashMap<>();
+
+        document.put("id","4");
+        document.put("countryName","Japan");
+
+        System.out.println(this.client.collections("Countries").documents().upsert(document));
+    }
+
     public void testDeleteDocument(){
         System.out.println(client.collections("intbooks").documents("1").delete());
     }
@@ -144,13 +153,26 @@ public class DocumentsTest extends TestCase {
         CollectionSchema collectionSchema = new CollectionSchema();
         collectionSchema.name("books").fields(fields).defaultSortingField("ratings_count");
 
-        CollectionResponse cr = client.collections().create(collectionSchema);
+        CollectionResponse collectionResponse = client.collections().create(collectionSchema);
 
-        File myObj = new File("/home/shiva/Desktop/typesense-java/typesense-java/src/test/java/org/typesense/model/books.jsonl");
+        File myObj = new File("books.jsonl");
         Scanner myReader = new Scanner(myObj);
         while (myReader.hasNextLine()) {
             String data = myReader.nextLine();
             this.client.collections("books").documents().create(data);
         }
+    }
+
+    public void testDirtyCreate(){
+        HashMap<String, Object > document = new HashMap<>();
+        HashMap<String, String > queryParameters = new HashMap<>();
+
+        document.put("countryName",1984);
+        document.put("capital","Tokyo");
+        document.put("gdp",29);
+
+        queryParameters.put("dirty_values","coerce_or_reject");
+
+        System.out.println(this.client.collections("Countries").documents().create(document,queryParameters));
     }
 }
