@@ -1,10 +1,7 @@
 package org.typesense.model;
 
 import junit.framework.TestCase;
-import org.typesense.api.CollectionResponse;
-import org.typesense.api.CollectionSchema;
-import org.typesense.api.Field;
-import org.typesense.api.SearchParameters;
+import org.typesense.api.*;
 import org.typesense.resources.Node;
 
 import java.io.File;
@@ -77,9 +74,10 @@ public class DocumentsTest extends TestCase {
     }
 
     public void testDeleteDocumentByQuery(){
-        HashMap<String, String> queryParameters= new HashMap<>();
-        queryParameters.put("filter_by", "publication_year:=2001");
-        System.out.println(client.collections("intbooks").documents().delete(queryParameters));
+        DeleteDocumentsParameters deleteDocumentsParameters = new DeleteDocumentsParameters();
+        deleteDocumentsParameters.filterBy("publication_year:=[1983,1984]");
+        deleteDocumentsParameters.batchSize(10);
+        System.out.println(client.collections("books").documents().delete(deleteDocumentsParameters));
     }
 
     public void testUpdateDocument(){
@@ -98,15 +96,19 @@ public class DocumentsTest extends TestCase {
     }
 
     public void testExportDocuments(){
-        System.out.println(client.collections("books").documents().export());
+        ExportDocumentsParameters exportDocumentsParameters = new ExportDocumentsParameters();
+        exportDocumentsParameters.addExcludeFieldsItem("gdp");
+        exportDocumentsParameters.addIncludeFieldsItem("gdp");
+        exportDocumentsParameters.addIncludeFieldsItem("capital");
+        System.out.println(client.collections("Countries").documents().export(exportDocumentsParameters));
     }
 
     public void testSearchDocuments(){
         SearchParameters searchParameters = new SearchParameters()
-                                                .query("i")
-                                                .queryBy("countryName")
-                                                .page(1);
-        org.typesense.api.SearchResult searchResult = client.collections("Countries").documents().search(searchParameters);
+                                                .q("harry")
+                                                .addQueryByItem("title").addQueryByItem("authors")
+                                                .addPrefixItem(true).addPrefixItem(false);
+        org.typesense.api.SearchResult searchResult = client.collections("books").documents().search(searchParameters);
 
         System.out.println(searchResult);
     }
@@ -114,7 +116,7 @@ public class DocumentsTest extends TestCase {
     public void testImport(){
         HashMap<String, Object> document1 = new HashMap<>();
         HashMap<String, Object> document2 = new HashMap<>();
-        HashMap<String, String> queryParameters = new HashMap<>();
+        ImportDocumentsParameters queryParameters = new ImportDocumentsParameters();
         ArrayList<HashMap<String, Object>> documentList = new ArrayList<>();
 
         document1.put("countryName","India");
@@ -127,13 +129,13 @@ public class DocumentsTest extends TestCase {
         documentList.add(document1);
         documentList.add(document2);
 
-        queryParameters.put("action","create");
+        queryParameters.action("create");
         System.out.println(this.client.collections("Countries").documents().import_(documentList, queryParameters));
     }
 
     public void testImportAsString(){
-        HashMap<String, String> queryParameters = new HashMap<>();
-        queryParameters.put("action","create");
+        ImportDocumentsParameters queryParameters = new ImportDocumentsParameters();
+        queryParameters.action("create");
         String documentList = "{\"countryName\": \"India\", \"capital\": \"Washington\", \"gdp\": 5215}\n" +
                 "{\"countryName\": \"Iran\", \"capital\": \"London\", \"gdp\": 5215}";
         System.out.println(this.client.collections("Countries").documents().import_(documentList, queryParameters));
@@ -165,13 +167,13 @@ public class DocumentsTest extends TestCase {
 
     public void testDirtyCreate(){
         HashMap<String, Object > document = new HashMap<>();
-        HashMap<String, String > queryParameters = new HashMap<>();
+        ImportDocumentsParameters queryParameters = new ImportDocumentsParameters();
 
         document.put("countryName",1984);
         document.put("capital","Tokyo");
         document.put("gdp",29);
 
-        queryParameters.put("dirty_values","coerce_or_reject");
+        queryParameters.dirtyValues("coerce_or_reject");
 
         System.out.println(this.client.collections("Countries").documents().create(document,queryParameters));
     }

@@ -10,9 +10,7 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.typesense.TypesenseClient;
 import org.typesense.api.ErrorResponse;
-import org.typesense.api.SearchParameters;
 import org.typesense.interceptor.LoggingInterceptor;
 import org.typesense.model.exceptions.*;
 import org.typesense.resources.Node;
@@ -37,7 +35,7 @@ public class ApiCall {
     private static int nodeIndex=0;
 
     private static final String API_KEY_HEADER = "X-TYPESENSE-API-KEY";
-    private static final Logger logger = LoggerFactory.getLogger(TypesenseClient.class);
+    private static final Logger logger = LoggerFactory.getLogger(ApiCall.class);
     private final Client client;
     private final String apiKey;
     private final Duration retryInterval;
@@ -113,7 +111,8 @@ public class ApiCall {
             return new HttpError(message,status_code);
     }
 
-    <T> T get(String endpoint, Class<T> resourceClass, SearchParameters searchParameters){
+
+    <T, Q> T get(String endpoint,Q queryParameters, Class<T> resourceClass){
 
         /**
          * Lambda function which implements the RequestHandler interface
@@ -121,7 +120,7 @@ public class ApiCall {
          * and returns T as the response entity.
          * This is similar for all type of requests.
          */
-        RequestHandler r =  (String REST_URI) -> populateSearchParameters(this.client.target(REST_URI),searchParameters)
+        RequestHandler r =  (String REST_URI) -> populateQueryParameters2(this.client.target(REST_URI), queryParameters)
                 .request(MediaType.APPLICATION_JSON)
                 .header(API_KEY_HEADER,apiKey)
                 .get();
@@ -157,16 +156,6 @@ public class ApiCall {
         return makeRequest(endpoint,r,resourceClass);
     }
 
-/*    <T,R> T put(String endpoint, R body){
-        RequestHandler r =  (String REST_URI) -> this.client.target(REST_URI)
-                .request(MediaType.APPLICATION_JSON)
-                .header(API_KEY_HEADER,apiKey)
-                .put(Entity.json(body));
-
-        Response response = makeRequest(endpoint,r);
-
-        return handleResponse(response);
-    }*/
 
     <T, R> T post(String endpoint, R body, Class<T> resourceClass){
 
@@ -188,9 +177,10 @@ public class ApiCall {
         return makeRequest(endpoint,r,null);
     }
 
-    <T,R> T post(String endpoint, R body, HashMap<String, String> queryParameters, Class<T> resourceClass){
 
-        RequestHandler r =  (String REST_URI) -> populateQueryParameters(this.client.target(REST_URI), queryParameters)
+    <T,R,Q> T post(String endpoint, R body, Q queryParameters, Class<T> resourceClass){
+
+        RequestHandler r =  (String REST_URI) -> populateQueryParameters2(this.client.target(REST_URI), queryParameters)
                 .request(MediaType.APPLICATION_JSON)
                 .header(API_KEY_HEADER,apiKey)
                 .post(Entity.json(body));
@@ -228,12 +218,11 @@ public class ApiCall {
         return makeRequest(endpoint,r,null);
     }
 
-    <T> T delete(String endpoint,  HashMap<String, String> queryParameters){
-        RequestHandler r =  (String REST_URI) -> populateQueryParameters(this.client.target(REST_URI),queryParameters)
+    <T, Q> T delete(String endpoint, Q queryParameters){
+        RequestHandler r =  (String REST_URI) -> populateQueryParameters2(this.client.target(REST_URI),queryParameters)
                 .request(MediaType.APPLICATION_JSON)
                 .header(API_KEY_HEADER,apiKey)
                 .delete();
-
 
         return makeRequest(endpoint,r,null);
     }
@@ -310,19 +299,6 @@ public class ApiCall {
         return  null;
     }
 
-    /**
-     * Appends search query parameters to the request URL.
-     *
-     * @param client a WebTarget target instance.
-     * @param parameters a SearchParameters instance.
-     * @return a WebTarget with the relevant search parameters added.
-     */
-    private WebTarget populateSearchParameters(WebTarget client, SearchParameters parameters) {
-        for (Map.Entry<String, String> entry : parameters.getParameters().entrySet()) {
-            client = client.queryParam(entry.getKey(), entry.getValue());
-        }
-        return client;
-    }
 
     /**
      * Adds query parameters to the http request
@@ -335,6 +311,28 @@ public class ApiCall {
         if(queryParameters!=null){
             for (Map.Entry<String, String> entry : queryParameters.entrySet()) {
                 client = client.queryParam(entry.getKey(), entry.getValue());
+            }
+        }
+        return client;
+    }
+
+    private <T> WebTarget populateQueryParameters2(WebTarget client, T queryParameters) {
+        if(queryParameters!=null){
+            ObjectMapper objectMapper = new ObjectMapper();
+            Map<String, Object> map = objectMapper.convertValue(queryParameters, Map.class);
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                StringBuilder value = new StringBuilder();
+                if(entry.getValue() instanceof ArrayList){
+                    for(int i=0;i<((ArrayList<?>) entry.getValue()).size();i++){
+                        value.append(((ArrayList<?>) entry.getValue()).get(i));
+                        if(i != ((ArrayList<?>) entry.getValue()).size()-1)
+                            value.append(",");
+                    }
+                    client = client.queryParam(entry.getKey(), value);
+                }
+                else {
+                    client = client.queryParam(entry.getKey(), entry.getValue());
+                }
             }
         }
         return client;

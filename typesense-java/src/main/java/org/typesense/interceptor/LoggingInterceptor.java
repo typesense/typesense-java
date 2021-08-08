@@ -21,7 +21,7 @@ public class LoggingInterceptor implements PreInvocationInterceptor, PostInvocat
 
     @Override
     public void beforeRequest(ClientRequestContext requestContext) {
-    /*    if (logger.isTraceEnabled()) {
+       if (logger.isTraceEnabled()) {
             try {
                 String json = objectMapper.writeValueAsString(requestContext.getEntity());
                 logger.trace("REQUEST URI    : " + requestContext.getUri().toString());
@@ -30,7 +30,7 @@ public class LoggingInterceptor implements PreInvocationInterceptor, PostInvocat
             } catch (JsonProcessingException ex) {
                 throw new RuntimeException(ex);
             }
-        }*/
+        }
     }
 
     @Override

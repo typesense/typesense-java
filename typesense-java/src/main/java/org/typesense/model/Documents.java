@@ -1,11 +1,9 @@
 package org.typesense.model;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.typesense.api.SearchParameters;
-import org.typesense.api.SearchResult;
+import org.typesense.api.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class Documents {
 
@@ -29,34 +27,38 @@ public class Documents {
         return this.apiCall.post(getEndPoint("/"),document,null,String.class);
     }
 
-    public String create(HashMap<String, Object> document, HashMap<String, String> queryParameters){
+    public String create(HashMap<String, Object> document, ImportDocumentsParameters queryParameters){
         return this.apiCall.post(getEndPoint("/"),document,queryParameters,String.class);
     }
 
     public HashMap<String, Object> upsert(HashMap<String, Object> document){
-        HashMap<String, String > queryParameters = new HashMap<>();
-        queryParameters.put("action", "upsert");
+        ImportDocumentsParameters queryParameters = new ImportDocumentsParameters();
+        queryParameters.action("upsert");
 
         return this.apiCall.post(getEndPoint("/"),document,queryParameters,HashMap.class);
     }
 
     public SearchResult search(SearchParameters searchParameters){
-        return this.apiCall.get(getEndPoint("search"), org.typesense.api.SearchResult.class, searchParameters);
+        return this.apiCall.get(getEndPoint("search"),  searchParameters,org.typesense.api.SearchResult.class);
     }
 
-    public HashMap<String, Object> delete(HashMap<String, String> queryParameters){
+    public HashMap<String, Object> delete(DeleteDocumentsParameters queryParameters){
         return this.apiCall.delete(getEndPoint("/"), queryParameters);
     }
 
     public String export(){
-        return  this.apiCall.get(getEndPoint("export"),String.class);
+        return this.apiCall.get(getEndPoint("export"),String.class);
     }
 
-    public String import_(String document, HashMap<String, String> queryParameters){
+    public String export(ExportDocumentsParameters exportDocumentsParameters){
+        return this.apiCall.get(getEndPoint("export"), exportDocumentsParameters, String.class);
+    }
+
+    public String import_(String document, ImportDocumentsParameters queryParameters){
             return this.apiCall.post(this.getEndPoint("import"),document, queryParameters,String.class);
     }
 
-    public String import_(ArrayList<HashMap<String, Object>> documents, HashMap<String, String> queryParameters){
+    public String import_(ArrayList<HashMap<String, Object>> documents, ImportDocumentsParameters queryParameters){
         ObjectMapper mapper = new ObjectMapper();
         String json="";
         for(int i=0;i<documents.size();i++){
@@ -75,5 +77,4 @@ public class Documents {
     public String getEndPoint(String target){
         return Collections.RESOURCE_PATH + "/" + this.collectionName + Documents.RESOURCE_PATH + "/" + target;
     }
-
 }
