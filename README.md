@@ -109,6 +109,49 @@ client.collections("countries").delete();
 client.collections("Countries").documents().export();
 ```
 
+### Create an API key
+```java
+ApiKeySchema apiKeySchema = new ApiKeySchema();
+List<String> actionValues = new ArrayList<>();
+List<String> collectionValues = new ArrayList<>();
+
+actionValues.add("*");
+collectionValues.add("*");
+
+apiKeySchema.description("Admin Key").actions(actionValues).collections(collectionValues);
+
+client.keys().create(apiKeySchema);
+```
+
+### Create search only API key
+```java
+ApiKeySchema apiKeySchema = new ApiKeySchema();
+List<String> actionValues = new ArrayList<>();
+List<String> collectionValues = new ArrayList<>();
+
+actionValues.add("documents:search");
+collectionValues.add("countries");
+
+apiKeySchema.description("Search only Key").actions(actionValues).collections(collectionValues);
+
+client.keys().create(apiKeySchema);
+```
+
+### Retrieve an API key
+```java
+client.keys("6").retrieve();
+```
+
+### List all the API keys
+```java
+client.keys().retrieve();
+```
+
+### Delete an API keys
+```java
+client.keys("6").delete();
+```
+
 ## Contributing
 Bug reports and pull requests are welcome on GitHub at https://github.com/typesense/typesense-java.
 
