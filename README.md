@@ -152,6 +152,111 @@ client.keys().retrieve();
 client.keys("6").delete();
 ```
 
+### Create or update an override
+```java
+SearchOverrideSchema searchOverrideSchema = new SearchOverrideSchema();
+
+List<SearchOverrideInclude> searchOverrideIncludes = new ArrayList<>();
+searchOverrideIncludes.add(new SearchOverrideInclude().id("422").position(1));
+searchOverrideIncludes.add(new SearchOverrideInclude().id("54").position(2));
+
+List<SearchOverrideExclude> searchOverrideExcludes = new ArrayList<>();
+searchOverrideExcludes.add(new SearchOverrideExclude().id("287"));
+
+searchOverrideSchema.rule(new SearchOverrideRule().query("new york").match("exact"))
+                    .includes(searchOverrideIncludes)
+                    .excludes(searchOverrideExcludes);
+
+client.collections("countries").overrides().upsert("new-york", searchOverrideSchema)
+```
+
+### Retrieve an Alias
+```java
+client.collections("countries").overrides("new-york").retrieve();
+```
+
+### List all overrides
+```java
+client.collections("countries").overrides().retrieve();
+```
+
+### Delete an override
+```java
+client.collections("countries").overrides("new-york").delete();
+```
+
+### Upsert an Alias
+```java
+CollectionAliasSchema collectionAliasSchema = new CollectionAliasSchema();
+collectionAliasSchema.collectionName("countries");
+
+client.aliases().upsert("countries2", collectionAliasSchema)
+```
+
+### Retrieve an Alias
+```java
+client.aliases("countries2").retrieve();
+```
+
+### List all Aliases
+```java
+client.aliases().retrieve();
+```
+
+### Delete an Alias
+```java
+client.aliases("countries2").delete();
+```
+
+### Upsert a multi-way synonym
+```java
+SearchSynonymSchema synonym = new SearchSynonymSchema();
+synonym.addSynonymsItem("France").addSynonymsItem("Germany").addSynonymsItem("Sweden");
+
+client.collections("countries").synonyms().upsert("country-synonyms",synonym)
+```
+
+### Upsert a single-way synonym
+```java
+SearchSynonymSchema synonym = new SearchSynonymSchema();
+synonym.root("europe");
+synonym.addSynonymsItem("France").addSynonymsItem("Germany").addSynonymsItem("Sweden");
+
+client.collections("countries").synonyms().upsert("continent-synonyms",synonym)
+```
+
+### Retrieve a synonym
+```java
+client.collections("countries").synonyms("continent-synonyms").retrieve();
+```
+
+### Retrieve all synonyms
+```java
+client.collections("countries").synonyms().retrieve();
+```
+
+### Delete a synonym
+```java
+client.collections("countries").synonyms("continent-synonyms").delete();
+```
+
+### Create snapshot (for backups)
+```java
+HashMap<String, String> query = new HashMap<>();
+query.put("snapshot_path","/tmp/typesense-data-snapshot");
+
+client.operations.perform("snapshot",query);
+```
+
+### Re-elect Leader
+```java
+client.operations.perform("vote");
+```
+
+### Check health
+```java
+client.health.retrieve();
+```
 ## Contributing
 Bug reports and pull requests are welcome on GitHub at https://github.com/typesense/typesense-java.
 
