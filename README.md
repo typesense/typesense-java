@@ -1,12 +1,6 @@
-# Typesense Java Client
+# Typesense Java Client ☕ 🔍
 
 Java client for the Typesense API: https://github.com/typesense/typesense
-
-## Installation
-
-```
-
-```
 
 ## Usage
 
@@ -40,3 +34,86 @@ hmap.put("gdp", 10);
 
 client.collections("contryName").documents().create(hmap);
 ```
+
+### Upserting a document
+```java
+HashMap<String, Object> hmap = new HashMap<>();
+hmap.put("countryName","India");
+hmap.put("capital","Delhi");
+hmap.put("gdp", 5);
+
+client.collections("contryName").documents().upsert(hmap);
+```
+
+### Import batch of documents
+```java
+ImportDocumentsParameters queryParameters = new ImportDocumentsParameters();
+queryParameters.action("create");
+
+String documentList = "{\"countryName\": \"India\", \"capital\": \"Washington\", \"gdp\": 5215}\n" +
+                      "{\"countryName\": \"Iran\", \"capital\": \"London\", \"gdp\": 5215}";
+// Import your document as JSONL string from a file.
+client.collections("countries").documents().import_(documentList, queryParameters)
+```
+
+### Search in a collection
+```java
+SearchParameters searchParameters = new SearchParameters()
+                                        .q("tokoyo")
+                                        .addQueryByItem("countryName").addQueryByItem("capital")
+                                        .addPrefixItem(true).addPrefixItem(false);
+SearchResult searchResult = client.collections("countries").documents().search(searchParameters);
+```
+
+### Update a document
+```java
+HashMap<String, Object> hmap = new HashMap<>();
+hmap.put("gdp", 8);
+client.collections("countries").documents("28").retrieve(hmap);
+```
+
+### Retrieve a document
+```java
+client.collections("countries").documents("28").retrieve();
+```
+
+### Delete a document
+```java
+client.collections("countries").documents("28").delete();
+```
+
+### Delete documents using query
+```java
+DeleteDocumentsParameters deleteDocumentsParameters = new DeleteDocumentsParameters();
+deleteDocumentsParameters.filterBy("gdp:=[2,8]");
+deleteDocumentsParameters.batchSize(10);
+```
+
+### Retrieve a collection
+```java
+client.collections("countries").retrieve();
+```
+
+### Retrieve all collections
+```java
+client.collections().retrieve();
+```
+
+### Drop a collection
+```java
+client.collections("countries").delete();   
+```
+
+### Export a collection
+```java
+client.collections("Countries").documents().export();
+```
+
+## Contributing
+Bug reports and pull requests are welcome on GitHub at https://github.com/typesense/typesense-java.
+
+## License
+`typesense-java` is distributed under the Apache 2 license.
+
+## Support
+Please open a Github issue or join our [Slack Community](https://join.slack.com/t/typesense-community/shared_invite/zt-mx4nbsbn-AuOL89O7iBtvkz136egSJg)
