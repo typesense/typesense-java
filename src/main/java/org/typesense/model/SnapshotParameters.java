@@ -13,28 +13,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-public class CollectionAliasSchema   {
+public class SnapshotParameters   {
   
-  @Schema(required = true, description = "Name of the collection you wish to map the alias to")
+  @Schema(description = "")
+  private String snapshotPath = null;
  /**
-   * Name of the collection you wish to map the alias to  
+   * Get snapshotPath
+   * @return snapshotPath
   **/
-  private String collectionName = null;
- /**
-   * Name of the collection you wish to map the alias to
-   * @return collectionName
-  **/
-  @JsonProperty("collection_name")
-  public String getCollectionName() {
-    return collectionName;
+  @JsonProperty("snapshot_path")
+  public String getSnapshotPath() {
+    return snapshotPath;
   }
 
-  public void setCollectionName(String collectionName) {
-    this.collectionName = collectionName;
+  public void setSnapshotPath(String snapshotPath) {
+    this.snapshotPath = snapshotPath;
   }
 
-  public CollectionAliasSchema collectionName(String collectionName) {
-    this.collectionName = collectionName;
+  public SnapshotParameters snapshotPath(String snapshotPath) {
+    this.snapshotPath = snapshotPath;
     return this;
   }
 
@@ -42,9 +39,9 @@ public class CollectionAliasSchema   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CollectionAliasSchema {\n");
+    sb.append("class SnapshotParameters {\n");
     
-    sb.append("    collectionName: ").append(toIndentedString(collectionName)).append("\n");
+    sb.append("    snapshotPath: ").append(toIndentedString(snapshotPath)).append("\n");
     sb.append("}");
     return sb.toString();
   }

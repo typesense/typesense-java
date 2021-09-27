@@ -143,14 +143,14 @@ public class DocumentsTest extends TestCase {
 
     public void testImportFromFile() throws FileNotFoundException {
         ArrayList<Field> fields = new ArrayList<>();
-        fields.add(new Field().name("title").type("string"));
-        fields.add(new Field().name("authors").type("string[]"));
-        fields.add(new Field().name("image_url").type("string"));
-        fields.add(new Field().name("publication_year").type("int32"));
-        fields.add(new Field().name("ratings_count").type("int32"));
-        fields.add(new Field().name("average_rating").type("float"));
-        fields.add(new Field().name("publication_year_facet").type("string").facet(true));
-        fields.add(new Field().name("authors_facet").type("string[]").facet(true));
+        fields.add(new Field().name("title").type(Field.TypeEnum.STRING));
+        fields.add(new Field().name("authors").type(Field.TypeEnum.STRING_));
+        fields.add(new Field().name("image_url").type(Field.TypeEnum.STRING));
+        fields.add(new Field().name("publication_year").type(Field.TypeEnum.INT32));
+        fields.add(new Field().name("ratings_count").type(Field.TypeEnum.INT32));
+        fields.add(new Field().name("average_rating").type(Field.TypeEnum.FLOAT));
+        fields.add(new Field().name("publication_year_facet").type(Field.TypeEnum.STRING).facet(true));
+        fields.add(new Field().name("authors_facet").type(Field.TypeEnum.STRING_).facet(true));
 
         CollectionSchema collectionSchema = new CollectionSchema();
         collectionSchema.name("books").fields(fields).defaultSortingField("ratings_count");

@@ -13,28 +13,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-public class CollectionAliasSchema   {
+public class HealthStatus   {
   
-  @Schema(required = true, description = "Name of the collection you wish to map the alias to")
+  @Schema(required = true, description = "")
+  private Boolean ok = null;
  /**
-   * Name of the collection you wish to map the alias to  
+   * Get ok
+   * @return ok
   **/
-  private String collectionName = null;
- /**
-   * Name of the collection you wish to map the alias to
-   * @return collectionName
-  **/
-  @JsonProperty("collection_name")
-  public String getCollectionName() {
-    return collectionName;
+  @JsonProperty("ok")
+  public Boolean isOk() {
+    return ok;
   }
 
-  public void setCollectionName(String collectionName) {
-    this.collectionName = collectionName;
+  public void setOk(Boolean ok) {
+    this.ok = ok;
   }
 
-  public CollectionAliasSchema collectionName(String collectionName) {
-    this.collectionName = collectionName;
+  public HealthStatus ok(Boolean ok) {
+    this.ok = ok;
     return this;
   }
 
@@ -42,9 +39,9 @@ public class CollectionAliasSchema   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CollectionAliasSchema {\n");
+    sb.append("class HealthStatus {\n");
     
-    sb.append("    collectionName: ").append(toIndentedString(collectionName)).append("\n");
+    sb.append("    ok: ").append(toIndentedString(ok)).append("\n");
     sb.append("}");
     return sb.toString();
   }

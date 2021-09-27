@@ -1,11 +1,25 @@
 package org.typesense.model;
 
+import java.util.List;
+import org.typesense.model.CollectionSchema;
+import org.typesense.model.Field;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlEnumValue;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
-public class CollectionResponse extends CollectionSchema {
+public class CollectionResponse extends CollectionSchema  {
 
-   /**
+    @Schema(required = true, description = "Number of documents in the collection")
+    /**
      * Number of documents in the collection
      **/
     private Long numDocuments = null;
@@ -18,11 +32,6 @@ public class CollectionResponse extends CollectionSchema {
         return numDocuments;
     }
 
-    @JsonProperty("created_at")
-    public String created_at;
-
-    @JsonProperty("num_memory_shards")
-    public long num_memory_shards;
 
 
     @Override

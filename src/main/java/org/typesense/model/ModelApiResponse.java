@@ -13,28 +13,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-public class CollectionAliasSchema   {
+public class ModelApiResponse   {
   
-  @Schema(required = true, description = "Name of the collection you wish to map the alias to")
+  @Schema(required = true, description = "")
+  private String message = null;
  /**
-   * Name of the collection you wish to map the alias to  
+   * Get message
+   * @return message
   **/
-  private String collectionName = null;
- /**
-   * Name of the collection you wish to map the alias to
-   * @return collectionName
-  **/
-  @JsonProperty("collection_name")
-  public String getCollectionName() {
-    return collectionName;
+  @JsonProperty("message")
+  public String getMessage() {
+    return message;
   }
 
-  public void setCollectionName(String collectionName) {
-    this.collectionName = collectionName;
+  public void setMessage(String message) {
+    this.message = message;
   }
 
-  public CollectionAliasSchema collectionName(String collectionName) {
-    this.collectionName = collectionName;
+  public ModelApiResponse message(String message) {
+    this.message = message;
     return this;
   }
 
@@ -42,9 +39,9 @@ public class CollectionAliasSchema   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CollectionAliasSchema {\n");
+    sb.append("class ModelApiResponse {\n");
     
-    sb.append("    collectionName: ").append(toIndentedString(collectionName)).append("\n");
+    sb.append("    message: ").append(toIndentedString(message)).append("\n");
     sb.append("}");
     return sb.toString();
   }

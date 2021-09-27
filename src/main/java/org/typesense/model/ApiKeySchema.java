@@ -1,21 +1,24 @@
 package org.typesense.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiKeySchema   {
-
+  
+  @Schema(required = true, description = "")
   private String description = null;
-
+  
+  @Schema(required = true, description = "")
   private List<String> actions = new ArrayList<String>();
-
+  
+  @Schema(required = true, description = "")
   private List<String> collections = new ArrayList<String>();
-
-  private Long expiresAt;
+  
+  @Schema(required = true, description = "")
+  private Long expiresAt = null;
  /**
    * Get description
    * @return description
@@ -116,7 +119,7 @@ public class ApiKeySchema   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private static String toIndentedString(Object o) {
+  private static String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

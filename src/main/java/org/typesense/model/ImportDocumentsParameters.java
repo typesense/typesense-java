@@ -1,91 +1,81 @@
 package org.typesense.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlEnumValue;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ImportDocumentsParameters   {
+  
+  @Schema(description = "")
+  private String action = null;
+  
+  @Schema(description = "")
+  private Integer batchSize = null;
+ /**
+   * Get action
+   * @return action
+  **/
+  @JsonProperty("action")
+  public String getAction() {
+    return action;
+  }
 
-    private String action = null;
+  public void setAction(String action) {
+    this.action = action;
+  }
 
-    private Integer batchSize = null;
+  public ImportDocumentsParameters action(String action) {
+    this.action = action;
+    return this;
+  }
 
-    private String dirtyValues = null;
-    /**
-     * Get action
-     * @return action
-     **/
-    @JsonProperty("action")
-    public String getAction() {
-        return action;
+ /**
+   * Get batchSize
+   * @return batchSize
+  **/
+  @JsonProperty("batch_size")
+  public Integer getBatchSize() {
+    return batchSize;
+  }
+
+  public void setBatchSize(Integer batchSize) {
+    this.batchSize = batchSize;
+  }
+
+  public ImportDocumentsParameters batchSize(Integer batchSize) {
+    this.batchSize = batchSize;
+    return this;
+  }
+
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("class ImportDocumentsParameters {\n");
+    
+    sb.append("    action: ").append(toIndentedString(action)).append("\n");
+    sb.append("    batchSize: ").append(toIndentedString(batchSize)).append("\n");
+    sb.append("}");
+    return sb.toString();
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private static String toIndentedString(java.lang.Object o) {
+    if (o == null) {
+      return "null";
     }
-
-    public void setAction(String action) {
-        this.action = action;
-    }
-
-    public ImportDocumentsParameters action(String action) {
-        this.action = action;
-        return this;
-    }
-
-    /**
-     * Get batchSize
-     * @return batchSize
-     **/
-    @JsonProperty("batch_size")
-    public Integer getBatchSize() {
-        return batchSize;
-    }
-
-    public void setBatchSize(Integer batchSize) {
-        this.batchSize = batchSize;
-    }
-
-    public ImportDocumentsParameters batchSize(Integer batchSize) {
-        this.batchSize = batchSize;
-        return this;
-    }
-
-    /**
-     * Get dirtyValues
-     * @return dirtyValues
-     **/
-    @JsonProperty("dirty_values")
-    public String getDirtyValues() {
-        return dirtyValues;
-    }
-
-    public void setDirtyValues(String dirtyValues) {
-        this.dirtyValues = dirtyValues;
-    }
-
-    public ImportDocumentsParameters dirtyValues(String dirtyValues) {
-        this.dirtyValues = dirtyValues;
-        return this;
-    }
-
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class ImportDocumentsParameters {\n");
-
-        sb.append("    action: ").append(toIndentedString(action)).append("\n");
-        sb.append("    batchSize: ").append(toIndentedString(batchSize)).append("\n");
-        sb.append("    dirtyValues: ").append(toIndentedString(dirtyValues)).append("\n");
-        sb.append("}");
-        return sb.toString();
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private static String toIndentedString(java.lang.Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
-    }
+    return o.toString().replace("\n", "\n    ");
+  }
 }

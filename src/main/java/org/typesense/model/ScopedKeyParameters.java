@@ -1,5 +1,6 @@
 package org.typesense.model;
 
+import java.math.BigDecimal;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import javax.xml.bind.annotation.XmlElement;
@@ -13,28 +14,46 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-public class CollectionAliasSchema   {
+public class ScopedKeyParameters   {
   
-  @Schema(required = true, description = "Name of the collection you wish to map the alias to")
+  @Schema(description = "")
+  private String filterBy = null;
+  
+  @Schema(description = "")
+  private BigDecimal expiresAt = null;
  /**
-   * Name of the collection you wish to map the alias to  
+   * Get filterBy
+   * @return filterBy
   **/
-  private String collectionName = null;
- /**
-   * Name of the collection you wish to map the alias to
-   * @return collectionName
-  **/
-  @JsonProperty("collection_name")
-  public String getCollectionName() {
-    return collectionName;
+  @JsonProperty("filter_by")
+  public String getFilterBy() {
+    return filterBy;
   }
 
-  public void setCollectionName(String collectionName) {
-    this.collectionName = collectionName;
+  public void setFilterBy(String filterBy) {
+    this.filterBy = filterBy;
   }
 
-  public CollectionAliasSchema collectionName(String collectionName) {
-    this.collectionName = collectionName;
+  public ScopedKeyParameters filterBy(String filterBy) {
+    this.filterBy = filterBy;
+    return this;
+  }
+
+ /**
+   * Get expiresAt
+   * @return expiresAt
+  **/
+  @JsonProperty("expires_at")
+  public BigDecimal getExpiresAt() {
+    return expiresAt;
+  }
+
+  public void setExpiresAt(BigDecimal expiresAt) {
+    this.expiresAt = expiresAt;
+  }
+
+  public ScopedKeyParameters expiresAt(BigDecimal expiresAt) {
+    this.expiresAt = expiresAt;
     return this;
   }
 
@@ -42,9 +61,10 @@ public class CollectionAliasSchema   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CollectionAliasSchema {\n");
+    sb.append("class ScopedKeyParameters {\n");
     
-    sb.append("    collectionName: ").append(toIndentedString(collectionName)).append("\n");
+    sb.append("    filterBy: ").append(toIndentedString(filterBy)).append("\n");
+    sb.append("    expiresAt: ").append(toIndentedString(expiresAt)).append("\n");
     sb.append("}");
     return sb.toString();
   }

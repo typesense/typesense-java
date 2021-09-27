@@ -1,72 +1,200 @@
 package org.typesense.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.ArrayList;
 import java.util.List;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class SearchParameters {
+import io.swagger.v3.oas.annotations.media.Schema;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlEnumValue;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
+public class SearchParameters   {
+  
+  @Schema(description = "The query text to search for in the collection. Use * as the search string to return all documents. This is typically useful when used in conjunction with filter_by.")
+ /**
+   * The query text to search for in the collection. Use * as the search string to return all documents. This is typically useful when used in conjunction with filter_by.  
+  **/
   private String q = null;
-
-  private List<String> queryBy = new ArrayList<>();
-
-  private List<String> queryByWeights = new ArrayList<>();
-
+  
+  @Schema(description = "A list of `string` fields that should be queried against. Multiple fields are separated with a comma.")
+ /**
+   * A list of `string` fields that should be queried against. Multiple fields are separated with a comma.  
+  **/
+  private List<String> queryBy = null;
+  
+  @Schema(description = "The relative weight to give each `query_by` field when ranking results. This can be used to boost fields in priority, when looking for matches. Multiple fields are separated with a comma.")
+ /**
+   * The relative weight to give each `query_by` field when ranking results. This can be used to boost fields in priority, when looking for matches. Multiple fields are separated with a comma.  
+  **/
+  private List<String> queryByWeights = null;
+  
+  @Schema(description = "Maximum number of hits returned. Increasing this value might increase search latency. Default: 500. Use `all` to return all hits found. ")
+ /**
+   * Maximum number of hits returned. Increasing this value might increase search latency. Default: 500. Use `all` to return all hits found.   
+  **/
   private OneOfsearchParametersMaxHits maxHits = null;
-
-  private List<Boolean> prefix = new ArrayList<>();
-
+  
+  @Schema(description = "Boolean field to indicate that the last word in the query should be treated as a prefix, and not as a whole word. This is used for building autocomplete and instant search interfaces. Defaults to true.")
+ /**
+   * Boolean field to indicate that the last word in the query should be treated as a prefix, and not as a whole word. This is used for building autocomplete and instant search interfaces. Defaults to true.  
+  **/
+  private List<Boolean> prefix = null;
+  
+  @Schema(example = "num_employees:>100 && country: [USA, UK]", description = "Filter conditions for refining your search results. Separate multiple conditions with &&.")
+ /**
+   * Filter conditions for refining your search results. Separate multiple conditions with &&.  
+  **/
   private String filterBy = null;
-
-  private List<String> sortBy = new ArrayList<>();
-
-  private List<String> facetBy = new ArrayList<>();
-
+  
+  @Schema(description = "A list of numerical fields and their corresponding sort orders that will be used for ordering your results. Up to 3 sort fields can be specified. The text similarity score is exposed as a special `_text_match` field that you can use in the list of sorting fields. If no `sort_by` parameter is specified, results are sorted by `_text_match:desc,default_sorting_field:desc`")
+ /**
+   * A list of numerical fields and their corresponding sort orders that will be used for ordering your results. Up to 3 sort fields can be specified. The text similarity score is exposed as a special `_text_match` field that you can use in the list of sorting fields. If no `sort_by` parameter is specified, results are sorted by `_text_match:desc,default_sorting_field:desc`  
+  **/
+  private List<String> sortBy = null;
+  
+  @Schema(description = "A list of fields that will be used for faceting your results on. Separate multiple fields with a comma.")
+ /**
+   * A list of fields that will be used for faceting your results on. Separate multiple fields with a comma.  
+  **/
+  private List<String> facetBy = null;
+  
+  @Schema(description = "Maximum number of facet values to be returned.")
+ /**
+   * Maximum number of facet values to be returned.  
+  **/
   private Integer maxFacetValues = null;
-
+  
+  @Schema(description = "Facet values that are returned can now be filtered via this parameter. The matching facet text is also highlighted. For example, when faceting by `category`, you can set `facet_query=category:shoe` to return only facet values that contain the prefix \"shoe\".")
+ /**
+   * Facet values that are returned can now be filtered via this parameter. The matching facet text is also highlighted. For example, when faceting by `category`, you can set `facet_query=category:shoe` to return only facet values that contain the prefix \"shoe\".  
+  **/
   private String facetQuery = null;
-
+  
+  @Schema(description = "The number of typographical errors (1 or 2) that would be tolerated. Default: 2 ")
+ /**
+   * The number of typographical errors (1 or 2) that would be tolerated. Default: 2   
+  **/
   private Integer numTypos = null;
-
+  
+  @Schema(description = "Results from this specific page number would be fetched.")
+ /**
+   * Results from this specific page number would be fetched.  
+  **/
   private Integer page = null;
-
+  
+  @Schema(description = "Number of results to fetch per page. Default: 10")
+ /**
+   * Number of results to fetch per page. Default: 10  
+  **/
   private Integer perPage = null;
-
-  private List<String> groupBy = new ArrayList<>();
-
+  
+  @Schema(description = "You can aggregate search results into groups or buckets by specify one or more `group_by` fields. Separate multiple fields with a comma. To group on a particular field, it must be a faceted field.")
+ /**
+   * You can aggregate search results into groups or buckets by specify one or more `group_by` fields. Separate multiple fields with a comma. To group on a particular field, it must be a faceted field.  
+  **/
+  private List<String> groupBy = null;
+  
+  @Schema(description = "Maximum number of hits to be returned for every group. If the `group_limit` is set as `K` then only the top K hits in each group are returned in the response. Default: 3 ")
+ /**
+   * Maximum number of hits to be returned for every group. If the `group_limit` is set as `K` then only the top K hits in each group are returned in the response. Default: 3   
+  **/
   private Integer groupLimit = null;
-
-  private List<String> includeFields = new ArrayList<>();
-
-  private List<String> excludeFields = new ArrayList<>();
-
-  private List<String> highlightFullFields = new ArrayList<>();
-
+  
+  @Schema(description = "List of fields from the document to include in the search result")
+ /**
+   * List of fields from the document to include in the search result  
+  **/
+  private List<String> includeFields = null;
+  
+  @Schema(description = "List of fields from the document to exclude in the search result")
+ /**
+   * List of fields from the document to exclude in the search result  
+  **/
+  private List<String> excludeFields = null;
+  
+  @Schema(description = "List of fields which should be highlighted fully without snippeting")
+ /**
+   * List of fields which should be highlighted fully without snippeting  
+  **/
+  private List<String> highlightFullFields = null;
+  
+  @Schema(description = "The number of tokens that should surround the highlighted text on each side. Default: 4 ")
+ /**
+   * The number of tokens that should surround the highlighted text on each side. Default: 4   
+  **/
   private Integer highlightAffixNumTokens = null;
-
+  
+  @Schema(description = "The start tag used for the highlighted snippets. Default: `<mark>` ")
+ /**
+   * The start tag used for the highlighted snippets. Default: `<mark>`   
+  **/
   private String highlightStartTag = null;
-
+  
+  @Schema(description = "The end tag used for the highlighted snippets. Default: `</mark>` ")
+ /**
+   * The end tag used for the highlighted snippets. Default: `</mark>`   
+  **/
   private String highlightEndTag = null;
-
+  
+  @Schema(description = "Field values under this length will be fully highlighted, instead of showing a snippet of relevant portion. Default: 30 ")
+ /**
+   * Field values under this length will be fully highlighted, instead of showing a snippet of relevant portion. Default: 30   
+  **/
   private Integer snippetThreshold = null;
-
+  
+  @Schema(description = "If the number of results found for a specific query is less than this number, Typesense will attempt to drop the tokens in the query until enough results are found. Tokens that have the least individual hits are dropped first. Set to 0 to disable. Default: 10 ")
+ /**
+   * If the number of results found for a specific query is less than this number, Typesense will attempt to drop the tokens in the query until enough results are found. Tokens that have the least individual hits are dropped first. Set to 0 to disable. Default: 10   
+  **/
   private Integer dropTokensThreshold = null;
-
+  
+  @Schema(description = "If the number of results found for a specific query is less than this number, Typesense will attempt to look for tokens with more typos until enough results are found. Default: 100 ")
+ /**
+   * If the number of results found for a specific query is less than this number, Typesense will attempt to look for tokens with more typos until enough results are found. Default: 100   
+  **/
   private Integer typoTokensThreshold = null;
-
-  private List<String> pinnedHits = new ArrayList<>();
-
-  private List<String> hiddenHits = new ArrayList<>();
-
-  private List<String> highlightFields = new ArrayList<>();
-
+  
+  @Schema(description = "A list of records to unconditionally include in the search results at specific positions. An example use case would be to feature or promote certain items on the top of search results. A list of `record_id:hit_position`. Eg: to include a record with ID 123 at Position 1 and another record with ID 456 at Position 5, you'd specify `123:1,456:5`. You could also use the Overrides feature to override search results based on rules. Overrides are applied first, followed by `pinned_hits` and  finally `hidden_hits`. ")
+ /**
+   * A list of records to unconditionally include in the search results at specific positions. An example use case would be to feature or promote certain items on the top of search results. A list of `record_id:hit_position`. Eg: to include a record with ID 123 at Position 1 and another record with ID 456 at Position 5, you'd specify `123:1,456:5`. You could also use the Overrides feature to override search results based on rules. Overrides are applied first, followed by `pinned_hits` and  finally `hidden_hits`.   
+  **/
+  private List<String> pinnedHits = null;
+  
+  @Schema(description = "A list of records to unconditionally hide from search results. A list of `record_id`s to hide. Eg: to hide records with IDs 123 and 456, you'd specify `123,456`. You could also use the Overrides feature to override search results based on rules. Overrides are applied first, followed by `pinned_hits` and finally `hidden_hits`. ")
+ /**
+   * A list of records to unconditionally hide from search results. A list of `record_id`s to hide. Eg: to hide records with IDs 123 and 456, you'd specify `123,456`. You could also use the Overrides feature to override search results based on rules. Overrides are applied first, followed by `pinned_hits` and finally `hidden_hits`.   
+  **/
+  private List<String> hiddenHits = null;
+  
+  @Schema(description = "A list of custom fields that must be highlighted even if you don't query  for them ")
+ /**
+   * A list of custom fields that must be highlighted even if you don't query  for them   
+  **/
+  private List<String> highlightFields = null;
+  
+  @Schema(description = "You can index content from any logographic language into Typesense if you are able to segment / split the text into space-separated words yourself  before indexing and querying. Set this parameter to tre to do the same ")
+ /**
+   * You can index content from any logographic language into Typesense if you are able to segment / split the text into space-separated words yourself  before indexing and querying. Set this parameter to tre to do the same   
+  **/
   private Boolean preSegmentedQuery = null;
-
+  
+  @Schema(description = "If you have some overrides defined but want to disable all of them during query time, you can do that by setting this parameter to false ")
+ /**
+   * If you have some overrides defined but want to disable all of them during query time, you can do that by setting this parameter to false   
+  **/
   private Boolean enableOverrides = null;
-
+  
+  @Schema(description = "Set this parameter to true to ensure that an exact match is ranked above the others  ")
+ /**
+   * Set this parameter to true to ensure that an exact match is ranked above the others    
+  **/
   private Boolean prioritizeExactMatch = null;
  /**
    * The query text to search for in the collection. Use * as the search string to return all documents. This is typically useful when used in conjunction with filter_by.
@@ -712,7 +840,7 @@ public class SearchParameters {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private static String toIndentedString(Object o) {
+  private static String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

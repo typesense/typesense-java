@@ -45,8 +45,9 @@ dependencies {
     implementation "org.glassfish.jersey.media:jersey-media-json-jackson:2.34"
     implementation "org.glassfish.jersey.inject:jersey-hk2:2.34"
     implementation "org.slf4j:slf4j-api:1.7.30"
-    implementation 'org.junit.jupiter:junit-jupiter:5.7.0'
-    implementation 'junit:junit:3.8.2'
+    implementation "org.junit.jupiter:junit-jupiter:5.7.0"
+    implementation "junit:junit:3.8.2"
+    implementation "io.swagger.core.v3:swagger-annotations:2.0.0"
     runtimeOnly "ch.qos.logback:logback-classic:1.2.3"
     testImplementation "junit:junit:4.12"
     testImplementation "org.hamcrest:hamcrest-all:1.3"

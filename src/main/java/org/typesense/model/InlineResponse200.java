@@ -13,28 +13,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-public class CollectionAliasSchema   {
+public class InlineResponse200   {
   
-  @Schema(required = true, description = "Name of the collection you wish to map the alias to")
+  @Schema(required = true, description = "")
+  private Integer numDeleted = null;
  /**
-   * Name of the collection you wish to map the alias to  
+   * Get numDeleted
+   * @return numDeleted
   **/
-  private String collectionName = null;
- /**
-   * Name of the collection you wish to map the alias to
-   * @return collectionName
-  **/
-  @JsonProperty("collection_name")
-  public String getCollectionName() {
-    return collectionName;
+  @JsonProperty("num_deleted")
+  public Integer getNumDeleted() {
+    return numDeleted;
   }
 
-  public void setCollectionName(String collectionName) {
-    this.collectionName = collectionName;
+  public void setNumDeleted(Integer numDeleted) {
+    this.numDeleted = numDeleted;
   }
 
-  public CollectionAliasSchema collectionName(String collectionName) {
-    this.collectionName = collectionName;
+  public InlineResponse200 numDeleted(Integer numDeleted) {
+    this.numDeleted = numDeleted;
     return this;
   }
 
@@ -42,9 +39,9 @@ public class CollectionAliasSchema   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CollectionAliasSchema {\n");
+    sb.append("class InlineResponse200 {\n");
     
-    sb.append("    collectionName: ").append(toIndentedString(collectionName)).append("\n");
+    sb.append("    numDeleted: ").append(toIndentedString(numDeleted)).append("\n");
     sb.append("}");
     return sb.toString();
   }

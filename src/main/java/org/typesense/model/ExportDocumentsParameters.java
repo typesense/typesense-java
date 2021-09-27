@@ -1,28 +1,39 @@
 package org.typesense.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.ArrayList;
 import java.util.List;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class ExportDocumentsParameters {
+import io.swagger.v3.oas.annotations.media.Schema;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlEnumValue;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.JsonCreator;
+
+public class ExportDocumentsParameters   {
   
+  @Schema(description = "Filter conditions for refining your search results. Separate multiple conditions with &&.")
  /**
    * Filter conditions for refining your search results. Separate multiple conditions with &&.  
   **/
   private String filterBy = null;
   
-  /**
+  @Schema(description = "List of fields from the document to include in the search result")
+ /**
    * List of fields from the document to include in the search result  
   **/
-  private List<String> includeFields = new ArrayList<>();
+  private List<String> includeFields = null;
   
-  /**
+  @Schema(description = "List of fields from the document to exclude in the search result")
+ /**
    * List of fields from the document to exclude in the search result  
   **/
-  private List<String> excludeFields = new ArrayList<>();
+  private List<String> excludeFields = null;
  /**
    * Filter conditions for refining your search results. Separate multiple conditions with &amp;&amp;.
    * @return filterBy
@@ -104,7 +115,7 @@ public class ExportDocumentsParameters {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private static String toIndentedString(Object o) {
+  private static String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

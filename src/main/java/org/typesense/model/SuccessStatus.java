@@ -13,28 +13,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-public class CollectionAliasSchema   {
+public class SuccessStatus   {
   
-  @Schema(required = true, description = "Name of the collection you wish to map the alias to")
+  @Schema(required = true, description = "")
+  private Boolean success = null;
  /**
-   * Name of the collection you wish to map the alias to  
+   * Get success
+   * @return success
   **/
-  private String collectionName = null;
- /**
-   * Name of the collection you wish to map the alias to
-   * @return collectionName
-  **/
-  @JsonProperty("collection_name")
-  public String getCollectionName() {
-    return collectionName;
+  @JsonProperty("success")
+  public Boolean isSuccess() {
+    return success;
   }
 
-  public void setCollectionName(String collectionName) {
-    this.collectionName = collectionName;
+  public void setSuccess(Boolean success) {
+    this.success = success;
   }
 
-  public CollectionAliasSchema collectionName(String collectionName) {
-    this.collectionName = collectionName;
+  public SuccessStatus success(Boolean success) {
+    this.success = success;
     return this;
   }
 
@@ -42,9 +39,9 @@ public class CollectionAliasSchema   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CollectionAliasSchema {\n");
+    sb.append("class SuccessStatus {\n");
     
-    sb.append("    collectionName: ").append(toIndentedString(collectionName)).append("\n");
+    sb.append("    success: ").append(toIndentedString(success)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -1,12 +1,21 @@
 package org.typesense.model;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlEnumValue;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 public class SearchOverrideRule   {
-
+  
+  @Schema(required = true, description = "Indicates what search queries should be overridden")
  /**
    * Indicates what search queries should be overridden  
   **/
@@ -39,10 +48,11 @@ public class SearchOverrideRule   {
       return null;
     }
   }  
+  @Schema(required = true, description = "Indicates whether the match on the query term should be `exact` or `contains`. If we want to match all queries that contained the word `apple`, we will use the `contains` match instead. ")
  /**
    * Indicates whether the match on the query term should be `exact` or `contains`. If we want to match all queries that contained the word `apple`, we will use the `contains` match instead.   
   **/
-  String match = null;
+  private MatchEnum match = null;
  /**
    * Indicates what search queries should be overridden
    * @return query
@@ -70,14 +80,14 @@ public class SearchOverrideRule   {
     if (match == null) {
       return null;
     }
-    return match;
+    return match.getValue();
   }
 
-  public void setMatch(String match) {
+  public void setMatch(MatchEnum match) {
     this.match = match;
   }
 
-  public SearchOverrideRule match(String match) {
+  public SearchOverrideRule match(MatchEnum match) {
     this.match = match;
     return this;
   }
@@ -98,7 +108,7 @@ public class SearchOverrideRule   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private static String toIndentedString(Object o) {
+  private static String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }
