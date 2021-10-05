@@ -34,7 +34,7 @@ public class CollectionSchema   {
  /**
    * The name of an int32 / float field that determines the order in which the search results are ranked when a sort_by clause is not provided during searching. This field must indicate some kind of popularity.  
   **/
-  private String defaultSortingField = null;
+  private String defaultSortingField = "";
  /**
    * Name of the collection
    * @return name

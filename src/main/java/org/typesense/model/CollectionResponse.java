@@ -17,41 +17,72 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 public class CollectionResponse extends CollectionSchema  {
+  
+  @Schema(required = true, description = "Number of documents in the collection")
+ /**
+   * Number of documents in the collection  
+  **/
+  private Long numDocuments = null;
+  
+  @Schema(required = true, description = "Timestamp of when the collection was created")
+ /**
+   * Timestamp of when the collection was created  
+  **/
+  private Long createdAt = null;
+  
+  @Schema(required = true, description = "")
+  private Long numMemoryShards = null;
+ /**
+   * Number of documents in the collection
+   * @return numDocuments
+  **/
+  @JsonProperty("num_documents")
+  public Long getNumDocuments() {
+    return numDocuments;
+  }
 
-    @Schema(required = true, description = "Number of documents in the collection")
-    /**
-     * Number of documents in the collection
-     **/
-    private Long numDocuments = null;
-    /**
-     * Number of documents in the collection
-     * @return numDocuments
-     **/
-    @JsonProperty("num_documents")
-    public Long getNumDocuments() {
-        return numDocuments;
+
+ /**
+   * Timestamp of when the collection was created
+   * @return createdAt
+  **/
+  @JsonProperty("created_at")
+  public Long getCreatedAt() {
+    return createdAt;
+  }
+
+
+ /**
+   * Get numMemoryShards
+   * @return numMemoryShards
+  **/
+  @JsonProperty("num_memory_shards")
+  public Long getNumMemoryShards() {
+    return numMemoryShards;
+  }
+
+
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("class CollectionResponse {\n");
+    sb.append("    ").append(toIndentedString(super.toString())).append("\n");
+    sb.append("    numDocuments: ").append(toIndentedString(numDocuments)).append("\n");
+    sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
+    sb.append("    numMemoryShards: ").append(toIndentedString(numMemoryShards)).append("\n");
+    sb.append("}");
+    return sb.toString();
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private static String toIndentedString(java.lang.Object o) {
+    if (o == null) {
+      return "null";
     }
-
-
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class Collection {\n");
-        sb.append("    ").append(toIndentedString(super.toString())).append("\n");
-        sb.append("    numDocuments: ").append(toIndentedString(numDocuments)).append("\n");
-        sb.append("}");
-        return sb.toString();
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private static String toIndentedString(java.lang.Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
-    }
+    return o.toString().replace("\n", "\n    ");
+  }
 }

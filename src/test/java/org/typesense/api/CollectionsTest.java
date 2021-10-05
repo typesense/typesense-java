@@ -53,7 +53,7 @@ public class CollectionsTest extends TestCase {
         fields.add(new Field().name("gdp").type(Field.TypeEnum.INT32).facet(true));
 
         CollectionSchema collectionSchema = new CollectionSchema();
-        collectionSchema.name("Countries").fields(fields).defaultSortingField("gdp");
+        collectionSchema.name("Countries").fields(fields);
 
         CollectionResponse cr = client.collections().create(collectionSchema);
         System.out.println(cr);

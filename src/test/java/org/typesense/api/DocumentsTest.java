@@ -173,7 +173,6 @@ public class DocumentsTest extends TestCase {
         document.put("capital","Tokyo");
         document.put("gdp",29);
 
-        queryParameters.dirtyValues("coerce_or_reject");
 
         System.out.println(this.client.collections("Countries").documents().create(document,queryParameters));
     }

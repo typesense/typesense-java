@@ -57,14 +57,14 @@ public class Field   {
   @Schema(example = "string", required = true, description = "")
   private TypeEnum type = null;
   
-  @Schema(example = "true", required = true, description = "")
+  @Schema(example = "true", description = "")
   private Boolean optional = false;
   
-  @Schema(example = "false", required = true, description = "")
+  @Schema(example = "false", description = "")
   private Boolean facet = false;
   
-  @Schema(example = "false", description = "")
-  private Boolean index = null;
+  @Schema(example = "true", description = "")
+  private Boolean index = true;
  /**
    * Get name
    * @return name
