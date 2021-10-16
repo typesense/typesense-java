@@ -3,6 +3,7 @@ package org.typesense.api;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.HttpUrlConnectorProvider;
@@ -17,7 +18,7 @@ import org.typesense.resources.Node;
 import org.typesense.resources.RequestHandler;
 
 
-
+import javax.annotation.Priority;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -132,7 +133,7 @@ public class ApiCall {
         RequestHandler r =  (String REST_URI) -> this.client.target(REST_URI)
                  .request(MediaType.APPLICATION_JSON)
                  .header(API_KEY_HEADER,apiKey)
-                 .get();
+                .get();
 
          return makeRequest(endpoint,r,resourceClass);
     }
@@ -154,6 +155,17 @@ public class ApiCall {
                 .put(Entity.json(body));
 
         return makeRequest(endpoint,r,resourceClass);
+    }
+
+    <T,R> T patch(String endpoint, R body){
+
+        RequestHandler r =  (String REST_URI) -> this.client.target(REST_URI)
+                .request(MediaType.APPLICATION_JSON)
+                .header(API_KEY_HEADER,apiKey)
+                .build("PATCH", Entity.entity(body, MediaType.APPLICATION_JSON))
+                .invoke();
+
+        return makeRequest(endpoint,r,null);
     }
 
 
@@ -350,7 +362,6 @@ public class ApiCall {
         if(resourceClass == null){
             ObjectMapper mapper = new ObjectMapper();
             String json = response.readEntity(String.class);
-
             try {
                 HashMap<String, Object> map = mapper.readValue(json, HashMap.class);
                 return (T)map;
@@ -359,12 +370,21 @@ public class ApiCall {
             }
         }
 
-        else{
-            return response.readEntity(resourceClass);
+        else {
+            ObjectMapperResolver resolver = new ObjectMapperResolver();
+            ObjectMapper mapper = resolver.getContext(String.class);
+            String json = response.readEntity(String.class);
+            try {
+                if(resourceClass == String.class) {
+                    return (T)json;
+                }
+                return mapper.readValue(json, resourceClass);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }
 
 }
-
 
