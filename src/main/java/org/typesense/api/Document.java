@@ -25,7 +25,7 @@ public class Document {
     }
 
     HashMap<String , Object> update(HashMap<String, Object> document){
-        return this.apiCall.post(this.endpoint, document);
+        return this.apiCall.patch(this.endpoint, document);
     }
 
 }

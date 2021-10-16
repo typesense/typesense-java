@@ -71,7 +71,7 @@ public class Documents {
             }
         }
         json = json.trim();
-        return this.apiCall.post(this.getEndPoint("import"),json,queryParameters,String.class);
+        return this.apiCall.post(this.getEndPoint("import"),json,queryParameters, String.class);
     }
 
     public String getEndPoint(String target){
