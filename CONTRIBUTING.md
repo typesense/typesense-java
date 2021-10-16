@@ -1,6 +1,7 @@
-# Typesense Java Client ☕ 🔍
+# Contributing
 
-Java client for the Typesense API: https://github.com/typesense/typesense
+Bug reports and pull requests are welcome on GitHub at https://github.com/typesense/typesense-java.
+
 
 ## Pull Request Process
 

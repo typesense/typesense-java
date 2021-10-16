@@ -260,6 +260,8 @@ client.health.retrieve();
 ## Contributing
 Bug reports and pull requests are welcome on GitHub at https://github.com/typesense/typesense-java.
 
+Please read [CONTRIBUTING.md](https://github.com/typesense/typesense-java/blob/master/CONTRIBUTING.md) for details on the process for submitting pull requests to this repository.
+
 ## License
 `typesense-java` is distributed under the Apache 2 license.
 
