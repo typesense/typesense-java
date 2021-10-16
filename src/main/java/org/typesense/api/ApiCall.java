@@ -93,7 +93,7 @@ public class ApiCall {
 
     private TypesenseError getException(Response response){
         ErrorResponse errorResponse = response.readEntity(ErrorResponse.class);
-        String message = errorResponse.message;
+        String message = errorResponse.getMessage();
         int status_code = response.getStatus();
 
         if(status_code == 400)
