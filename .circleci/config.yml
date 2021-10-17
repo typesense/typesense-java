@@ -32,7 +32,7 @@ jobs:
       
       - run:
           name: Install Typesense
-          command: wget https://dl.typesense.org/releases/0.21.0/typesense-server-0.21.0-linux-amd64.tar.gz && sudo tar -C /usr/local/bin -xzvf typesense-server-0.21.0-linux-amd64.tar.gz && rm typesense-server-0.21.0-linux-amd64.tar.gz
+          command: wget https://dl.typesense.org/releases/0.21.0/typesense-server-$TYPESENSE_VERSION-linux-amd64.tar.gz && sudo tar -C /usr/local/bin -xzvf typesense-server-$TYPESENSE_VERSION-linux-amd64.tar.gz && rm typesense-server-$TYPESENSE_VERSION-linux-amd64.tar.gz
           environment:
             TYPESENSE_VERSION: 0.21.0
       
