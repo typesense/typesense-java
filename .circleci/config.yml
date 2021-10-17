@@ -24,6 +24,18 @@ jobs:
     steps:
       - checkout
 
+      - run:
+          name: Install dockerize
+          command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+          environment:
+            DOCKERIZE_VERSION: v0.3.0
+      
+      - run:
+          name: Install and run Typesense
+          command: docker run -p 8108:8108 -v/tmp/typesense-data:/data typesense/typesense:$TYPESENSE_VERSION --data-dir /data --api-key=xyz
+          environment:
+            DOCKERIZE_VERSION: 0.21.0
+
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -37,6 +49,10 @@ jobs:
           paths:
             - ~/.gradle
           key: v1-dependencies-{{ checksum "build.gradle" }}
+      
+      - run:
+          name: Wait for Typesense
+          command: dockerize -wait http://localhost:8108/health -timeout 1m
 
       # run tests!
       - run: gradle test
