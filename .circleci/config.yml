@@ -31,10 +31,15 @@ jobs:
             DOCKERIZE_VERSION: v0.3.0
       
       - run:
-          name: Install and run Typesense
-          command: docker run -p 8108:8108 -v/tmp/typesense-data:/data -d typesense/typesense:0.21.0 --data-dir /data --api-key=xyz
+          name: Install Typesense
+          command: wget https://dl.typesense.org/releases/0.21.0/typesense-server-0.21.0-linux-amd64.tar.gz && sudo tar -C /usr/local/bin -xzvf typesense-server-0.21.0-linux-amd64.tar.gz && rm typesense-server-0.21.0-linux-amd64.tar.gz
           environment:
-            DOCKERIZE_VERSION: 0.21.0
+            TYPESENSE_VERSION: 0.21.0
+      
+      - run:
+          name: Run Typesense
+          command: mkdir data && typesense-server --data-dir ./data --api-key=xyz
+          background: true
 
       # Download and cache dependencies
       - restore_cache:
