@@ -2,14 +2,9 @@ package org.typesense.api;
 
 import junit.framework.TestCase;
 import org.typesense.model.*;
-import org.typesense.resources.Node;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;
 
 public class DocumentsTest extends TestCase {
 
