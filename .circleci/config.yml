@@ -32,7 +32,7 @@ jobs:
       
       - run:
           name: Install and run Typesense
-          command: docker run -p 8108:8108 -v/tmp/typesense-data:/data typesense/typesense:$TYPESENSE_VERSION --data-dir /data --api-key=xyz
+          command: docker run -p 8108:8108 -v/tmp/typesense-data:/data -d typesense/typesense:0.21.0 --data-dir /data --api-key=xyz
           environment:
             DOCKERIZE_VERSION: 0.21.0
 
