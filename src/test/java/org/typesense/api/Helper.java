@@ -1,5 +1,6 @@
 package org.typesense.api;
 
+import org.typesense.model.CollectionResponse;
 import org.typesense.model.CollectionSchema;
 import org.typesense.model.Field;
 import org.typesense.resources.Node;
@@ -51,6 +52,9 @@ public class Helper {
     }
 
     public void teardown() {
-        client.collections("books").delete();
+        CollectionResponse[] collectionResponses = client.collections().retrieve();
+        for(CollectionResponse c:collectionResponses) {
+            client.collections(c.getName()).delete();
+        }
     }
 }
