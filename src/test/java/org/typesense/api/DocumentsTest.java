@@ -148,4 +148,21 @@ public class DocumentsTest extends TestCase {
         }
         client.collections("books").documents().import_(data.toString(), queryParameters);
     }
+
+    public void testDirtyCreate(){
+        helper.createTestDocument();
+        ImportDocumentsParameters queryParameters = new ImportDocumentsParameters();
+        queryParameters.dirtyValues(ImportDocumentsParameters.DirtyValuesEnum.COERCE_OR_REJECT);
+        queryParameters.action("upsert");
+        String[] authors = {"shakspeare","william"};
+        HashMap<String, Object> hmap = new HashMap<>();
+        hmap.put("title", 111);
+        hmap.put("authors",authors);
+        hmap.put("publication_year",1666);
+        hmap.put("ratings_count",124);
+        hmap.put("average_rating",3.2);
+        hmap.put("id","2");
+
+        System.out.println(this.client.collections("books").documents().create(hmap,queryParameters));
+    }
 }
