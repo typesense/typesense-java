@@ -14,7 +14,7 @@ public class Client {
     private HashMap<String, Alias> individualAliases;
 
     private Keys keys;
-    private HashMap<String, Key> individualKeys;
+    private HashMap<Long, Key> individualKeys;
 
     public Health health;
     public Operations operations;
@@ -30,7 +30,7 @@ public class Client {
         this.aliases = new Aliases(this.apiCall);
         this.individualAliases = new HashMap<>();
         this.keys = new Keys(this.apiCall);
-        this.individualKeys = new HashMap<>();
+        this.individualKeys = new HashMap<Long, Key>();
         this.health = new Health(this.apiCall);
         this.operations = new Operations(this.apiCall);
         this.metrics = new Metrics(this.apiCall);
@@ -74,7 +74,7 @@ public class Client {
         return this.keys;
     }
 
-    public Key keys(String id){
+    public Key keys(Long id){
         Key retVal;
 
         if(!this.individualKeys.containsKey(id)){

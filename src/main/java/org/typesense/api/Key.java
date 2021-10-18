@@ -4,10 +4,10 @@ import org.typesense.model.ApiKey;
 
 public class Key {
 
-    private String id;
+    private Long id;
     private ApiCall apiCall;
 
-    public Key(String id, ApiCall apiCall) {
+    public Key(Long id, ApiCall apiCall) {
         this.id = id;
         this.apiCall = apiCall;
     }

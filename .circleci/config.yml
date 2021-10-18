@@ -40,6 +40,9 @@ jobs:
           name: Run Typesense
           command: mkdir data && typesense-server --data-dir ./data --api-key=xyz
           background: true
+      - run:
+          name: Fetch JSONL file
+          command: sudo bash -c "curl https://gist.githubusercontent.com/harisarang/62a43d8a6c2dcf8d51ea4eab9d90c0c3/raw/090284f8c2aefaacba161b05cf2382836cadc31f/books.jsonl > /books.jsonl"
 
       # Download and cache dependencies
       - restore_cache:

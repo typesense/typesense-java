@@ -3,8 +3,11 @@ package org.typesense.api;
 import junit.framework.TestCase;
 import org.typesense.model.*;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class DocumentsTest extends TestCase {
 
@@ -124,5 +127,42 @@ public class DocumentsTest extends TestCase {
         String documentList = "{\"countryName\": \"India\", \"capital\": \"Washington\", \"gdp\": 5215}\n" +
                 "{\"countryName\": \"Iran\", \"capital\": \"London\", \"gdp\": 5215}";
         System.out.println(this.client.collections("books").documents().import_(documentList, queryParameters));
+    }
+
+    public void testExportDocuments(){
+        helper.createTestDocument();
+        ExportDocumentsParameters exportDocumentsParameters = new ExportDocumentsParameters();
+        exportDocumentsParameters.addExcludeFieldsItem("id");
+        exportDocumentsParameters.addIncludeFieldsItem("publication_year");
+        exportDocumentsParameters.addIncludeFieldsItem("authors");
+        System.out.println(client.collections("books").documents().export(exportDocumentsParameters));
+    }
+
+    public void testImportFromFile() throws FileNotFoundException {
+        File myObj = new File("/books.jsonl");
+        ImportDocumentsParameters queryParameters = new ImportDocumentsParameters();
+        Scanner myReader = new Scanner(myObj);
+        StringBuilder data = new StringBuilder();
+        while (myReader.hasNextLine()) {
+            data.append(myReader.nextLine()).append("\n");
+        }
+        client.collections("books").documents().import_(data.toString(), queryParameters);
+    }
+
+    public void testDirtyCreate(){
+        helper.createTestDocument();
+        ImportDocumentsParameters queryParameters = new ImportDocumentsParameters();
+        queryParameters.dirtyValues(ImportDocumentsParameters.DirtyValuesEnum.COERCE_OR_REJECT);
+        queryParameters.action("upsert");
+        String[] authors = {"shakspeare","william"};
+        HashMap<String, Object> hmap = new HashMap<>();
+        hmap.put("title", 111);
+        hmap.put("authors",authors);
+        hmap.put("publication_year",1666);
+        hmap.put("ratings_count",124);
+        hmap.put("average_rating",3.2);
+        hmap.put("id","2");
+
+        System.out.println(this.client.collections("books").documents().create(hmap,queryParameters));
     }
 }
