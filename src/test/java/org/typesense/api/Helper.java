@@ -72,6 +72,13 @@ public class Helper {
         client.collections("books").overrides().upsert("customize-apple", searchOverrideSchema);
     }
 
+    public void createTestSynonym() {
+        SearchSynonymSchema synonym = new SearchSynonymSchema();
+        synonym.addSynonymsItem("blazer").addSynonymsItem("coat").addSynonymsItem("jacket");
+
+        client.collections("books").synonyms().upsert("coat-synonyms",synonym);
+    }
+
     public void teardown() {
         CollectionResponse[] collectionResponses = client.collections().retrieve();
         for(CollectionResponse c:collectionResponses) {

@@ -16,6 +16,9 @@ public class Synonyms {
     }
 
     public SearchSynonym upsert(String synonymId, SearchSynonymSchema searchSynonymSchema){
+        if (searchSynonymSchema.getRoot() == null) {
+            searchSynonymSchema.setRoot("");
+        }
         return this.apiCall.put(getEndpoint(synonymId), searchSynonymSchema,SearchSynonym.class);
     }
 
