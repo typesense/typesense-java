@@ -1,6 +1,5 @@
 package org.typesense.api;
 
-import jdk.javadoc.internal.doclets.toolkit.util.Utils;
 import junit.framework.TestCase;
 import org.typesense.model.ApiKey;
 import org.typesense.model.ApiKeySchema;
