@@ -6,6 +6,7 @@ import org.typesense.resources.Node;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Helper {
     private final Client client;
@@ -52,6 +53,16 @@ public class Helper {
         client.aliases().upsert("books", collectionAliasSchema);
     }
 
+    public ApiKey createTestKey() {
+        ApiKeySchema apiKeySchema = new ApiKeySchema();
+        List<String> actionValues = new ArrayList<>();
+        List<String> collectionValues = new ArrayList<>();
+        actionValues.add("*");
+        collectionValues.add("*");
+        apiKeySchema.description("Admin Key").actions(actionValues).collections(collectionValues);
+        return client.keys().create(apiKeySchema);
+    }
+
     public void teardown() {
         CollectionResponse[] collectionResponses = client.collections().retrieve();
         for(CollectionResponse c:collectionResponses) {
@@ -61,6 +72,11 @@ public class Helper {
         CollectionAliasesResponse collectionAliasesResponse = client.aliases().retrieve();
         for(CollectionAlias a:collectionAliasesResponse.getAliases()) {
             client.aliases(a.getName()).delete();
+        }
+
+        ApiKeysResponse apiKeysResponse = client.keys().retrieve();
+        for (ApiKey k: apiKeysResponse.getKeys()) {
+            client.keys(k.getId()).delete();
         }
     }
 }

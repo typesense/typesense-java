@@ -26,7 +26,7 @@ public class ApiKeySchema   {
   @Schema(required = true, description = "")
   private List<String> collections = new ArrayList<String>();
   
-  @Schema(required = true, description = "")
+  @Schema(description = "")
   private Long expiresAt = null;
  /**
    * Get description

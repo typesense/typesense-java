@@ -22,6 +22,9 @@ public class Keys {
     }
 
     public ApiKey create(ApiKeySchema apiKeySchema){
+        if (apiKeySchema.getExpiresAt() == null) {
+            apiKeySchema.setExpiresAt(System.currentTimeMillis() / 1000L + 315360000); // Adding 10 years for expiration.
+        }
         return this.apiCall.post(Keys.RESOURCEPATH, apiKeySchema, ApiKey.class);
     }
 
