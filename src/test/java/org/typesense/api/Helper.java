@@ -34,12 +34,9 @@ public class Helper {
         HashMap<String, Object> hmap = new HashMap<>();
         hmap.put("title","Romeo and juliet");
         hmap.put("authors",authors);
-        hmap.put("image_url","fgfg");
         hmap.put("publication_year",1666);
         hmap.put("ratings_count",124);
         hmap.put("average_rating",3.2);
-        hmap.put("publication_year_facet","dff");
-        hmap.put("authors_facet",authors);
         hmap.put("id","1");
 
         client.collections("books").documents().create(hmap);
