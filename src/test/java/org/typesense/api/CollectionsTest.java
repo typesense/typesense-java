@@ -5,30 +5,30 @@ import org.junit.jupiter.api.Test;
 import org.typesense.model.CollectionResponse;
 import org.typesense.model.CollectionSchema;
 import org.typesense.model.Field;
-import org.typesense.resources.Node;
 
-import java.time.Duration;
 import java.util.ArrayList;
 
 
 public class CollectionsTest extends TestCase {
 
     public Client client;
+    private Helper helper;
 
     public void setUp() throws Exception {
         super.setUp();
-
-        ArrayList<Node> nodes = new ArrayList<>();
-        nodes.add(new Node("http","localhost","3001"));
-
-        Configuration configuration = new Configuration(nodes,Duration.ofSeconds(3),"xyz");
-
-        this.client = new Client(configuration);
-
+        helper = new Helper();
+        this.client = helper.getClient();
     }
+
+    public void tearDown() throws Exception {
+        super.tearDown();
+        helper.teardown();
+    }
+
 
     @Test
     public void testRetrieveAllCollections() {
+        helper.createTestCollection();
         CollectionResponse[] collectionResponses = client.collections().retrieve();
         for(CollectionResponse c:collectionResponses)
             System.out.println(c);
@@ -36,12 +36,14 @@ public class CollectionsTest extends TestCase {
 
     @Test
     public void testRetrieveSingleCollection(){
+        helper.createTestCollection();
         System.out.println(client.collections("books").retrieve());
     }
 
     @Test
     public void testDeleteCollection(){
-        System.out.println(client.collections("Countries").delete());
+        helper.createTestCollection();
+        System.out.println(client.collections("books").delete());
     }
 
     @Test
