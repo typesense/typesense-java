@@ -1,8 +1,6 @@
 package org.typesense.api;
 
-import org.typesense.model.CollectionResponse;
-import org.typesense.model.CollectionSchema;
-import org.typesense.model.Field;
+import org.typesense.model.*;
 import org.typesense.resources.Node;
 
 import java.time.Duration;
@@ -51,10 +49,21 @@ public class Helper {
         return this.client;
     }
 
+    public void createTestAlias() {
+        CollectionAliasSchema collectionAliasSchema = new CollectionAliasSchema();
+        collectionAliasSchema.collectionName("books_june11");
+        client.aliases().upsert("books", collectionAliasSchema);
+    }
+
     public void teardown() {
         CollectionResponse[] collectionResponses = client.collections().retrieve();
         for(CollectionResponse c:collectionResponses) {
             client.collections(c.getName()).delete();
+        }
+
+        CollectionAliasesResponse collectionAliasesResponse = client.aliases().retrieve();
+        for(CollectionAlias a:collectionAliasesResponse.getAliases()) {
+            client.aliases(a.getName()).delete();
         }
     }
 }
