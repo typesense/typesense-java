@@ -63,6 +63,15 @@ public class Helper {
         return client.keys().create(apiKeySchema);
     }
 
+    public void createTestOverrirde() {
+        SearchOverrideSchema searchOverrideSchema = new SearchOverrideSchema();
+        List<SearchOverrideInclude> searchOverrideIncludes = new ArrayList<>();
+        searchOverrideIncludes.add(new SearchOverrideInclude().id("422").position(1));
+        searchOverrideSchema.rule(new SearchOverrideRule().query("apple").match(SearchOverrideRule.MatchEnum.EXACT))
+                .includes(searchOverrideIncludes);
+        client.collections("books").overrides().upsert("customize-apple", searchOverrideSchema);
+    }
+
     public void teardown() {
         CollectionResponse[] collectionResponses = client.collections().retrieve();
         for(CollectionResponse c:collectionResponses) {
