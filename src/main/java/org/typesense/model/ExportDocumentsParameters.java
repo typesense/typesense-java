@@ -23,17 +23,17 @@ public class ExportDocumentsParameters   {
   **/
   private String filterBy = null;
   
-  @Schema(description = "List of fields from the document to include in the search result")
+  @Schema(required = true, description = "List of fields from the document to include in the search result")
  /**
    * List of fields from the document to include in the search result  
   **/
-  private List<String> includeFields = null;
+  private List<String> includeFields = new ArrayList<String>();
   
-  @Schema(description = "List of fields from the document to exclude in the search result")
+  @Schema(required = true, description = "List of fields from the document to exclude in the search result")
  /**
    * List of fields from the document to exclude in the search result  
   **/
-  private List<String> excludeFields = null;
+  private List<String> excludeFields = new ArrayList<String>();
  /**
    * Filter conditions for refining your search results. Separate multiple conditions with &amp;&amp;.
    * @return filterBy

@@ -125,4 +125,13 @@ public class DocumentsTest extends TestCase {
                 "{\"countryName\": \"Iran\", \"capital\": \"London\", \"gdp\": 5215}";
         System.out.println(this.client.collections("books").documents().import_(documentList, queryParameters));
     }
+
+    public void testExportDocuments(){
+        helper.createTestDocument();
+        ExportDocumentsParameters exportDocumentsParameters = new ExportDocumentsParameters();
+        exportDocumentsParameters.addExcludeFieldsItem("id");
+        exportDocumentsParameters.addIncludeFieldsItem("publication_year");
+        exportDocumentsParameters.addIncludeFieldsItem("authors");
+        System.out.println(client.collections("books").documents().export(exportDocumentsParameters));
+    }
 }
