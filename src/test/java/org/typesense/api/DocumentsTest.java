@@ -3,8 +3,11 @@ package org.typesense.api;
 import junit.framework.TestCase;
 import org.typesense.model.*;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class DocumentsTest extends TestCase {
 
@@ -133,5 +136,16 @@ public class DocumentsTest extends TestCase {
         exportDocumentsParameters.addIncludeFieldsItem("publication_year");
         exportDocumentsParameters.addIncludeFieldsItem("authors");
         System.out.println(client.collections("books").documents().export(exportDocumentsParameters));
+    }
+
+    public void testImportFromFile() throws FileNotFoundException {
+        File myObj = new File("/books.jsonl");
+        ImportDocumentsParameters queryParameters = new ImportDocumentsParameters();
+        Scanner myReader = new Scanner(myObj);
+        StringBuilder data = new StringBuilder();
+        while (myReader.hasNextLine()) {
+            data.append(myReader.nextLine()).append("\n");
+        }
+        client.collections("books").documents().import_(data.toString(), queryParameters);
     }
 }
