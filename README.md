@@ -1,18 +1,38 @@
 # Typesense Java Client ☕ 🔍
 
-Java client for the Typesense API: https://github.com/typesense/typesense
+Java client library for accessing the HTTP API of [Typesense](https://typesense.org) search engine.
+
+Note: This package is still under development. Some existing APIs might change or new APIs might be available in the future.
+
+## Installation
+
+Download the JAR file from the [releases](https://github.com/typesense/typesense-java/releases) section of this repository and add it to your project.
+
+```java
+import org.typesense.api.*;
+import org.typesense.models.*;
+import org.typesense.resources.*;
+```
 
 ## Usage
 
 ### Create a new client
 ```java
 ArrayList<Node> nodes = new ArrayList<>();
-nodes.add(new Node("http","localhost","3001"));
-Configuration configuration = new Configuration(nodes, Duration.ofSeconds(3),"xyz");
-Client client = client = new Client(configuration);
+nodes.add(
+  new Node(
+    "http",       // For Typesense Cloud use https
+    "localhost",  // For Typesense Cloud use xxx.a1.typesense.net
+    "8108"        // For Typesense Cloud use 443
+  )
+);
+
+Configuration configuration = new Configuration(nodes, Duration.ofSeconds(2),"<API_KEY>");
+
+Clienr client = new Client(configuration);
  ```
 
-### Create a collection
+### Create a new collection
 ```java
 ArrayList<Field> fields = new ArrayList<>();
 fields.add(new Field().name("countryName").type("string"));
@@ -258,7 +278,6 @@ client.operations.perform("vote");
 client.health.retrieve();
 ```
 ## Contributing
-Bug reports and pull requests are welcome on GitHub at https://github.com/typesense/typesense-java.
 
 Please read [CONTRIBUTING.md](https://github.com/typesense/typesense-java/blob/master/CONTRIBUTING.md) for details on the process for submitting pull requests to this repository.
 
