@@ -10,7 +10,7 @@ Download the JAR file from the [releases](https://github.com/typesense/typesense
 
 ```java
 import org.typesense.api.*;
-import org.typesense.models.*;
+import org.typesense.model.*;
 import org.typesense.resources.*;
 ```
 
@@ -29,7 +29,7 @@ nodes.add(
 
 Configuration configuration = new Configuration(nodes, Duration.ofSeconds(2),"<API_KEY>");
 
-Clienr client = new Client(configuration);
+Client client = new Client(configuration);
  ```
 
 ### Create a new collection
@@ -89,7 +89,7 @@ SearchResult searchResult = client.collections("countries").documents().search(s
 ```java
 HashMap<String, Object> hmap = new HashMap<>();
 hmap.put("gdp", 8);
-client.collections("countries").documents("28").retrieve(hmap);
+client.collections("countries").documents("28").update(hmap);
 ```
 
 ### Retrieve a document
