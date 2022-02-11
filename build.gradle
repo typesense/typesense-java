@@ -6,12 +6,24 @@ repositories {
 }
 
 group = 'org.typesense'
-version = '0.1.0'
+version = '0.0.2'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 jar {
-    archiveBaseName = 'typesense-java'
+    manifest {
+        attributes "Main-Class": "org.typesense.api.Client"
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    } {
+        exclude "META-INF/*.SF"
+        exclude "META-INF/*.DSA"
+        exclude "META-INF/*.RSA"
+        duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+    }
+
 }
 
 sourceSets {
