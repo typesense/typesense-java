@@ -22,7 +22,7 @@ public class Client {
     public Debug debug;
     public MultiSearch multiSearch;
 
-    Client(Configuration configuration){
+    public Client(Configuration configuration){
         this.configuration = configuration;
         this.apiCall = new ApiCall(configuration);
         collections = new Collections(apiCall);
