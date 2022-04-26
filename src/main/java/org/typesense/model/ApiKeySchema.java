@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 public class ApiKeySchema   {
   
-  @Schema(required = true, description = "")
+  @Schema(description = "")
   private String description = null;
   
   @Schema(required = true, description = "")

@@ -1,7 +1,5 @@
 package org.typesense.model;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import javax.xml.bind.annotation.XmlElement;
@@ -27,13 +25,13 @@ public class ExportDocumentsParameters   {
  /**
    * List of fields from the document to include in the search result  
   **/
-  private List<String> includeFields = new ArrayList<String>();
+  private String includeFields = null;
   
   @Schema(required = true, description = "List of fields from the document to exclude in the search result")
  /**
    * List of fields from the document to exclude in the search result  
   **/
-  private List<String> excludeFields = new ArrayList<String>();
+  private String excludeFields = null;
  /**
    * Filter conditions for refining your search results. Separate multiple conditions with &amp;&amp;.
    * @return filterBy
@@ -57,21 +55,16 @@ public class ExportDocumentsParameters   {
    * @return includeFields
   **/
   @JsonProperty("include_fields")
-  public List<String> getIncludeFields() {
+  public String getIncludeFields() {
     return includeFields;
   }
 
-  public void setIncludeFields(List<String> includeFields) {
+  public void setIncludeFields(String includeFields) {
     this.includeFields = includeFields;
   }
 
-  public ExportDocumentsParameters includeFields(List<String> includeFields) {
+  public ExportDocumentsParameters includeFields(String includeFields) {
     this.includeFields = includeFields;
-    return this;
-  }
-
-  public ExportDocumentsParameters addIncludeFieldsItem(String includeFieldsItem) {
-    this.includeFields.add(includeFieldsItem);
     return this;
   }
 
@@ -80,21 +73,16 @@ public class ExportDocumentsParameters   {
    * @return excludeFields
   **/
   @JsonProperty("exclude_fields")
-  public List<String> getExcludeFields() {
+  public String getExcludeFields() {
     return excludeFields;
   }
 
-  public void setExcludeFields(List<String> excludeFields) {
+  public void setExcludeFields(String excludeFields) {
     this.excludeFields = excludeFields;
   }
 
-  public ExportDocumentsParameters excludeFields(List<String> excludeFields) {
+  public ExportDocumentsParameters excludeFields(String excludeFields) {
     this.excludeFields = excludeFields;
-    return this;
-  }
-
-  public ExportDocumentsParameters addExcludeFieldsItem(String excludeFieldsItem) {
-    this.excludeFields.add(excludeFieldsItem);
     return this;
   }
 

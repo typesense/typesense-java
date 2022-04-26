@@ -2,6 +2,7 @@ package org.typesense.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.typesense.model.FacetCounts;
 import org.typesense.model.SearchGroupedHit;
 import org.typesense.model.SearchResultHit;
 import org.typesense.model.SearchResultRequestParams;
@@ -20,57 +21,69 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 public class SearchResult   {
   
-  @Schema(required = true, description = "")
-  private List<Integer> facetCounts = new ArrayList<Integer>();
+  @Schema(description = "")
+  private List<FacetCounts> facetCounts = null;
   
-  @Schema(required = true, description = "The number of documents found")
+  @Schema(description = "The number of documents found")
  /**
    * The number of documents found  
   **/
   private Integer found = null;
   
-  @Schema(required = true, description = "The number of milliseconds the search took")
+  @Schema(description = "The number of milliseconds the search took")
  /**
    * The number of milliseconds the search took  
   **/
   private Integer searchTimeMs = null;
   
-  @Schema(required = true, description = "The search result page number")
+  @Schema(description = "The total number of pages")
+ /**
+   * The total number of pages  
+  **/
+  private Integer outOf = null;
+  
+  @Schema(description = "Whether the search was cut off")
+ /**
+   * Whether the search was cut off  
+  **/
+  private Boolean searchCutoff = null;
+  
+  @Schema(description = "The search result page number")
  /**
    * The search result page number  
   **/
   private Integer page = null;
   
-  @Schema(required = true, description = "")
-  private List<SearchGroupedHit> groupedHits = new ArrayList<SearchGroupedHit>();
+  @Schema(description = "")
+  private List<SearchGroupedHit> groupedHits = null;
   
-  @Schema(required = true, description = "The documents that matched the search query")
+  @Schema(description = "The documents that matched the search query")
  /**
    * The documents that matched the search query  
   **/
-  private List<SearchResultHit> hits = new ArrayList<SearchResultHit>();
+  private List<SearchResultHit> hits = null;
   
-  @Schema(required = true, description = "")
+  @Schema(description = "")
   private SearchResultRequestParams requestParams = null;
  /**
    * Get facetCounts
    * @return facetCounts
   **/
   @JsonProperty("facet_counts")
-  public List<Integer> getFacetCounts() {
+  public List<FacetCounts> getFacetCounts() {
     return facetCounts;
   }
 
-  public void setFacetCounts(List<Integer> facetCounts) {
+  public void setFacetCounts(List<FacetCounts> facetCounts) {
     this.facetCounts = facetCounts;
   }
 
-  public SearchResult facetCounts(List<Integer> facetCounts) {
+  public SearchResult facetCounts(List<FacetCounts> facetCounts) {
     this.facetCounts = facetCounts;
     return this;
   }
 
-  public SearchResult addFacetCountsItem(Integer facetCountsItem) {
+  public SearchResult addFacetCountsItem(FacetCounts facetCountsItem) {
     this.facetCounts.add(facetCountsItem);
     return this;
   }
@@ -108,6 +121,42 @@ public class SearchResult   {
 
   public SearchResult searchTimeMs(Integer searchTimeMs) {
     this.searchTimeMs = searchTimeMs;
+    return this;
+  }
+
+ /**
+   * The total number of pages
+   * @return outOf
+  **/
+  @JsonProperty("out_of")
+  public Integer getOutOf() {
+    return outOf;
+  }
+
+  public void setOutOf(Integer outOf) {
+    this.outOf = outOf;
+  }
+
+  public SearchResult outOf(Integer outOf) {
+    this.outOf = outOf;
+    return this;
+  }
+
+ /**
+   * Whether the search was cut off
+   * @return searchCutoff
+  **/
+  @JsonProperty("search_cutoff")
+  public Boolean isSearchCutoff() {
+    return searchCutoff;
+  }
+
+  public void setSearchCutoff(Boolean searchCutoff) {
+    this.searchCutoff = searchCutoff;
+  }
+
+  public SearchResult searchCutoff(Boolean searchCutoff) {
+    this.searchCutoff = searchCutoff;
     return this;
   }
 
@@ -202,6 +251,8 @@ public class SearchResult   {
     sb.append("    facetCounts: ").append(toIndentedString(facetCounts)).append("\n");
     sb.append("    found: ").append(toIndentedString(found)).append("\n");
     sb.append("    searchTimeMs: ").append(toIndentedString(searchTimeMs)).append("\n");
+    sb.append("    outOf: ").append(toIndentedString(outOf)).append("\n");
+    sb.append("    searchCutoff: ").append(toIndentedString(searchCutoff)).append("\n");
     sb.append("    page: ").append(toIndentedString(page)).append("\n");
     sb.append("    groupedHits: ").append(toIndentedString(groupedHits)).append("\n");
     sb.append("    hits: ").append(toIndentedString(hits)).append("\n");

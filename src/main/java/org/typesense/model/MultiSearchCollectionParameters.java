@@ -1,8 +1,6 @@
 package org.typesense.model;
 
-import java.util.List;
-import org.typesense.model.CollectionSchema;
-import org.typesense.model.Field;
+import org.typesense.model.MultiSearchParameters;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import javax.xml.bind.annotation.XmlElement;
@@ -16,47 +14,38 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-public class CollectionResponse extends CollectionSchema  {
+public class MultiSearchCollectionParameters extends MultiSearchParameters  {
   
-  @Schema(required = true, description = "Number of documents in the collection")
+  @Schema(required = true, description = "The collection to search in. ")
  /**
-   * Number of documents in the collection  
+   * The collection to search in.   
   **/
-  private Long numDocuments = null;
-  
-  @Schema(required = true, description = "Timestamp of when the collection was created")
+  private String collection = null;
  /**
-   * Timestamp of when the collection was created  
+   * The collection to search in. 
+   * @return collection
   **/
-  private Long createdAt = null;
- /**
-   * Number of documents in the collection
-   * @return numDocuments
-  **/
-  @JsonProperty("num_documents")
-  public Long getNumDocuments() {
-    return numDocuments;
+  @JsonProperty("collection")
+  public String getCollection() {
+    return collection;
   }
 
-
- /**
-   * Timestamp of when the collection was created
-   * @return createdAt
-  **/
-  @JsonProperty("created_at")
-  public Long getCreatedAt() {
-    return createdAt;
+  public void setCollection(String collection) {
+    this.collection = collection;
   }
 
+  public MultiSearchCollectionParameters collection(String collection) {
+    this.collection = collection;
+    return this;
+  }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CollectionResponse {\n");
+    sb.append("class MultiSearchCollectionParameters {\n");
     sb.append("    ").append(toIndentedString(super.toString())).append("\n");
-    sb.append("    numDocuments: ").append(toIndentedString(numDocuments)).append("\n");
-    sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
+    sb.append("    collection: ").append(toIndentedString(collection)).append("\n");
     sb.append("}");
     return sb.toString();
   }

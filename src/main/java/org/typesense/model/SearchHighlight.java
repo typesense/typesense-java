@@ -17,29 +17,29 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 public class SearchHighlight   {
   
-  @Schema(example = "company_name", required = true, description = "")
+  @Schema(example = "company_name", description = "")
   private String field = null;
   
-  @Schema(example = "<mark>Stark</mark> Industries", required = true, description = "Present only for (non-array) string fields")
+  @Schema(example = "<mark>Stark</mark> Industries", description = "Present only for (non-array) string fields")
  /**
    * Present only for (non-array) string fields  
   **/
   private String snippet = null;
   
-  @Schema(example = "[\"<mark>Stark</mark> Industries\",\"<mark>Stark</mark> Corp\"]", required = true, description = "Present only for (array) string[] fields")
+  @Schema(example = "[\"<mark>Stark</mark> Industries\",\"<mark>Stark</mark> Corp\"]", description = "Present only for (array) string[] fields")
  /**
    * Present only for (array) string[] fields  
   **/
-  private List<String> snippets = new ArrayList<String>();
+  private List<String> snippets = null;
   
-  @Schema(example = "1", required = true, description = "The indices property will be present only for string[] fields and will contain the corresponding indices of the snippets in the search field")
+  @Schema(example = "1", description = "The indices property will be present only for string[] fields and will contain the corresponding indices of the snippets in the search field")
  /**
    * The indices property will be present only for string[] fields and will contain the corresponding indices of the snippets in the search field  
   **/
-  private List<Integer> indices = new ArrayList<Integer>();
+  private List<Integer> indices = null;
   
-  @Schema(required = true, description = "")
-  private List<Object> matchedTokens = new ArrayList<Object>();
+  @Schema(description = "")
+  private List<Object> matchedTokens = null;
  /**
    * Get field
    * @return field

@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 public class SearchSynonymSchema   {
   
-  @Schema(required = true, description = "For 1-way synonyms, indicates the root word that words in the `synonyms` parameter map to.")
+  @Schema(description = "For 1-way synonyms, indicates the root word that words in the `synonyms` parameter map to.")
  /**
    * For 1-way synonyms, indicates the root word that words in the `synonyms` parameter map to.  
   **/

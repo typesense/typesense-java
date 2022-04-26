@@ -23,17 +23,29 @@ public class SearchOverrideSchema   {
   @Schema(required = true, description = "")
   private SearchOverrideRule rule = null;
   
-  @Schema(required = true, description = "List of document `id`s that should be included in the search results with their corresponding `position`s.")
+  @Schema(description = "List of document `id`s that should be included in the search results with their corresponding `position`s.")
  /**
    * List of document `id`s that should be included in the search results with their corresponding `position`s.  
   **/
-  private List<SearchOverrideInclude> includes = new ArrayList<SearchOverrideInclude>();
+  private List<SearchOverrideInclude> includes = null;
   
-  @Schema(required = true, description = "List of document `id`s that should be excluded from the search results.")
+  @Schema(description = "List of document `id`s that should be excluded from the search results.")
  /**
    * List of document `id`s that should be excluded from the search results.  
   **/
-  private List<SearchOverrideExclude> excludes = new ArrayList<SearchOverrideExclude>();
+  private List<SearchOverrideExclude> excludes = null;
+  
+  @Schema(description = "A filter by clause that is applied to any search query that matches the override rule. ")
+ /**
+   * A filter by clause that is applied to any search query that matches the override rule.   
+  **/
+  private String filterBy = null;
+  
+  @Schema(description = "Indicates whether search query tokens that exist in the override's rule should be removed from the search query. ")
+ /**
+   * Indicates whether search query tokens that exist in the override's rule should be removed from the search query.   
+  **/
+  private Boolean removeMatchedTokens = null;
  /**
    * Get rule
    * @return rule
@@ -98,6 +110,42 @@ public class SearchOverrideSchema   {
     return this;
   }
 
+ /**
+   * A filter by clause that is applied to any search query that matches the override rule. 
+   * @return filterBy
+  **/
+  @JsonProperty("filter_by")
+  public String getFilterBy() {
+    return filterBy;
+  }
+
+  public void setFilterBy(String filterBy) {
+    this.filterBy = filterBy;
+  }
+
+  public SearchOverrideSchema filterBy(String filterBy) {
+    this.filterBy = filterBy;
+    return this;
+  }
+
+ /**
+   * Indicates whether search query tokens that exist in the override&#x27;s rule should be removed from the search query. 
+   * @return removeMatchedTokens
+  **/
+  @JsonProperty("remove_matched_tokens")
+  public Boolean isRemoveMatchedTokens() {
+    return removeMatchedTokens;
+  }
+
+  public void setRemoveMatchedTokens(Boolean removeMatchedTokens) {
+    this.removeMatchedTokens = removeMatchedTokens;
+  }
+
+  public SearchOverrideSchema removeMatchedTokens(Boolean removeMatchedTokens) {
+    this.removeMatchedTokens = removeMatchedTokens;
+    return this;
+  }
+
 
   @Override
   public String toString() {
@@ -107,6 +155,8 @@ public class SearchOverrideSchema   {
     sb.append("    rule: ").append(toIndentedString(rule)).append("\n");
     sb.append("    includes: ").append(toIndentedString(includes)).append("\n");
     sb.append("    excludes: ").append(toIndentedString(excludes)).append("\n");
+    sb.append("    filterBy: ").append(toIndentedString(filterBy)).append("\n");
+    sb.append("    removeMatchedTokens: ").append(toIndentedString(removeMatchedTokens)).append("\n");
     sb.append("}");
     return sb.toString();
   }

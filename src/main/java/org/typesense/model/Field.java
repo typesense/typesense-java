@@ -17,45 +17,9 @@ public class Field   {
   
   @Schema(example = "company_name", required = true, description = "")
   private String name = null;
-  public enum TypeEnum {
-    STRING("string"),
-    INT32("int32"),
-    INT64("int64"),
-    FLOAT("float"),
-    BOOL("bool"),
-    STRING_("string[]"),
-    INT32_("int32[]"),
-    INT64_("int64[]"),
-    FLOAT_("float[]"),
-    BOOL_("bool[]"),
-    AUTO("auto");
-
-    private String value;
-
-    TypeEnum(String value) {
-      this.value = value;
-    }
-    @JsonValue
-    public String getValue() {
-      return value;
-    }
-
-    @Override
-    public String toString() {
-      return String.valueOf(value);
-    }
-    @JsonCreator
-    public static TypeEnum fromValue(String text) {
-      for (TypeEnum b : TypeEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }  
+  
   @Schema(example = "string", required = true, description = "")
-  private TypeEnum type = null;
+  private String type = null;
   
   @Schema(example = "true", description = "")
   private Boolean optional = false;
@@ -89,17 +53,14 @@ public class Field   {
   **/
   @JsonProperty("type")
   public String getType() {
-    if (type == null) {
-      return null;
-    }
-    return type.getValue();
+    return type;
   }
 
-  public void setType(TypeEnum type) {
+  public void setType(String type) {
     this.type = type;
   }
 
-  public Field type(TypeEnum type) {
+  public Field type(String type) {
     this.type = type;
     return this;
   }

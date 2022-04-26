@@ -1,5 +1,6 @@
 package org.typesense.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import javax.xml.bind.annotation.XmlElement;
@@ -13,15 +14,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-public class SearchParameters   {
+/**
+  * Parameters for the multi search API. 
+ **/
+@Schema(description="Parameters for the multi search API. ")
+public class MultiSearchParameters   {
   
-  @Schema(required = true, description = "The query text to search for in the collection. Use * as the search string to return all documents. This is typically useful when used in conjunction with filter_by.")
+  @Schema(description = "The query text to search for in the collection. Use * as the search string to return all documents. This is typically useful when used in conjunction with filter_by.")
  /**
    * The query text to search for in the collection. Use * as the search string to return all documents. This is typically useful when used in conjunction with filter_by.  
   **/
   private String q = null;
   
-  @Schema(required = true, description = "A list of `string` fields that should be queried against. Multiple fields are separated with a comma.")
+  @Schema(description = "A list of `string` fields that should be queried against. Multiple fields are separated with a comma.")
  /**
    * A list of `string` fields that should be queried against. Multiple fields are separated with a comma.  
   **/
@@ -45,7 +50,7 @@ public class SearchParameters   {
   **/
   private String filterBy = null;
   
-  @Schema(example = "num_employees:desc", description = "A list of numerical fields and their corresponding sort orders that will be used for ordering your results. Up to 3 sort fields can be specified. The text similarity score is exposed as a special `_text_match` field that you can use in the list of sorting fields. If no `sort_by` parameter is specified, results are sorted by `_text_match:desc,default_sorting_field:desc`")
+  @Schema(description = "A list of numerical fields and their corresponding sort orders that will be used for ordering your results. Up to 3 sort fields can be specified. The text similarity score is exposed as a special `_text_match` field that you can use in the list of sorting fields. If no `sort_by` parameter is specified, results are sorted by `_text_match:desc,default_sorting_field:desc`")
  /**
    * A list of numerical fields and their corresponding sort orders that will be used for ordering your results. Up to 3 sort fields can be specified. The text similarity score is exposed as a special `_text_match` field that you can use in the list of sorting fields. If no `sort_by` parameter is specified, results are sorted by `_text_match:desc,default_sorting_field:desc`  
   **/
@@ -237,7 +242,7 @@ public class SearchParameters   {
     this.q = q;
   }
 
-  public SearchParameters q(String q) {
+  public MultiSearchParameters q(String q) {
     this.q = q;
     return this;
   }
@@ -255,7 +260,7 @@ public class SearchParameters   {
     this.queryBy = queryBy;
   }
 
-  public SearchParameters queryBy(String queryBy) {
+  public MultiSearchParameters queryBy(String queryBy) {
     this.queryBy = queryBy;
     return this;
   }
@@ -273,7 +278,7 @@ public class SearchParameters   {
     this.queryByWeights = queryByWeights;
   }
 
-  public SearchParameters queryByWeights(String queryByWeights) {
+  public MultiSearchParameters queryByWeights(String queryByWeights) {
     this.queryByWeights = queryByWeights;
     return this;
   }
@@ -291,7 +296,7 @@ public class SearchParameters   {
     this.prefix = prefix;
   }
 
-  public SearchParameters prefix(String prefix) {
+  public MultiSearchParameters prefix(String prefix) {
     this.prefix = prefix;
     return this;
   }
@@ -309,7 +314,7 @@ public class SearchParameters   {
     this.filterBy = filterBy;
   }
 
-  public SearchParameters filterBy(String filterBy) {
+  public MultiSearchParameters filterBy(String filterBy) {
     this.filterBy = filterBy;
     return this;
   }
@@ -327,7 +332,7 @@ public class SearchParameters   {
     this.sortBy = sortBy;
   }
 
-  public SearchParameters sortBy(String sortBy) {
+  public MultiSearchParameters sortBy(String sortBy) {
     this.sortBy = sortBy;
     return this;
   }
@@ -345,7 +350,7 @@ public class SearchParameters   {
     this.facetBy = facetBy;
   }
 
-  public SearchParameters facetBy(String facetBy) {
+  public MultiSearchParameters facetBy(String facetBy) {
     this.facetBy = facetBy;
     return this;
   }
@@ -363,7 +368,7 @@ public class SearchParameters   {
     this.maxFacetValues = maxFacetValues;
   }
 
-  public SearchParameters maxFacetValues(Integer maxFacetValues) {
+  public MultiSearchParameters maxFacetValues(Integer maxFacetValues) {
     this.maxFacetValues = maxFacetValues;
     return this;
   }
@@ -381,7 +386,7 @@ public class SearchParameters   {
     this.facetQuery = facetQuery;
   }
 
-  public SearchParameters facetQuery(String facetQuery) {
+  public MultiSearchParameters facetQuery(String facetQuery) {
     this.facetQuery = facetQuery;
     return this;
   }
@@ -399,7 +404,7 @@ public class SearchParameters   {
     this.numTypos = numTypos;
   }
 
-  public SearchParameters numTypos(Integer numTypos) {
+  public MultiSearchParameters numTypos(Integer numTypos) {
     this.numTypos = numTypos;
     return this;
   }
@@ -417,7 +422,7 @@ public class SearchParameters   {
     this.page = page;
   }
 
-  public SearchParameters page(Integer page) {
+  public MultiSearchParameters page(Integer page) {
     this.page = page;
     return this;
   }
@@ -435,7 +440,7 @@ public class SearchParameters   {
     this.perPage = perPage;
   }
 
-  public SearchParameters perPage(Integer perPage) {
+  public MultiSearchParameters perPage(Integer perPage) {
     this.perPage = perPage;
     return this;
   }
@@ -453,7 +458,7 @@ public class SearchParameters   {
     this.groupBy = groupBy;
   }
 
-  public SearchParameters groupBy(String groupBy) {
+  public MultiSearchParameters groupBy(String groupBy) {
     this.groupBy = groupBy;
     return this;
   }
@@ -471,7 +476,7 @@ public class SearchParameters   {
     this.groupLimit = groupLimit;
   }
 
-  public SearchParameters groupLimit(Integer groupLimit) {
+  public MultiSearchParameters groupLimit(Integer groupLimit) {
     this.groupLimit = groupLimit;
     return this;
   }
@@ -489,7 +494,7 @@ public class SearchParameters   {
     this.includeFields = includeFields;
   }
 
-  public SearchParameters includeFields(String includeFields) {
+  public MultiSearchParameters includeFields(String includeFields) {
     this.includeFields = includeFields;
     return this;
   }
@@ -507,7 +512,7 @@ public class SearchParameters   {
     this.excludeFields = excludeFields;
   }
 
-  public SearchParameters excludeFields(String excludeFields) {
+  public MultiSearchParameters excludeFields(String excludeFields) {
     this.excludeFields = excludeFields;
     return this;
   }
@@ -525,7 +530,7 @@ public class SearchParameters   {
     this.highlightFullFields = highlightFullFields;
   }
 
-  public SearchParameters highlightFullFields(String highlightFullFields) {
+  public MultiSearchParameters highlightFullFields(String highlightFullFields) {
     this.highlightFullFields = highlightFullFields;
     return this;
   }
@@ -543,7 +548,7 @@ public class SearchParameters   {
     this.highlightAffixNumTokens = highlightAffixNumTokens;
   }
 
-  public SearchParameters highlightAffixNumTokens(Integer highlightAffixNumTokens) {
+  public MultiSearchParameters highlightAffixNumTokens(Integer highlightAffixNumTokens) {
     this.highlightAffixNumTokens = highlightAffixNumTokens;
     return this;
   }
@@ -561,7 +566,7 @@ public class SearchParameters   {
     this.highlightStartTag = highlightStartTag;
   }
 
-  public SearchParameters highlightStartTag(String highlightStartTag) {
+  public MultiSearchParameters highlightStartTag(String highlightStartTag) {
     this.highlightStartTag = highlightStartTag;
     return this;
   }
@@ -579,7 +584,7 @@ public class SearchParameters   {
     this.highlightEndTag = highlightEndTag;
   }
 
-  public SearchParameters highlightEndTag(String highlightEndTag) {
+  public MultiSearchParameters highlightEndTag(String highlightEndTag) {
     this.highlightEndTag = highlightEndTag;
     return this;
   }
@@ -597,7 +602,7 @@ public class SearchParameters   {
     this.snippetThreshold = snippetThreshold;
   }
 
-  public SearchParameters snippetThreshold(Integer snippetThreshold) {
+  public MultiSearchParameters snippetThreshold(Integer snippetThreshold) {
     this.snippetThreshold = snippetThreshold;
     return this;
   }
@@ -615,7 +620,7 @@ public class SearchParameters   {
     this.dropTokensThreshold = dropTokensThreshold;
   }
 
-  public SearchParameters dropTokensThreshold(Integer dropTokensThreshold) {
+  public MultiSearchParameters dropTokensThreshold(Integer dropTokensThreshold) {
     this.dropTokensThreshold = dropTokensThreshold;
     return this;
   }
@@ -633,7 +638,7 @@ public class SearchParameters   {
     this.typoTokensThreshold = typoTokensThreshold;
   }
 
-  public SearchParameters typoTokensThreshold(Integer typoTokensThreshold) {
+  public MultiSearchParameters typoTokensThreshold(Integer typoTokensThreshold) {
     this.typoTokensThreshold = typoTokensThreshold;
     return this;
   }
@@ -651,7 +656,7 @@ public class SearchParameters   {
     this.pinnedHits = pinnedHits;
   }
 
-  public SearchParameters pinnedHits(String pinnedHits) {
+  public MultiSearchParameters pinnedHits(String pinnedHits) {
     this.pinnedHits = pinnedHits;
     return this;
   }
@@ -669,7 +674,7 @@ public class SearchParameters   {
     this.hiddenHits = hiddenHits;
   }
 
-  public SearchParameters hiddenHits(String hiddenHits) {
+  public MultiSearchParameters hiddenHits(String hiddenHits) {
     this.hiddenHits = hiddenHits;
     return this;
   }
@@ -687,7 +692,7 @@ public class SearchParameters   {
     this.highlightFields = highlightFields;
   }
 
-  public SearchParameters highlightFields(String highlightFields) {
+  public MultiSearchParameters highlightFields(String highlightFields) {
     this.highlightFields = highlightFields;
     return this;
   }
@@ -705,7 +710,7 @@ public class SearchParameters   {
     this.preSegmentedQuery = preSegmentedQuery;
   }
 
-  public SearchParameters preSegmentedQuery(Boolean preSegmentedQuery) {
+  public MultiSearchParameters preSegmentedQuery(Boolean preSegmentedQuery) {
     this.preSegmentedQuery = preSegmentedQuery;
     return this;
   }
@@ -723,7 +728,7 @@ public class SearchParameters   {
     this.enableOverrides = enableOverrides;
   }
 
-  public SearchParameters enableOverrides(Boolean enableOverrides) {
+  public MultiSearchParameters enableOverrides(Boolean enableOverrides) {
     this.enableOverrides = enableOverrides;
     return this;
   }
@@ -741,7 +746,7 @@ public class SearchParameters   {
     this.prioritizeExactMatch = prioritizeExactMatch;
   }
 
-  public SearchParameters prioritizeExactMatch(Boolean prioritizeExactMatch) {
+  public MultiSearchParameters prioritizeExactMatch(Boolean prioritizeExactMatch) {
     this.prioritizeExactMatch = prioritizeExactMatch;
     return this;
   }
@@ -759,7 +764,7 @@ public class SearchParameters   {
     this.exhaustiveSearch = exhaustiveSearch;
   }
 
-  public SearchParameters exhaustiveSearch(Boolean exhaustiveSearch) {
+  public MultiSearchParameters exhaustiveSearch(Boolean exhaustiveSearch) {
     this.exhaustiveSearch = exhaustiveSearch;
     return this;
   }
@@ -777,7 +782,7 @@ public class SearchParameters   {
     this.searchCutoffMs = searchCutoffMs;
   }
 
-  public SearchParameters searchCutoffMs(Integer searchCutoffMs) {
+  public MultiSearchParameters searchCutoffMs(Integer searchCutoffMs) {
     this.searchCutoffMs = searchCutoffMs;
     return this;
   }
@@ -795,7 +800,7 @@ public class SearchParameters   {
     this.useCache = useCache;
   }
 
-  public SearchParameters useCache(Boolean useCache) {
+  public MultiSearchParameters useCache(Boolean useCache) {
     this.useCache = useCache;
     return this;
   }
@@ -813,7 +818,7 @@ public class SearchParameters   {
     this.cacheTtl = cacheTtl;
   }
 
-  public SearchParameters cacheTtl(Integer cacheTtl) {
+  public MultiSearchParameters cacheTtl(Integer cacheTtl) {
     this.cacheTtl = cacheTtl;
     return this;
   }
@@ -831,7 +836,7 @@ public class SearchParameters   {
     this.minLen1typo = minLen1typo;
   }
 
-  public SearchParameters minLen1typo(Integer minLen1typo) {
+  public MultiSearchParameters minLen1typo(Integer minLen1typo) {
     this.minLen1typo = minLen1typo;
     return this;
   }
@@ -849,7 +854,7 @@ public class SearchParameters   {
     this.minLen2typo = minLen2typo;
   }
 
-  public SearchParameters minLen2typo(Integer minLen2typo) {
+  public MultiSearchParameters minLen2typo(Integer minLen2typo) {
     this.minLen2typo = minLen2typo;
     return this;
   }
@@ -858,7 +863,7 @@ public class SearchParameters   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class SearchParameters {\n");
+    sb.append("class MultiSearchParameters {\n");
     
     sb.append("    q: ").append(toIndentedString(q)).append("\n");
     sb.append("    queryBy: ").append(toIndentedString(queryBy)).append("\n");

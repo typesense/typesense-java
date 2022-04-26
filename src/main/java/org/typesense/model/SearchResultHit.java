@@ -20,17 +20,26 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 public class SearchResultHit   {
   
-  @Schema(required = true, description = "Contains highlighted portions of the search fields")
+  @Schema(description = "Contains highlighted portions of the search fields")
  /**
    * Contains highlighted portions of the search fields  
   **/
-  private List<SearchHighlight> highlights = new ArrayList<SearchHighlight>();
+  private List<SearchHighlight> highlights = null;
   
-  @Schema(required = true, description = "Can be any key-value pair")
+  @Schema(description = "Can be any key-value pair")
  /**
    * Can be any key-value pair  
   **/
-  private Map<String, Object> document = new HashMap<String, Object>();
+  private Map<String, Object> document = null;
+  
+  @Schema(description = "")
+  private Long textMatch = null;
+  
+  @Schema(description = "Can be any key-value pair")
+ /**
+   * Can be any key-value pair  
+  **/
+  private Map<String, Integer> geoDistanceMeters = null;
  /**
    * Contains highlighted portions of the search fields
    * @return highlights
@@ -77,6 +86,47 @@ public class SearchResultHit   {
     return this;
   }
 
+ /**
+   * Get textMatch
+   * @return textMatch
+  **/
+  @JsonProperty("text_match")
+  public Long getTextMatch() {
+    return textMatch;
+  }
+
+  public void setTextMatch(Long textMatch) {
+    this.textMatch = textMatch;
+  }
+
+  public SearchResultHit textMatch(Long textMatch) {
+    this.textMatch = textMatch;
+    return this;
+  }
+
+ /**
+   * Can be any key-value pair
+   * @return geoDistanceMeters
+  **/
+  @JsonProperty("geo_distance_meters")
+  public Map<String, Integer> getGeoDistanceMeters() {
+    return geoDistanceMeters;
+  }
+
+  public void setGeoDistanceMeters(Map<String, Integer> geoDistanceMeters) {
+    this.geoDistanceMeters = geoDistanceMeters;
+  }
+
+  public SearchResultHit geoDistanceMeters(Map<String, Integer> geoDistanceMeters) {
+    this.geoDistanceMeters = geoDistanceMeters;
+    return this;
+  }
+
+  public SearchResultHit putGeoDistanceMetersItem(String key, Integer geoDistanceMetersItem) {
+    this.geoDistanceMeters.put(key, geoDistanceMetersItem);
+    return this;
+  }
+
 
   @Override
   public String toString() {
@@ -85,6 +135,8 @@ public class SearchResultHit   {
     
     sb.append("    highlights: ").append(toIndentedString(highlights)).append("\n");
     sb.append("    document: ").append(toIndentedString(document)).append("\n");
+    sb.append("    textMatch: ").append(toIndentedString(textMatch)).append("\n");
+    sb.append("    geoDistanceMeters: ").append(toIndentedString(geoDistanceMeters)).append("\n");
     sb.append("}");
     return sb.toString();
   }
