@@ -1,5 +1,6 @@
 package org.typesense.api;
 
+import org.typesense.api.exceptions.TypesenseError;
 import org.typesense.model.CollectionResponse;
 
 import java.util.HashMap;
@@ -36,11 +37,11 @@ public class Collection {
         this.individualOverrides = new HashMap<String, Override>();
     }
 
-    public CollectionResponse retrieve(){
+    public CollectionResponse retrieve() throws Exception {
         return this.apiCall.get(endpoint, CollectionResponse.class);
     }
 
-    public CollectionResponse delete(){
+    public CollectionResponse delete() throws Exception {
         return this.apiCall.delete(endpoint,CollectionResponse.class);
     }
 

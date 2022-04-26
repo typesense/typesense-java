@@ -1,5 +1,6 @@
 package org.typesense.api;
 
+import org.typesense.api.exceptions.TypesenseError;
 import org.typesense.model.SearchOverride;
 
 public class Override {
@@ -14,11 +15,11 @@ public class Override {
         this.apiCall = apiCall;
     }
 
-    public SearchOverride retrieve(){
+    public SearchOverride retrieve() throws Exception {
         return this.apiCall.get(this.getEndpoint(), SearchOverride.class);
     }
 
-    public SearchOverride delete(){
+    public SearchOverride delete() throws Exception {
         return this.apiCall.delete(this.getEndpoint(), SearchOverride.class);
     }
 

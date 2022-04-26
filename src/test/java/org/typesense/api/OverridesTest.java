@@ -1,6 +1,7 @@
 package org.typesense.api;
 
 import junit.framework.TestCase;
+import org.typesense.api.exceptions.TypesenseError;
 import org.typesense.model.SearchOverrideExclude;
 import org.typesense.model.SearchOverrideInclude;
 import org.typesense.model.SearchOverrideRule;
@@ -27,7 +28,7 @@ public class OverridesTest extends TestCase {
         helper.teardown();
     }
 
-    public void testUpsert() {
+    public void testUpsert() throws Exception {
         SearchOverrideSchema searchOverrideSchema = new SearchOverrideSchema();
 
         List<SearchOverrideInclude> searchOverrideIncludes = new ArrayList<>();
@@ -44,15 +45,15 @@ public class OverridesTest extends TestCase {
         System.out.println(client.collections("books").overrides().upsert("apple", searchOverrideSchema));
     }
 
-    public void testRetrieveAll(){
+    public void testRetrieveAll() throws Exception {
         System.out.println(this.client.collections("books").overrides().retrieve());
     }
 
-    public void testRetrieve(){
+    public void testRetrieve() throws Exception {
         System.out.println(this.client.collections("books").overrides("customize-apple").retrieve());
     }
 
-    public void testDelete(){
+    public void testDelete() throws Exception {
         System.out.println(this.client.collections("books").overrides("customize-apple").delete());
     }
 }

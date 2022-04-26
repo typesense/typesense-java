@@ -1,5 +1,6 @@
 package org.typesense.api;
 
+import org.typesense.api.exceptions.TypesenseError;
 import org.typesense.model.*;
 import org.typesense.resources.Node;
 
@@ -20,7 +21,7 @@ public class Helper {
         this.client = new Client(configuration);
     }
 
-    public void createTestCollection() {
+    public void createTestCollection() throws Exception {
         ArrayList<Field> fields = new ArrayList<>();
         fields.add(new Field().name(".*").type(FieldTypes.AUTO).optional(true));
 
@@ -30,7 +31,7 @@ public class Helper {
         client.collections().create(collectionSchema);
     }
 
-    public void createTestDocument() {
+    public void createTestDocument() throws Exception {
         String[] authors = {"shakspeare","william"};
         HashMap<String, Object> hmap = new HashMap<>();
         hmap.put("title","Romeo and juliet");
@@ -47,13 +48,13 @@ public class Helper {
         return this.client;
     }
 
-    public void createTestAlias() {
+    public void createTestAlias() throws Exception {
         CollectionAliasSchema collectionAliasSchema = new CollectionAliasSchema();
         collectionAliasSchema.collectionName("books_june11");
         client.aliases().upsert("books", collectionAliasSchema);
     }
 
-    public ApiKey createTestKey() {
+    public ApiKey createTestKey() throws Exception {
         ApiKeySchema apiKeySchema = new ApiKeySchema();
         List<String> actionValues = new ArrayList<>();
         List<String> collectionValues = new ArrayList<>();
@@ -63,7 +64,7 @@ public class Helper {
         return client.keys().create(apiKeySchema);
     }
 
-    public void createTestOverrirde() {
+    public void createTestOverrirde() throws Exception {
         SearchOverrideSchema searchOverrideSchema = new SearchOverrideSchema();
         List<SearchOverrideInclude> searchOverrideIncludes = new ArrayList<>();
         searchOverrideIncludes.add(new SearchOverrideInclude().id("422").position(1));
@@ -72,14 +73,14 @@ public class Helper {
         client.collections("books").overrides().upsert("customize-apple", searchOverrideSchema);
     }
 
-    public void createTestSynonym() {
+    public void createTestSynonym() throws Exception {
         SearchSynonymSchema synonym = new SearchSynonymSchema();
         synonym.addSynonymsItem("blazer").addSynonymsItem("coat").addSynonymsItem("jacket");
 
         client.collections("books").synonyms().upsert("coat-synonyms",synonym);
     }
 
-    public void teardown() {
+    public void teardown() throws Exception {
         CollectionResponse[] collectionResponses = client.collections().retrieve();
         for(CollectionResponse c:collectionResponses) {
             client.collections(c.getName()).delete();

@@ -28,9 +28,9 @@ public class Configuration {
         this.connectionTimeout = connectionTimeout;
         this.apiKey = apiKey;
 
-        this.healthCheckInterval = Duration.ofSeconds(15);
+        this.healthCheckInterval = Duration.ofSeconds(60);
         this.numRetries =  3;
-        this.retryInterval= Duration.ofSeconds(100);
+        this.retryInterval= Duration.ofSeconds(3);
         this.sendApiKeyAsQueryParam = false;
     }
 

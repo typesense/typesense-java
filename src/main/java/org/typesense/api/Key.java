@@ -1,5 +1,6 @@
 package org.typesense.api;
 
+import org.typesense.api.exceptions.TypesenseError;
 import org.typesense.model.ApiKey;
 
 public class Key {
@@ -12,11 +13,11 @@ public class Key {
         this.apiCall = apiCall;
     }
 
-    public ApiKey retrieve(){
+    public ApiKey retrieve() throws Exception {
         return this.apiCall.get(this.getEndpoint(), ApiKey.class);
     }
 
-    public ApiKey delete(){
+    public ApiKey delete() throws Exception {
         return this.apiCall.delete(this.getEndpoint(), ApiKey.class);
     }
 

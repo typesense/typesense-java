@@ -1,5 +1,7 @@
 package org.typesense.api;
 
+import org.typesense.api.exceptions.TypesenseError;
+
 import java.util.HashMap;
 
 public class Document {
@@ -16,15 +18,15 @@ public class Document {
         this.endpoint = Collections.RESOURCE_PATH + "/" +  this.collectionName + Documents.RESOURCE_PATH + "/" + this.documentId;
     }
 
-    HashMap<String,Object> retrieve(){
+    HashMap<String,Object> retrieve() throws Exception {
         return this.apiCall.get(endpoint);
     }
 
-    HashMap<String, Object> delete(){
+    HashMap<String, Object> delete() throws Exception {
         return this.apiCall.delete(this.endpoint);
     }
 
-    HashMap<String , Object> update(HashMap<String, Object> document){
+    HashMap<String , Object> update(HashMap<String, Object> document) throws Exception {
         return this.apiCall.patch(this.endpoint, document);
     }
 

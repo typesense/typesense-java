@@ -1,6 +1,6 @@
 package org.typesense.api.exceptions;
 
-public class TypesenseError extends Exception{
+public class TypesenseError extends Exception {
     public String message;
     public int status;
 

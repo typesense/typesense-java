@@ -1,6 +1,7 @@
 package org.typesense.api;
 
 import junit.framework.TestCase;
+import org.typesense.api.exceptions.TypesenseError;
 import org.typesense.model.ApiKey;
 import org.typesense.model.ApiKeySchema;
 
@@ -29,7 +30,7 @@ public class KeysTest extends TestCase {
         helper.teardown();
     }
 
-    public void testCreate() {
+    public void testCreate() throws Exception {
         ApiKeySchema apiKeySchema = new ApiKeySchema();
         List<String> actionValues = new ArrayList<>();
         List<String> collectionValues = new ArrayList<>();
@@ -42,7 +43,7 @@ public class KeysTest extends TestCase {
         System.out.println(client.keys().create(apiKeySchema));
     }
 
-    public void testCreateSearchOnly(){
+    public void testCreateSearchOnly() throws Exception {
         ApiKeySchema apiKeySchema = new ApiKeySchema();
         List<String> actionValues = new ArrayList<>();
         List<String> collectionValues = new ArrayList<>();
@@ -55,15 +56,15 @@ public class KeysTest extends TestCase {
         System.out.println(this.client.keys().create(apiKeySchema));
     }
 
-    public void testRetrieve() {
+    public void testRetrieve() throws Exception {
         System.out.println(this.client.keys(id).retrieve());
     }
 
-    public void testRetrieveAll() {
+    public void testRetrieveAll() throws Exception {
         System.out.println(client.keys().retrieve());
     }
 
-    public void testDelete(){
+    public void testDelete() throws Exception {
         System.out.println(this.client.keys(id).delete());
     }
 

@@ -1,6 +1,7 @@
 package org.typesense.api;
 
 import junit.framework.TestCase;
+import org.typesense.api.exceptions.TypesenseError;
 import org.typesense.model.SearchSynonymSchema;
 
 public class SynonymsTest extends TestCase {
@@ -22,7 +23,7 @@ public class SynonymsTest extends TestCase {
         helper.teardown();
     }
 
-    public void testUpsert() {
+    public void testUpsert() throws Exception {
         SearchSynonymSchema synonym = new SearchSynonymSchema();
 
         //One-way
@@ -32,15 +33,15 @@ public class SynonymsTest extends TestCase {
         System.out.println(this.client.collections("books").synonyms().upsert("books-synonyms",synonym));
     }
 
-    public void testRetrieve(){
+    public void testRetrieve() throws Exception {
         System.out.println(this.client.collections("books").synonyms("coat-synonyms").retrieve());
     }
 
-    public void testRetrieveAll(){
+    public void testRetrieveAll() throws Exception {
         System.out.println(this.client.collections("books").synonyms().retrieve());
     }
 
-    public void testDelete(){
+    public void testDelete() throws Exception {
         System.out.println(this.client.collections("books").synonyms("coat-synonyms").delete());
     }
 }

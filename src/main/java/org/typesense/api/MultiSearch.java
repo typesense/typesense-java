@@ -1,5 +1,6 @@
 package org.typesense.api;
 
+import org.typesense.api.exceptions.TypesenseError;
 import org.typesense.model.MultiSearchResponse;
 
 import java.util.HashMap;
@@ -14,7 +15,7 @@ public class MultiSearch {
         this.apiCall = apiCall;
     }
 
-    public MultiSearchResponse perform(HashMap<String , List<HashMap<String,String>>> multiSearchParameters, HashMap<String, String> common_params){
+    public MultiSearchResponse perform(HashMap<String , List<HashMap<String,String>>> multiSearchParameters, HashMap<String, String> common_params) throws Exception {
         return this.apiCall.post(MultiSearch.RESOURCEPATH, multiSearchParameters, common_params, MultiSearchResponse.class);
     }
 }

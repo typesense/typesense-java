@@ -1,6 +1,7 @@
 package org.typesense.api;
 
 import junit.framework.TestCase;
+import org.typesense.api.exceptions.TypesenseError;
 import org.typesense.resources.Node;
 
 import java.time.Duration;
@@ -23,25 +24,25 @@ public class HealthAndOperationsTest extends TestCase {
         helper.teardown();
     }
 
-    public void testRetrieve() {
+    public void testRetrieve() throws Exception {
         System.out.println(this.client.health.retrieve());
     }
 
-    public void testPerformSnapshot(){
+    public void testPerformSnapshot() throws Exception {
         HashMap<String, String> query = new HashMap<>();
         query.put("snapshot_path","/tmp/typesense-data-snapshot");
         System.out.println(client.operations.perform("snapshot",query));
     }
 
-    public void testPerformVote(){
+    public void testPerformVote() throws Exception {
         System.out.println(client.operations.perform("vote"));
     }
 
-    public void testMetrics(){
+    public void testMetrics() throws Exception {
         System.out.println(client.metrics.retrieve());
     }
 
-    public void testDebug(){
+    public void testDebug() throws Exception {
         System.out.println(client.debug.retrieve());
     }
 }

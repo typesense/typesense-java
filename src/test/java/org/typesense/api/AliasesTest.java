@@ -1,6 +1,7 @@
 package org.typesense.api;
 
 import junit.framework.TestCase;
+import org.typesense.api.exceptions.TypesenseError;
 import org.typesense.model.CollectionAlias;
 import org.typesense.model.CollectionAliasSchema;
 import org.typesense.model.CollectionAliasesResponse;
@@ -26,26 +27,26 @@ public class AliasesTest extends TestCase {
         helper.teardown();
     }
 
-    public void testUpsert() {
+    public void testUpsert() throws Exception {
         CollectionAliasSchema collectionAliasSchema = new CollectionAliasSchema();
         collectionAliasSchema.collectionName("books_june11");
 
         System.out.println(client.aliases().upsert("books1", collectionAliasSchema));
     }
 
-    public void testRetrieveAll() {
+    public void testRetrieveAll() throws Exception {
         CollectionAliasesResponse collectionAliasesResponse = client.aliases().retrieve();
 
         System.out.println(collectionAliasesResponse);
     }
 
-    public void testRetrieveSingleAlias() {
+    public void testRetrieveSingleAlias() throws Exception {
         CollectionAlias collectionAlias = client.aliases("books").retrieve();
 
         System.out.println(collectionAlias);
     }
 
-    public void testDelete() {
+    public void testDelete() throws Exception {
         CollectionAlias collectionAlias = client.aliases("books").delete();
 
         System.out.println(collectionAlias);

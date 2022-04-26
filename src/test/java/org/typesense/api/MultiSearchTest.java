@@ -1,6 +1,7 @@
 package org.typesense.api;
 
 import junit.framework.TestCase;
+import org.typesense.api.exceptions.TypesenseError;
 import org.typesense.model.CollectionSchema;
 import org.typesense.model.Field;
 import org.typesense.resources.Node;
@@ -39,7 +40,12 @@ public class MultiSearchTest extends TestCase {
         client.collections("brands").documents().create(hmap);
     }
 
-    public void testSearch(){
+    public void tearDown() throws Exception {
+        super.tearDown();
+        helper.teardown();
+    }
+
+    public void testSearch() throws Exception {
         HashMap<String,String > val1 = new HashMap<>();
         HashMap<String,String > val2 = new HashMap<>();
 

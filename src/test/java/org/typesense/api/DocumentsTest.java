@@ -1,6 +1,7 @@
 package org.typesense.api;
 
 import junit.framework.TestCase;
+import org.typesense.api.exceptions.TypesenseError;
 import org.typesense.model.*;
 
 import java.io.File;
@@ -26,12 +27,12 @@ public class DocumentsTest extends TestCase {
         helper.teardown();
     }
 
-    public void testRetrieveDocument(){
+    public void testRetrieveDocument() throws Exception {
         helper.createTestDocument();
         System.out.println(client.collections("books").documents("1").retrieve());
     }
 
-    public void testCreateDocument(){
+    public void testCreateDocument() throws Exception {
 
         String[] authors = {"shakspeare","william"};
         HashMap<String, Object> hmap = new HashMap<>();
@@ -48,7 +49,7 @@ public class DocumentsTest extends TestCase {
         System.out.println(client.collections("books").documents().create(hmap));
     }
 
-    public void testUpsertDocument(){
+    public void testUpsertDocument() throws Exception {
 
         String[] authors = new String[]{"jk", "Rowling"};
         HashMap<String, Object> hmap = new HashMap<>();
@@ -66,12 +67,12 @@ public class DocumentsTest extends TestCase {
 
     }
 
-    public void testDeleteDocument(){
+    public void testDeleteDocument() throws Exception {
         helper.createTestDocument();
         System.out.println(client.collections("books").documents("1").delete());
     }
 
-    public void testDeleteDocumentByQuery(){
+    public void testDeleteDocumentByQuery() throws Exception {
         helper.createTestDocument();
         DeleteDocumentsParameters deleteDocumentsParameters = new DeleteDocumentsParameters();
         deleteDocumentsParameters.filterBy("publication_year:=[1666]");
@@ -79,7 +80,7 @@ public class DocumentsTest extends TestCase {
         System.out.println(client.collections("books").documents().delete(deleteDocumentsParameters));
     }
 
-    public void testUpdateDocument(){
+    public void testUpdateDocument() throws Exception {
         helper.createTestDocument();
         String[] authors = new String[]{"Shakespeare", "william"};
         HashMap<String , Object> document = new HashMap<>();
@@ -90,7 +91,7 @@ public class DocumentsTest extends TestCase {
         //System.out.println(client.collections("books").documents("1").update(document));
     }
 
-    public void testSearchDocuments(){
+    public void testSearchDocuments() throws Exception {
         helper.createTestDocument();
         SearchParameters searchParameters = new SearchParameters()
                                                 .q("romeo")
@@ -101,7 +102,7 @@ public class DocumentsTest extends TestCase {
         System.out.println(searchResult);
     }
 
-    public void testImport(){
+    public void testImport() throws Exception {
         HashMap<String, Object> document1 = new HashMap<>();
         HashMap<String, Object> document2 = new HashMap<>();
         ImportDocumentsParameters queryParameters = new ImportDocumentsParameters();
@@ -121,7 +122,7 @@ public class DocumentsTest extends TestCase {
         System.out.println(this.client.collections("books").documents().import_(documentList, queryParameters));
     }
 
-    public void testImportAsString(){
+    public void testImportAsString() throws Exception {
         ImportDocumentsParameters queryParameters = new ImportDocumentsParameters();
         queryParameters.action("create");
         String documentList = "{\"countryName\": \"India\", \"capital\": \"Washington\", \"gdp\": 5215}\n" +
@@ -129,14 +130,14 @@ public class DocumentsTest extends TestCase {
         System.out.println(this.client.collections("books").documents().import_(documentList, queryParameters));
     }
 
-    public void testExportDocuments(){
+    public void testExportDocuments() throws Exception {
         helper.createTestDocument();
         ExportDocumentsParameters exportDocumentsParameters = new ExportDocumentsParameters();
         exportDocumentsParameters.setExcludeFields("id,publication_year,authors");
         System.out.println(client.collections("books").documents().export(exportDocumentsParameters));
     }
 
-    public void testImportFromFile() throws FileNotFoundException {
+    public void testImportFromFile() throws FileNotFoundException, Exception {
         File myObj = new File("/tmp/books.jsonl");
         ImportDocumentsParameters queryParameters = new ImportDocumentsParameters();
         Scanner myReader = new Scanner(myObj);
@@ -147,7 +148,7 @@ public class DocumentsTest extends TestCase {
         client.collections("books").documents().import_(data.toString(), queryParameters);
     }
 
-    public void testDirtyCreate(){
+    public void testDirtyCreate() throws Exception {
         helper.createTestDocument();
         ImportDocumentsParameters queryParameters = new ImportDocumentsParameters();
         queryParameters.dirtyValues(ImportDocumentsParameters.DirtyValuesEnum.COERCE_OR_REJECT);

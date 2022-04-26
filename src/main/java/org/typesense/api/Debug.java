@@ -1,5 +1,7 @@
 package org.typesense.api;
 
+import org.typesense.api.exceptions.TypesenseError;
+
 import java.util.HashMap;
 
 public class Debug {
@@ -11,7 +13,7 @@ public class Debug {
         this.apiCall = apiCall;
     }
 
-    public HashMap<String, String> retrieve(){
+    public HashMap<String, String> retrieve() throws Exception {
         return this.apiCall.get(RESOURCEPATH);
     }
 }
