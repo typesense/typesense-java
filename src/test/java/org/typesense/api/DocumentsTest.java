@@ -86,16 +86,16 @@ public class DocumentsTest extends TestCase {
         document.put("title","Romeo and juliet");
         document.put("authors",authors);
         document.put("id","1");
-
-        System.out.println(client.collections("books").documents("1").update(document));
+        client.collections("books").documents("1").update(document);
+        //System.out.println(client.collections("books").documents("1").update(document));
     }
 
     public void testSearchDocuments(){
         helper.createTestDocument();
         SearchParameters searchParameters = new SearchParameters()
                                                 .q("romeo")
-                                                .addQueryByItem("title").addQueryByItem("authors")
-                                                .addPrefixItem(false).addPrefixItem(true);
+                                                .queryBy("title,authors")
+                                                .prefix("false,true");
         org.typesense.model.SearchResult searchResult = client.collections("books").documents().search(searchParameters);
 
         System.out.println(searchResult);
@@ -132,14 +132,12 @@ public class DocumentsTest extends TestCase {
     public void testExportDocuments(){
         helper.createTestDocument();
         ExportDocumentsParameters exportDocumentsParameters = new ExportDocumentsParameters();
-        exportDocumentsParameters.addExcludeFieldsItem("id");
-        exportDocumentsParameters.addIncludeFieldsItem("publication_year");
-        exportDocumentsParameters.addIncludeFieldsItem("authors");
+        exportDocumentsParameters.setExcludeFields("id,publication_year,authors");
         System.out.println(client.collections("books").documents().export(exportDocumentsParameters));
     }
 
     public void testImportFromFile() throws FileNotFoundException {
-        File myObj = new File("/books.jsonl");
+        File myObj = new File("/tmp/books.jsonl");
         ImportDocumentsParameters queryParameters = new ImportDocumentsParameters();
         Scanner myReader = new Scanner(myObj);
         StringBuilder data = new StringBuilder();

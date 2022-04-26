@@ -50,9 +50,9 @@ public class CollectionsTest extends TestCase {
     public void testCreateCollection(){
 
         ArrayList<Field> fields = new ArrayList<>();
-        fields.add(new Field().name("countryName").type(Field.TypeEnum.STRING));
-        fields.add(new Field().name("capital").type(Field.TypeEnum.STRING));
-        fields.add(new Field().name("gdp").type(Field.TypeEnum.INT32).facet(true));
+        fields.add(new Field().name("countryName").type(FieldTypes.STRING));
+        fields.add(new Field().name("capital").type(FieldTypes.STRING));
+        fields.add(new Field().name("gdp").type(FieldTypes.INT32).facet(true));
 
         CollectionSchema collectionSchema = new CollectionSchema();
         collectionSchema.name("Countries").fields(fields);

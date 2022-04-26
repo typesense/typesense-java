@@ -23,7 +23,7 @@ public class MultiSearchTest extends TestCase {
         helper.createTestDocument();
 
         ArrayList<Field> fields = new ArrayList<>();
-        fields.add(new Field().name(".*").type(Field.TypeEnum.AUTO).optional(true));
+        fields.add(new Field().name(".*").type(FieldTypes.AUTO).optional(true));
         CollectionSchema collectionSchema = new CollectionSchema();
         collectionSchema.name("brands").fields(fields);
         client.collections().create(collectionSchema);

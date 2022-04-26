@@ -22,7 +22,7 @@ public class Helper {
 
     public void createTestCollection() {
         ArrayList<Field> fields = new ArrayList<>();
-        fields.add(new Field().name(".*").type(Field.TypeEnum.AUTO).optional(true));
+        fields.add(new Field().name(".*").type(FieldTypes.AUTO).optional(true));
 
         CollectionSchema collectionSchema = new CollectionSchema();
         collectionSchema.name("books").fields(fields);
