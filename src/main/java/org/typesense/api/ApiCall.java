@@ -3,12 +3,18 @@ package org.typesense.api;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.client.WebTarget;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
-import org.glassfish.jersey.client.HttpUrlConnectorProvider;
-import org.glassfish.jersey.jackson.JacksonFeature;
 
+import org.glassfish.jersey.jackson.internal.jackson.jaxrs.json.JacksonJaxbJsonProvider;
+import org.glassfish.jersey.jackson.internal.jackson.jaxrs.json.JacksonJsonProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.typesense.model.ErrorResponse;
@@ -16,15 +22,8 @@ import org.typesense.interceptor.LoggingInterceptor;
 import org.typesense.api.exceptions.*;
 import org.typesense.resources.Node;
 import org.typesense.resources.RequestHandler;
+import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 
-
-import javax.annotation.Priority;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.*;
 
 
@@ -48,13 +47,19 @@ public class ApiCall {
         this.retryInterval = configuration.retryInterval;
 
         ClientConfig clientConfig = new ClientConfig();
+        clientConfig.connectorProvider(new ApacheConnectorProvider());
+
         if (logger.isTraceEnabled()) {
             clientConfig = clientConfig.register(new LoggingInterceptor());
         }
-        // TODO: SET_METHOD_WORKAROUND Generates an illegal reflective access operation for the patch op
+
+        JacksonJsonProvider jacksonJsonProvider = new JacksonJaxbJsonProvider();
+        ObjectMapper objectMapper = jacksonJsonProvider.locateMapper(
+                Object.class, MediaType.APPLICATION_JSON_TYPE);
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
         this.client = ClientBuilder.newClient(clientConfig)
-                .register(JacksonFeature.class)
-                .property(HttpUrlConnectorProvider.SET_METHOD_WORKAROUND, true);
+                .register(jacksonJsonProvider);
     }
 
     boolean isDueForHealthCheck(Node node){
