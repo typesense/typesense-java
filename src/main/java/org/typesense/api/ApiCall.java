@@ -171,7 +171,7 @@ public class ApiCall {
         return makeRequest(endpoint, r, resourceClass);
     }
 
-    <T, R> T patch(String endpoint, R body) throws Exception {
+    <T, R> T patch(String endpoint, R body, Class<T> resourceClass) throws Exception {
 
         RequestHandler r = (String REST_URI) -> this.client.target(REST_URI)
                 .request(MediaType.APPLICATION_JSON)
@@ -179,7 +179,7 @@ public class ApiCall {
                 .build("PATCH", Entity.entity(body, MediaType.APPLICATION_JSON))
                 .invoke();
 
-        return makeRequest(endpoint, r, null);
+        return makeRequest(endpoint, r, resourceClass);
     }
 
 

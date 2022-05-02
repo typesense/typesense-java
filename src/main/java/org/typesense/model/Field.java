@@ -29,6 +29,18 @@ public class Field   {
   
   @Schema(example = "true", description = "")
   private Boolean index = true;
+  
+  @Schema(example = "el", description = "")
+  private String locale = null;
+  
+  @Schema(example = "true", description = "")
+  private Boolean sort = false;
+  
+  @Schema(example = "true", description = "")
+  private Boolean infix = false;
+  
+  @Schema(example = "true", description = "")
+  private Boolean drop = null;
  /**
    * Get name
    * @return name
@@ -119,6 +131,78 @@ public class Field   {
     return this;
   }
 
+ /**
+   * Get locale
+   * @return locale
+  **/
+  @JsonProperty("locale")
+  public String getLocale() {
+    return locale;
+  }
+
+  public void setLocale(String locale) {
+    this.locale = locale;
+  }
+
+  public Field locale(String locale) {
+    this.locale = locale;
+    return this;
+  }
+
+ /**
+   * Get sort
+   * @return sort
+  **/
+  @JsonProperty("sort")
+  public Boolean isSort() {
+    return sort;
+  }
+
+  public void setSort(Boolean sort) {
+    this.sort = sort;
+  }
+
+  public Field sort(Boolean sort) {
+    this.sort = sort;
+    return this;
+  }
+
+ /**
+   * Get infix
+   * @return infix
+  **/
+  @JsonProperty("infix")
+  public Boolean isInfix() {
+    return infix;
+  }
+
+  public void setInfix(Boolean infix) {
+    this.infix = infix;
+  }
+
+  public Field infix(Boolean infix) {
+    this.infix = infix;
+    return this;
+  }
+
+ /**
+   * Get drop
+   * @return drop
+  **/
+  @JsonProperty("drop")
+  public Boolean isDrop() {
+    return drop;
+  }
+
+  public void setDrop(Boolean drop) {
+    this.drop = drop;
+  }
+
+  public Field drop(Boolean drop) {
+    this.drop = drop;
+    return this;
+  }
+
 
   @Override
   public String toString() {
@@ -130,6 +214,10 @@ public class Field   {
     sb.append("    optional: ").append(toIndentedString(optional)).append("\n");
     sb.append("    facet: ").append(toIndentedString(facet)).append("\n");
     sb.append("    index: ").append(toIndentedString(index)).append("\n");
+    sb.append("    locale: ").append(toIndentedString(locale)).append("\n");
+    sb.append("    sort: ").append(toIndentedString(sort)).append("\n");
+    sb.append("    infix: ").append(toIndentedString(infix)).append("\n");
+    sb.append("    drop: ").append(toIndentedString(drop)).append("\n");
     sb.append("}");
     return sb.toString();
   }

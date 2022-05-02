@@ -2,6 +2,7 @@ package org.typesense.api;
 
 import org.typesense.api.exceptions.TypesenseError;
 import org.typesense.model.CollectionResponse;
+import org.typesense.model.CollectionUpdateSchema;
 
 import java.util.HashMap;
 
@@ -39,6 +40,10 @@ public class Collection {
 
     public CollectionResponse retrieve() throws Exception {
         return this.apiCall.get(endpoint, CollectionResponse.class);
+    }
+
+    public CollectionUpdateSchema update(CollectionUpdateSchema c) throws Exception {
+        return this.apiCall.patch(endpoint, c, CollectionUpdateSchema.class);
     }
 
     public CollectionResponse delete() throws Exception {
