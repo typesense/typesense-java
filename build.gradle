@@ -40,6 +40,11 @@ configurations {
     integrationTestRuntimeOnly.extendsFrom runtimeOnly
 }
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
 tasks.register('integrationTest', Test) {
     description = 'Runs integration tests (assumes running Docker image or local server)'
     group = 'verification'
@@ -66,4 +71,47 @@ dependencies {
     testImplementation "org.hamcrest:hamcrest-all:1.3"
     integrationTestImplementation "junit:junit:4.12"
     integrationTestImplementation "org.hamcrest:hamcrest-all:1.3"
+}
+
+nexusPublishing {
+    repositories {
+        sonatype {
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+        }
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from(components.java)
+            pom {
+                name = 'typesense-java'
+                description = 'Typesense Java Client'
+                url = 'https://github.com/typesense/typesense-java'
+                licenses {
+                    license {
+                        name = 'GNU General Public License v3.0'
+                        url = 'https://www.gnu.org/licenses/gpl-3.0.en.html'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'typesense'
+                        name = 'Typesense'
+                    }
+                }
+                scm {
+                    url = 'https://github.com/typesense/typesense-java'
+                    connection = 'scm:git://github.com/typesense/typesense-java.git'
+                    developerConnection = 'scm:git://github.com/typesense/typesense-java.git'
+                }
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.mavenJava
 }
