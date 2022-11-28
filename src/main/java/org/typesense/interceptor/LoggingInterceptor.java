@@ -2,13 +2,13 @@ package org.typesense.interceptor;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.glassfish.jersey.client.spi.PostInvocationInterceptor;
-import org.glassfish.jersey.client.spi.PreInvocationInterceptor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import jakarta.ws.rs.client.ClientRequestContext;
 import jakarta.ws.rs.client.ClientResponseContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.glassfish.jersey.client.spi.PostInvocationInterceptor;
+import org.glassfish.jersey.client.spi.PreInvocationInterceptor;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 public class LoggingInterceptor implements PreInvocationInterceptor, PostInvocationInterceptor {
 
-    private static final Logger logger = LoggerFactory.getLogger(LoggingInterceptor.class);
+    private static final Logger logger = LogManager.getLogger(LoggingInterceptor.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override

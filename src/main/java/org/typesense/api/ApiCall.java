@@ -1,10 +1,5 @@
 package org.typesense.api;
 
-import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
-import java.time.Duration;
-import java.time.LocalDateTime;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.ws.rs.client.Client;
@@ -13,22 +8,28 @@ import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
-
 import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.jackson.internal.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import org.glassfish.jersey.jackson.internal.jackson.jaxrs.json.JacksonJsonProvider;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.typesense.model.ErrorResponse;
-import org.typesense.interceptor.LoggingInterceptor;
 import org.typesense.api.exceptions.*;
+import org.typesense.interceptor.LoggingInterceptor;
+import org.typesense.model.ErrorResponse;
 import org.typesense.resources.Node;
 import org.typesense.resources.RequestHandler;
-import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 
 import javax.net.ssl.SSLException;
-import java.util.*;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class ApiCall {
@@ -39,7 +40,7 @@ public class ApiCall {
     private static int nodeIndex = 0;
 
     private static final String API_KEY_HEADER = "X-TYPESENSE-API-KEY";
-    private static final Logger logger = LoggerFactory.getLogger(ApiCall.class);
+    private static final Logger logger = LogManager.getLogger(ApiCall.class);
     private final Client client;
     private final String apiKey;
     private final Duration retryInterval;
@@ -129,7 +130,7 @@ public class ApiCall {
 
     <T, Q> T get(String endpoint, Q queryParameters, Class<T> resourceClass) throws Exception {
 
-        /**
+        /*
          * Lambda function which implements the RequestHandler interface
          * which is passed as a parameter to makeRequest function
          * and returns T as the response entity.
@@ -283,7 +284,7 @@ public class ApiCall {
 
     <T> T makeRequest(String endpoint, RequestHandler requestHandler, Class<T> resourceClass) throws Exception {
         int num_tries = 0;
-        Logger logger = LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+        Logger logger = LogManager.getLogger(ApiCall.class);
         Response response;
         Exception lastException = new TypesenseError("Unknown client error", 400);
 
