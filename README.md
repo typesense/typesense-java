@@ -10,7 +10,7 @@ The client is available on Maven central:
 <dependency>
     <groupId>org.typesense</groupId>
     <artifactId>typesense-java</artifactId>
-    <version>0.0.5</version>
+    <version>0.0.6</version>
 </dependency>
 ```
 
