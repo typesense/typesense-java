@@ -1,8 +1,6 @@
 package org.typesense.api;
 
 import junit.framework.TestCase;
-import org.junit.jupiter.api.Test;
-import org.typesense.api.exceptions.TypesenseError;
 import org.typesense.model.CollectionResponse;
 import org.typesense.model.CollectionSchema;
 import org.typesense.model.Field;
@@ -27,7 +25,6 @@ public class CollectionsTest extends TestCase {
     }
 
 
-    @Test
     public void testRetrieveAllCollections() throws Exception {
         helper.createTestCollection();
         CollectionResponse[] collectionResponses = client.collections().retrieve();
@@ -35,19 +32,16 @@ public class CollectionsTest extends TestCase {
             System.out.println(c);
     }
 
-    @Test
     public void testRetrieveSingleCollection() throws Exception {
         helper.createTestCollection();
         System.out.println(client.collections("books").retrieve());
     }
 
-    @Test
     public void testDeleteCollection() throws Exception {
         helper.createTestCollection();
         System.out.println(client.collections("books").delete());
     }
 
-    @Test
     public void testCreateCollection() throws Exception {
 
         ArrayList<Field> fields = new ArrayList<>();

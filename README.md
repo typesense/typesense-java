@@ -2,11 +2,17 @@
 
 Java client library for accessing the HTTP API of [Typesense](https://typesense.org) search engine.
 
-Note: This package is still under development. Some existing APIs might change or new APIs might be available in the future.
-
 ## Installation
 
-Download the JAR file from the [releases](https://github.com/typesense/typesense-java/releases) section of this repository and add it to your project.
+The client is available on Maven central:
+
+```xml
+<dependency>
+    <groupId>org.typesense</groupId>
+    <artifactId>typesense-java</artifactId>
+    <version>0.0.5</version>
+</dependency>
+```
 
 ```java
 import org.typesense.api.*;
