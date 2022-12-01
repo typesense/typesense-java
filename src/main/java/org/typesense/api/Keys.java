@@ -2,7 +2,6 @@ package org.typesense.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.typesense.api.exceptions.TypesenseError;
 import org.typesense.model.ApiKey;
 import org.typesense.model.ApiKeySchema;
 import org.typesense.model.ApiKeysResponse;
@@ -26,11 +25,11 @@ public class Keys {
         if (apiKeySchema.getExpiresAt() == null) {
             apiKeySchema.setExpiresAt(System.currentTimeMillis() / 1000L + 315360000); // Adding 10 years for expiration.
         }
-        return this.apiCall.post(Keys.RESOURCEPATH, apiKeySchema, ApiKey.class);
+        return this.apiCall.post(Keys.RESOURCEPATH, apiKeySchema, null, ApiKey.class);
     }
 
     public ApiKeysResponse retrieve() throws Exception {
-        return this.apiCall.get(Keys.RESOURCEPATH, ApiKeysResponse.class);
+        return this.apiCall.get(Keys.RESOURCEPATH, null, ApiKeysResponse.class);
     }
 
     public String generateScopedSearchKey(String searchKey, HashMap<String, Object> parameters){

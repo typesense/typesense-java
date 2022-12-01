@@ -1,6 +1,6 @@
 package org.typesense.api;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.typesense.api.exceptions.TypesenseError;
 import org.typesense.model.*;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class Documents {
     }
 
     public HashMap<String, Object> create(HashMap<String, Object> document) throws Exception {
-        return this.apiCall.post(getEndPoint("/"), document);
+        return this.apiCall.post(getEndPoint("/"), document, null, HashMap.class);
     }
 
     public String create(String document) throws Exception {
@@ -44,11 +44,11 @@ public class Documents {
     }
 
     public HashMap<String, Object> delete(DeleteDocumentsParameters queryParameters) throws Exception {
-        return this.apiCall.delete(getEndPoint("/"), queryParameters);
+        return this.apiCall.delete(getEndPoint("/"), queryParameters, HashMap.class);
     }
 
     public String export() throws Exception {
-        return this.apiCall.get(getEndPoint("export"),String.class);
+        return this.apiCall.get(getEndPoint("export"), null, String.class);
     }
 
     public String export(ExportDocumentsParameters exportDocumentsParameters) throws Exception {

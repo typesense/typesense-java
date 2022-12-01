@@ -1,6 +1,5 @@
 package org.typesense.api;
 
-import org.typesense.api.exceptions.TypesenseError;
 import org.typesense.model.SearchSynonym;
 import org.typesense.model.SearchSynonymSchema;
 import org.typesense.model.SearchSynonymsResponse;
@@ -20,11 +19,11 @@ public class Synonyms {
         if (searchSynonymSchema.getRoot() == null) {
             searchSynonymSchema.setRoot("");
         }
-        return this.apiCall.put(getEndpoint(synonymId), searchSynonymSchema,SearchSynonym.class);
+        return this.apiCall.put(getEndpoint(synonymId), searchSynonymSchema, null, SearchSynonym.class);
     }
 
     public SearchSynonymsResponse retrieve() throws Exception {
-        return this.apiCall.get(this.getEndpoint(null),SearchSynonymsResponse.class);
+        return this.apiCall.get(this.getEndpoint(null), null, SearchSynonymsResponse.class);
     }
 
     public String getEndpoint(String operation){

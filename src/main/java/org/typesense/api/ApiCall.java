@@ -2,34 +2,23 @@ package org.typesense.api;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.ws.rs.client.Client;
-import jakarta.ws.rs.client.ClientBuilder;
-import jakarta.ws.rs.client.Entity;
-import jakarta.ws.rs.client.WebTarget;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
+import okhttp3.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
-import org.glassfish.jersey.client.ClientConfig;
-import org.glassfish.jersey.client.ClientProperties;
-import org.glassfish.jersey.jackson.internal.jackson.jaxrs.json.JacksonJaxbJsonProvider;
-import org.glassfish.jersey.jackson.internal.jackson.jaxrs.json.JacksonJsonProvider;
 import org.typesense.api.exceptions.*;
-import org.typesense.interceptor.LoggingInterceptor;
 import org.typesense.model.ErrorResponse;
 import org.typesense.resources.Node;
-import org.typesense.resources.RequestHandler;
 
 import javax.net.ssl.SSLException;
+import java.io.IOException;
 import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 
 public class ApiCall {
@@ -41,9 +30,12 @@ public class ApiCall {
 
     private static final String API_KEY_HEADER = "X-TYPESENSE-API-KEY";
     private static final Logger logger = LogManager.getLogger(ApiCall.class);
-    private final Client client;
+    private final OkHttpClient client;
     private final String apiKey;
     private final Duration retryInterval;
+
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    private final ObjectMapper mapper = new ObjectMapper();
 
     public ApiCall(Configuration configuration) {
         this.configuration = configuration;
@@ -51,22 +43,13 @@ public class ApiCall {
         this.apiKey = configuration.apiKey;
         this.retryInterval = configuration.retryInterval;
 
-        ClientConfig clientConfig = new ClientConfig();
-        clientConfig.connectorProvider(new ApacheConnectorProvider());
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
-        if (logger.isTraceEnabled()) {
-            clientConfig = clientConfig.register(new LoggingInterceptor());
-        }
-
-        JacksonJsonProvider jacksonJsonProvider = new JacksonJaxbJsonProvider();
-        ObjectMapper objectMapper = jacksonJsonProvider.locateMapper(
-                Object.class, MediaType.APPLICATION_JSON_TYPE);
-        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-
-        this.client = ClientBuilder.newClient(clientConfig)
-                .register(jacksonJsonProvider);
-        this.client.property(ClientProperties.CONNECT_TIMEOUT, configuration.connectionTimeout.getSeconds()*1000);
-        this.client.property(ClientProperties.READ_TIMEOUT, configuration.connectionTimeout.getSeconds()*1000);
+        client = new OkHttpClient()
+                .newBuilder()
+                .connectTimeout(configuration.connectionTimeout.getSeconds(), TimeUnit.SECONDS)
+                .readTimeout(configuration.connectionTimeout.getSeconds(), TimeUnit.SECONDS)
+                .build();
     }
 
     boolean isDueForHealthCheck(Node node) {
@@ -103,10 +86,10 @@ public class ApiCall {
         node.lastAccessTimestamp = LocalDateTime.now();
     }
 
-    private TypesenseError getException(Response response) {
-        ErrorResponse errorResponse = response.readEntity(ErrorResponse.class);
+    private TypesenseError getException(Response response) throws IOException {
+        ErrorResponse errorResponse = mapper.readValue(response.body().string(), ErrorResponse.class);
         String message = errorResponse.getMessage();
-        int status_code = response.getStatus();
+        int status_code = response.code();
 
         if (status_code == 400)
             return new RequestMalformed(message, status_code);
@@ -128,164 +111,38 @@ public class ApiCall {
             return new HttpError(message, status_code);
     }
 
-    <T, Q> T get(String endpoint, Q queryParameters, Class<T> resourceClass) throws Exception {
-
-        /*
-         * Lambda function which implements the RequestHandler interface
-         * which is passed as a parameter to makeRequest function
-         * and returns T as the response entity.
-         * This is similar for all type of requests.
-         */
-        RequestHandler r = (String REST_URI) -> populateQueryParameters2(this.client.target(REST_URI), queryParameters)
-                .request(MediaType.APPLICATION_JSON)
-                .header(API_KEY_HEADER, apiKey)
-                .get();
-
-        return makeRequest(endpoint, r, resourceClass);
+    <Q, R> R get(String endpoint, Q queryParameters, Class<R> responseClass) throws Exception {
+        Request.Builder rb = new Request.Builder().get();
+        return makeRequest(endpoint, queryParameters, rb, responseClass);
     }
 
-    <T> T get(String endpoint, Class<T> resourceClass) throws Exception {
-        RequestHandler r = (String REST_URI) -> this.client.target(REST_URI)
-                .request(MediaType.APPLICATION_JSON)
-                .header(API_KEY_HEADER, apiKey)
-                .get();
-
-        return makeRequest(endpoint, r, resourceClass);
+    <B, Q, R> R put(String endpoint, B body, Q queryParameters, Class<R> responseClass) throws Exception {
+        RequestBody requestBody = RequestBody.create(mapper.writeValueAsString(body), JSON);
+        Request.Builder rb = new Request.Builder().put(requestBody);
+        return makeRequest(endpoint, queryParameters, rb, responseClass);
     }
 
-    <T> T get(String endpoint) throws Exception {
-        RequestHandler r = (String REST_URI) -> this.client.target(REST_URI)
-                .request(MediaType.APPLICATION_JSON_TYPE)
-                .header(API_KEY_HEADER, apiKey)
-                .get();
-
-        return makeRequest(endpoint, r, null);
+    <B, Q, R> R patch(String endpoint, B body, Q queryParameters, Class<R> responseClass) throws Exception {
+        RequestBody requestBody = RequestBody.create(mapper.writeValueAsString(body), JSON);
+        Request.Builder rb = new Request.Builder().patch(requestBody);
+        return makeRequest(endpoint, queryParameters, rb, responseClass);
     }
 
-    <T, R> T put(String endpoint, R body, Class<T> resourceClass) throws Exception {
-
-        RequestHandler r = (String REST_URI) -> this.client.target(REST_URI)
-                .request(MediaType.APPLICATION_JSON)
-                .header(API_KEY_HEADER, apiKey)
-                .put(Entity.json(body));
-
-        return makeRequest(endpoint, r, resourceClass);
+    <B, Q, R> R post(String endpoint, B body, Q queryParameters, Class<R> responseClass) throws Exception {
+        RequestBody requestBody = RequestBody.create(mapper.writeValueAsString(body), JSON);
+        Request.Builder rb = new Request.Builder().post(requestBody);
+        return makeRequest(endpoint, queryParameters, rb, responseClass);
     }
 
-    <T, R> T patch(String endpoint, R body, Class<T> resourceClass) throws Exception {
-
-        RequestHandler r = (String REST_URI) -> this.client.target(REST_URI)
-                .request(MediaType.APPLICATION_JSON)
-                .header(API_KEY_HEADER, apiKey)
-                .build("PATCH", Entity.entity(body, MediaType.APPLICATION_JSON))
-                .invoke();
-
-        return makeRequest(endpoint, r, resourceClass);
+    <Q, R> R delete(String endpoint, Q queryParameters, Class<R> responseClass) throws Exception {
+        Request.Builder rb = new Request.Builder().delete();
+        return makeRequest(endpoint, queryParameters, rb, responseClass);
     }
 
-
-    <T, R> T post(String endpoint, R body, Class<T> resourceClass) throws Exception {
-
-        RequestHandler r = (String REST_URI) -> this.client.target(REST_URI)
-                .request(MediaType.APPLICATION_JSON)
-                .header(API_KEY_HEADER, apiKey)
-                .post(Entity.json(body));
-
-        return makeRequest(endpoint, r, resourceClass);
-    }
-
-    <T> T post(String endpoint, T body) throws Exception {
-
-        RequestHandler r = (String REST_URI) -> this.client.target(REST_URI)
-                .request(MediaType.APPLICATION_JSON)
-                .header(API_KEY_HEADER, apiKey)
-                .post(Entity.json(body));
-
-        return makeRequest(endpoint, r, null);
-    }
-
-
-    <T, R, Q> T post(String endpoint, R body, Q queryParameters, Class<T> resourceClass) throws Exception {
-
-        RequestHandler r = (String REST_URI) -> populateQueryParameters2(this.client.target(REST_URI), queryParameters)
-                .request(MediaType.APPLICATION_JSON)
-                .header(API_KEY_HEADER, apiKey)
-                .post(Entity.json(body));
-
-        return makeRequest(endpoint, r, resourceClass);
-    }
-
-    <T> T post(String endpoint, HashMap<String, String> queryParameters) throws Exception {
-
-        RequestHandler r = (String REST_URI) -> populateQueryParameters(this.client.target(REST_URI), queryParameters)
-                .request(MediaType.APPLICATION_JSON)
-                .header(API_KEY_HEADER, apiKey)
-                .post(Entity.json(null));
-
-        return makeRequest(endpoint, r, null);
-    }
-
-    <T> T post(String endpoint, HashMap<String, List<HashMap<String, String>>> body, HashMap<String, String> queryParameters, Class<T> resourceClass) throws Exception {
-
-        RequestHandler r = (String REST_URI) -> populateQueryParameters(this.client.target(REST_URI), queryParameters)
-                .request(MediaType.APPLICATION_JSON)
-                .header(API_KEY_HEADER, apiKey)
-                .post(Entity.json(body));
-
-        return makeRequest(endpoint, r, resourceClass);
-    }
-
-    <T> T post(String endpoint) throws Exception {
-
-        RequestHandler r = (String REST_URI) -> this.client.target(REST_URI)
-                .request(MediaType.APPLICATION_JSON)
-                .header(API_KEY_HEADER, apiKey)
-                .post(Entity.json(null));
-
-        return makeRequest(endpoint, r, null);
-    }
-
-    <T, Q> T delete(String endpoint, Q queryParameters) throws Exception {
-        RequestHandler r = (String REST_URI) -> populateQueryParameters2(this.client.target(REST_URI), queryParameters)
-                .request(MediaType.APPLICATION_JSON)
-                .header(API_KEY_HEADER, apiKey)
-                .delete();
-
-        return makeRequest(endpoint, r, null);
-    }
-
-
-    <T> T delete(String endpoint, Class<T> resourceClass) throws Exception {
-        RequestHandler r = (String REST_URI) -> this.client.target(REST_URI)
-                .request(MediaType.APPLICATION_JSON)
-                .header(API_KEY_HEADER, apiKey)
-                .delete();
-
-        return makeRequest(endpoint, r, resourceClass);
-    }
-
-    <T> T delete(String endpoint) throws Exception {
-        RequestHandler r = (String REST_URI) -> this.client.target(REST_URI)
-                .request(MediaType.APPLICATION_JSON)
-                .header(API_KEY_HEADER, apiKey)
-                .delete();
-
-        return makeRequest(endpoint, r, null);
-    }
-
-    /**
-     * Actual function which makes the http request
-     *
-     * @param endpoint       particular endpoint of the resource
-     * @param requestHandler lambda function interface for the particular request
-     * @param <T>            response entity
-     * @return http response
-     */
-
-    <T> T makeRequest(String endpoint, RequestHandler requestHandler, Class<T> resourceClass) throws Exception {
+    <Q, T> T makeRequest(String endpoint, Q queryParameters, Request.Builder requestBuilder,
+                         Class<T> responseClass) throws Exception {
         int num_tries = 0;
         Logger logger = LogManager.getLogger(ApiCall.class);
-        Response response;
         Exception lastException = new TypesenseError("Unknown client error", 400);
 
         while (num_tries < this.configuration.numRetries) {
@@ -295,15 +152,21 @@ public class ApiCall {
 
             try {
                 String url = URI + endpoint;
-                response = requestHandler.handleRequest(url);
+                String fullUrl = populateQueryParameters(url, queryParameters).toString();
+                Request request = requestBuilder
+                                  .url(fullUrl)
+                                  .header(API_KEY_HEADER, apiKey)
+                                  .build();
 
-                if (response.getStatus() < 500) {
+                Response response = client.newCall(request).execute();
+
+                if (response.code() < 500) {
                     // any non-50x status code means that the node is healthy
                     this.setNodeHealthStatus(node, true);
                 }
 
-                if (response.getStatus() >= 200 && response.getStatus() < 300) {
-                    return handleResponse(response, resourceClass);
+                if (response.code() >= 200 && response.code() < 300) {
+                    return handleResponse(response, responseClass);
                 }
 
                 throw getException(response);
@@ -311,9 +174,9 @@ public class ApiCall {
             } catch (Exception e) {
                 boolean handleError = (e instanceof ServerError) ||
                                       (e instanceof ServiceUnavailable) ||
-                                      (e.getCause() instanceof SocketTimeoutException) ||
-                                      (e.getCause() instanceof UnknownHostException) ||
-                                      (e.getCause() instanceof SSLException);
+                                      (e instanceof SocketTimeoutException) ||
+                                      (e instanceof java.net.UnknownHostException) ||
+                                      (e instanceof SSLException);
 
                 if(!handleError) {
                     // we just throw and move on
@@ -335,28 +198,11 @@ public class ApiCall {
         throw lastException;
     }
 
+    private <T> HttpUrl.Builder populateQueryParameters(String url, T queryParameters) {
+        HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
 
-    /**
-     * Adds query parameters to the http request
-     *
-     * @param client          WebTarget object pointing to the required endpoint
-     * @param queryParameters Map of the query parameters
-     * @return WebTarget with the query parameters added
-     */
-
-    private WebTarget populateQueryParameters(WebTarget client, HashMap<String, String> queryParameters) {
         if (queryParameters != null) {
-            for (Map.Entry<String, String> entry : queryParameters.entrySet()) {
-                client = client.queryParam(entry.getKey(), entry.getValue());
-            }
-        }
-        return client;
-    }
-
-    private <T> WebTarget populateQueryParameters2(WebTarget client, T queryParameters) {
-        if (queryParameters != null) {
-            ObjectMapper objectMapper = new ObjectMapper();
-            Map<String, Object> map = objectMapper.convertValue(queryParameters, Map.class);
+            Map<String, Object> map = mapper.convertValue(queryParameters, Map.class);
             for (Map.Entry<String, Object> entry : map.entrySet()) {
                 StringBuilder value = new StringBuilder();
                 if (entry.getValue() instanceof ArrayList) {
@@ -365,13 +211,14 @@ public class ApiCall {
                         if (i != ((ArrayList<?>) entry.getValue()).size() - 1)
                             value.append(",");
                     }
-                    client = client.queryParam(entry.getKey(), value);
+                    httpBuilder.addQueryParameter(entry.getKey(), value.toString());
                 } else {
-                    client = client.queryParam(entry.getKey(), entry.getValue());
+                    httpBuilder.addQueryParameter(entry.getKey(), entry.getValue().toString());
                 }
             }
         }
-        return client;
+
+        return httpBuilder;
     }
 
     /**
@@ -382,25 +229,19 @@ public class ApiCall {
      * @return HashMap containing the response
      */
 
-    <T> T handleResponse(Response response, Class<T> resourceClass) {
-        if (resourceClass == null) {
-            ObjectMapper mapper = new ObjectMapper();
-            String json = response.readEntity(String.class);
+    <T> T handleResponse(Response response, Class<T> responseClass) throws IOException {
+        if (responseClass == null) {
             try {
-                HashMap<String, Object> map = mapper.readValue(json, HashMap.class);
-                return (T) map;
+                return (T) mapper.readValue(response.body().string(), HashMap.class);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
-            ObjectMapperResolver resolver = new ObjectMapperResolver();
-            ObjectMapper mapper = resolver.getContext(String.class);
-            String json = response.readEntity(String.class);
             try {
-                if (resourceClass == String.class) {
-                    return (T) json;
+                if (responseClass == String.class) {
+                    return (T) response.body().string();
                 }
-                return mapper.readValue(json, resourceClass);
+                return mapper.readValue(response.body().string(), responseClass);
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -137,17 +137,6 @@ public class DocumentsTest extends TestCase {
         System.out.println(client.collections("books").documents().export(exportDocumentsParameters));
     }
 
-    public void testImportFromFile() throws FileNotFoundException, Exception {
-        File myObj = new File("/tmp/books.jsonl");
-        ImportDocumentsParameters queryParameters = new ImportDocumentsParameters();
-        Scanner myReader = new Scanner(myObj);
-        StringBuilder data = new StringBuilder();
-        while (myReader.hasNextLine()) {
-            data.append(myReader.nextLine()).append("\n");
-        }
-        client.collections("books").documents().import_(data.toString(), queryParameters);
-    }
-
     public void testDirtyCreate() throws Exception {
         helper.createTestDocument();
         ImportDocumentsParameters queryParameters = new ImportDocumentsParameters();

@@ -1,6 +1,5 @@
 package org.typesense.api;
 
-import org.typesense.api.exceptions.TypesenseError;
 import org.typesense.model.CollectionAlias;
 import org.typesense.model.CollectionAliasSchema;
 import org.typesense.model.CollectionAliasesResponse;
@@ -16,11 +15,11 @@ public class Aliases {
 
 
     public CollectionAlias upsert(String name, CollectionAliasSchema collectionAliasSchema) throws Exception {
-        return this.apiCall.put(RESOURCE_PATH + "/" + name, collectionAliasSchema, CollectionAlias.class);
+        return this.apiCall.put(RESOURCE_PATH + "/" + name, collectionAliasSchema, null, CollectionAlias.class);
     }
 
     public CollectionAliasesResponse retrieve() throws Exception {
-        return this.apiCall.get(RESOURCE_PATH,CollectionAliasesResponse.class);
+        return this.apiCall.get(RESOURCE_PATH, null, CollectionAliasesResponse.class);
     }
 
 }

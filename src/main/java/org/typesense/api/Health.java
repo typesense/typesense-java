@@ -1,7 +1,5 @@
 package org.typesense.api;
 
-import org.typesense.api.exceptions.TypesenseError;
-
 import java.util.HashMap;
 
 public class Health {
@@ -14,6 +12,6 @@ public class Health {
     }
 
     public HashMap<String, Object> retrieve() throws Exception {
-        return this.apiCall.get(RESOURCEPATH);
+        return this.apiCall.get(RESOURCEPATH, null, HashMap.class);
     }
 }

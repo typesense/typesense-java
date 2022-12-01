@@ -28,7 +28,7 @@ public class RetryTest extends TestCase {
             client.health.retrieve();
         } catch (Exception e) {
             long timeTaken = System.currentTimeMillis() - start;
-            assertTrue(e.getCause() instanceof UnknownHostException);
+            assertTrue(e instanceof java.net.UnknownHostException);
             assertTrue(timeTaken > 4000);
             return ;
         }

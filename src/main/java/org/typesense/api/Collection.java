@@ -1,6 +1,5 @@
 package org.typesense.api;
 
-import org.typesense.api.exceptions.TypesenseError;
 import org.typesense.model.CollectionResponse;
 import org.typesense.model.CollectionUpdateSchema;
 
@@ -39,15 +38,15 @@ public class Collection {
     }
 
     public CollectionResponse retrieve() throws Exception {
-        return this.apiCall.get(endpoint, CollectionResponse.class);
+        return this.apiCall.get(endpoint, null, CollectionResponse.class);
     }
 
     public CollectionUpdateSchema update(CollectionUpdateSchema c) throws Exception {
-        return this.apiCall.patch(endpoint, c, CollectionUpdateSchema.class);
+        return this.apiCall.patch(endpoint, c, null, CollectionUpdateSchema.class);
     }
 
     public CollectionResponse delete() throws Exception {
-        return this.apiCall.delete(endpoint,CollectionResponse.class);
+        return this.apiCall.delete(endpoint, null, CollectionResponse.class);
     }
 
     public Documents documents(){

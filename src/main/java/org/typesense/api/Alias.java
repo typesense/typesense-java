@@ -1,6 +1,5 @@
 package org.typesense.api;
 
-import org.typesense.api.exceptions.TypesenseError;
 import org.typesense.model.CollectionAlias;
 
 public class Alias {
@@ -14,11 +13,11 @@ public class Alias {
     }
 
     public CollectionAlias retrieve() throws Exception {
-        return this.apiCall.get(this.getEndpoint(),CollectionAlias.class);
+        return this.apiCall.get(this.getEndpoint(), null, CollectionAlias.class);
     }
 
     public CollectionAlias delete() throws Exception {
-        return this.apiCall.delete(this.getEndpoint(),CollectionAlias.class);
+        return this.apiCall.delete(this.getEndpoint(), null, CollectionAlias.class);
     }
 
     public String getEndpoint(){

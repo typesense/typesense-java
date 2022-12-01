@@ -1,6 +1,5 @@
 package org.typesense.api;
 
-import org.typesense.api.exceptions.TypesenseError;
 import org.typesense.model.SearchSynonym;
 
 public class Synonym {
@@ -16,11 +15,11 @@ public class Synonym {
     }
 
     public SearchSynonym retrieve() throws Exception {
-        return this.apiCall.get(this.getEndpoint(), SearchSynonym.class);
+        return this.apiCall.get(this.getEndpoint(), null, SearchSynonym.class);
     }
 
     public SearchSynonym delete() throws Exception {
-        return this.apiCall.delete(this.getEndpoint(), SearchSynonym.class);
+        return this.apiCall.delete(this.getEndpoint(), null, SearchSynonym.class);
     }
 
     public String getEndpoint(){

@@ -14,6 +14,7 @@ public class SynonymsTest extends TestCase {
         super.setUp();
         helper = new Helper();
         client = helper.getClient();
+        helper.teardown();
         helper.createTestCollection();
         helper.createTestSynonym();
     }

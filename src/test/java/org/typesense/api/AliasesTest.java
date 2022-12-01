@@ -18,6 +18,7 @@ public class AliasesTest extends TestCase {
     public void setUp() throws Exception {
         super.setUp();
         helper = new Helper();
+        helper.teardown();
         client = helper.getClient();
         helper.createTestAlias();
     }

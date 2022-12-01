@@ -1,7 +1,5 @@
 package org.typesense.api;
 
-import org.typesense.api.exceptions.TypesenseError;
-
 import java.util.HashMap;
 
 public class Document {
@@ -19,15 +17,15 @@ public class Document {
     }
 
     public HashMap<String,Object> retrieve() throws Exception {
-        return this.apiCall.get(endpoint);
+        return this.apiCall.get(endpoint, null, HashMap.class);
     }
 
     public HashMap<String, Object> delete() throws Exception {
-        return this.apiCall.delete(this.endpoint);
+        return this.apiCall.delete(this.endpoint, null, HashMap.class);
     }
 
     public HashMap<String , Object> update(HashMap<String, Object> document) throws Exception {
-        return this.apiCall.patch(this.endpoint, document, HashMap.class);
+        return this.apiCall.patch(this.endpoint, document, null, HashMap.class);
     }
 
 }

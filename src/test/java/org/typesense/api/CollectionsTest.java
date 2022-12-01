@@ -16,6 +16,7 @@ public class CollectionsTest extends TestCase {
     public void setUp() throws Exception {
         super.setUp();
         helper = new Helper();
+        helper.teardown();
         this.client = helper.getClient();
     }
 
