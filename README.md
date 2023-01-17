@@ -10,7 +10,7 @@ The client is available on Maven central:
 <dependency>
     <groupId>org.typesense</groupId>
     <artifactId>typesense-java</artifactId>
-    <version>0.0.6</version>
+    <version>0.0.8</version>
 </dependency>
 ```
 
@@ -43,7 +43,7 @@ Client client = new Client(configuration);
 ArrayList<Field> fields = new ArrayList<>();
 fields.add(new Field().name("countryName").type(FieldTypes.STRING));
 fields.add(new Field().name("capital").type(FieldTypes.STRING));
-fields.add(new Field().name("gdp").type(FieldTypes.INT32).facet(true));
+fields.add(new Field().name("gdp").type(FieldTypes.INT32).facet(true).sort(true));
 
 CollectionSchema collectionSchema = new CollectionSchema();
 collectionSchema.name("Countries").fields(fields).defaultSortingField("gdp");
