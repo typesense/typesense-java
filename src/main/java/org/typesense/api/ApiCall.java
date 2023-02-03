@@ -221,7 +221,7 @@ public class ApiCall {
                             value.append(",");
                     }
                     httpBuilder.addQueryParameter(entry.getKey(), value.toString());
-                } else {
+                } else if (entry.getValue() != null){
                     httpBuilder.addQueryParameter(entry.getKey(), entry.getValue().toString());
                 }
             }
