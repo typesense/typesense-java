@@ -1,6 +1,6 @@
 package org.typesense.api;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class Debug {
 
@@ -11,7 +11,7 @@ public class Debug {
         this.apiCall = apiCall;
     }
 
-    public HashMap<String, String> retrieve() throws Exception {
-        return this.apiCall.get(RESOURCEPATH, null, HashMap.class);
+    public Map<String, String> retrieve() throws Exception {
+        return this.apiCall.get(RESOURCEPATH, null, Map.class);
     }
 }

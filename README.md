@@ -24,7 +24,7 @@ import org.typesense.resources.*;
 
 ### Create a new client
 ```java
-ArrayList<Node> nodes = new ArrayList<>();
+List<Node> nodes = new ArrayList<>();
 nodes.add(
   new Node(
     "http",       // For Typesense Cloud use https
@@ -40,7 +40,7 @@ Client client = new Client(configuration);
 
 ### Create a new collection
 ```java
-ArrayList<Field> fields = new ArrayList<>();
+List<Field> fields = new ArrayList<>();
 fields.add(new Field().name("countryName").type(FieldTypes.STRING));
 fields.add(new Field().name("capital").type(FieldTypes.STRING));
 fields.add(new Field().name("gdp").type(FieldTypes.INT32).facet(true).sort(true));
@@ -53,7 +53,7 @@ client.collections().create(collectionSchema);
 
 ### Index a document
 ```java
-HashMap<String, Object> hmap = new HashMap<>();
+Map<String, Object> hmap = new HashMap<>();
 hmap.put("countryName","India");
 hmap.put("capital","Delhi");
 hmap.put("gdp", 10);
@@ -63,7 +63,7 @@ client.collections("contryName").documents().create(hmap);
 
 ### Upserting a document
 ```java
-HashMap<String, Object> hmap = new HashMap<>();
+Map<String, Object> hmap = new HashMap<>();
 hmap.put("countryName","India");
 hmap.put("capital","Delhi");
 hmap.put("gdp", 5);
@@ -93,7 +93,7 @@ SearchResult searchResult = client.collections("countries").documents().search(s
 
 ### Update a document
 ```java
-HashMap<String, Object> hmap = new HashMap<>();
+Map<String, Object> hmap = new HashMap<>();
 hmap.put("gdp", 8);
 client.collections("countries").documents("28").update(hmap);
 ```
@@ -268,7 +268,7 @@ client.collections("countries").synonyms("continent-synonyms").delete();
 
 ### Create snapshot (for backups)
 ```java
-HashMap<String, String> query = new HashMap<>();
+Map<String, String> query = new HashMap<>();
 query.put("snapshot_path","/tmp/typesense-data-snapshot");
 
 client.operations.perform("snapshot",query);

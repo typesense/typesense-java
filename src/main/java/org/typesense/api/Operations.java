@@ -1,6 +1,6 @@
 package org.typesense.api;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class Operations {
 
@@ -11,11 +11,11 @@ public class Operations {
         this.apiCall = apiCall;
     }
 
-    public HashMap<String, String> perform(String operationName, HashMap<String, String> queryParameters) throws Exception {
-        return this.apiCall.post(RESOUCEPATH + "/" + operationName, "{}", queryParameters, HashMap.class);
+    public Map<String, String> perform(String operationName, Map<String, String> queryParameters) throws Exception {
+        return this.apiCall.post(RESOUCEPATH + "/" + operationName, "{}", queryParameters, Map.class);
     }
 
-    public HashMap<String, String> perform(String operationName) throws Exception {
-        return this.apiCall.post(RESOUCEPATH + "/" + operationName, "{}", null, HashMap.class);
+    public Map<String, String> perform(String operationName) throws Exception {
+        return this.apiCall.post(RESOUCEPATH + "/" + operationName, "{}", null, Map.class);
     }
 }
