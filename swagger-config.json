@@ -1,0 +1,7 @@
+{
+  "modelPackage" : "org.typesense.model",
+  "apiPackage" : "org.typesense.api",
+  "generateSupportingFiles": true,
+  "java8": true,
+  "library": "jersey2"
+}
