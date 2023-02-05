@@ -10,7 +10,7 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-import java.util.HashMap;
+import java.util.Map;
 
 public class Keys {
 
@@ -32,7 +32,7 @@ public class Keys {
         return this.apiCall.get(Keys.RESOURCEPATH, null, ApiKeysResponse.class);
     }
 
-    public String generateScopedSearchKey(String searchKey, HashMap<String, Object> parameters){
+    public String generateScopedSearchKey(String searchKey, Map<String, Object> parameters){
         ObjectMapper mapper = new ObjectMapper();
         String params = "";
         try {

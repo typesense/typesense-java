@@ -2,7 +2,7 @@ package org.typesense.api;
 
 import org.typesense.model.MultiSearchResponse;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 
 public class MultiSearch {
@@ -14,7 +14,7 @@ public class MultiSearch {
         this.apiCall = apiCall;
     }
 
-    public MultiSearchResponse perform(HashMap<String , List<HashMap<String,String>>> multiSearchParameters, HashMap<String, String> common_params) throws Exception {
+    public MultiSearchResponse perform(Map<String , List<Map<String,String>>> multiSearchParameters, Map<String, String> common_params) throws Exception {
         return this.apiCall.post(MultiSearch.RESOURCEPATH, multiSearchParameters, common_params, MultiSearchResponse.class);
     }
 }

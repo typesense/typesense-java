@@ -1,6 +1,6 @@
 package org.typesense.api;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class Health {
 
@@ -11,7 +11,7 @@ public class Health {
         this.apiCall = apiCall;
     }
 
-    public HashMap<String, Object> retrieve() throws Exception {
-        return this.apiCall.get(RESOURCEPATH, null, HashMap.class);
+    public Map<String, Object> retrieve() throws Exception {
+        return this.apiCall.get(RESOURCEPATH, null, Map.class);
     }
 }

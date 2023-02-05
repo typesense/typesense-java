@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class DocumentsTest extends TestCase {
@@ -106,7 +108,7 @@ public class DocumentsTest extends TestCase {
         HashMap<String, Object> document1 = new HashMap<>();
         HashMap<String, Object> document2 = new HashMap<>();
         ImportDocumentsParameters queryParameters = new ImportDocumentsParameters();
-        ArrayList<HashMap<String, Object>> documentList = new ArrayList<>();
+        List<Map<String, Object>> documentList = new ArrayList<>();
 
         document1.put("countryName","India");
         document1.put("capital","Delhi");

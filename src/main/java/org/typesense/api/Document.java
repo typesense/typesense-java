@@ -1,6 +1,6 @@
 package org.typesense.api;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class Document {
     private String collectionName;
@@ -16,16 +16,16 @@ public class Document {
         this.endpoint = Collections.RESOURCE_PATH + "/" +  this.collectionName + Documents.RESOURCE_PATH + "/" + this.documentId;
     }
 
-    public HashMap<String,Object> retrieve() throws Exception {
-        return this.apiCall.get(endpoint, null, HashMap.class);
+    public Map<String,Object> retrieve() throws Exception {
+        return this.apiCall.get(endpoint, null, Map.class);
     }
 
-    public HashMap<String, Object> delete() throws Exception {
-        return this.apiCall.delete(this.endpoint, null, HashMap.class);
+    public Map<String, Object> delete() throws Exception {
+        return this.apiCall.delete(this.endpoint, null, Map.class);
     }
 
-    public HashMap<String , Object> update(HashMap<String, Object> document) throws Exception {
-        return this.apiCall.patch(this.endpoint, document, null, HashMap.class);
+    public Map<String , Object> update(Map<String, Object> document) throws Exception {
+        return this.apiCall.patch(this.endpoint, document, null, Map.class);
     }
 
 }

@@ -1,6 +1,5 @@
 package org.typesense.api;
 
-import org.typesense.api.exceptions.TypesenseError;
 import org.typesense.model.*;
 import org.typesense.resources.Node;
 
@@ -13,7 +12,7 @@ public class Helper {
     private final Client client;
 
     Helper() {
-        ArrayList<Node> nodes = new ArrayList<>();
+        List<Node> nodes = new ArrayList<>();
         nodes.add(new Node("http","localhost","8108"));
 
         Configuration configuration = new Configuration(nodes, Duration.ofSeconds(3),"xyz");
@@ -22,7 +21,7 @@ public class Helper {
     }
 
     public void createTestCollection() throws Exception {
-        ArrayList<Field> fields = new ArrayList<>();
+        List<Field> fields = new ArrayList<>();
         fields.add(new Field().name(".*").type(FieldTypes.AUTO).optional(true));
 
         CollectionSchema collectionSchema = new CollectionSchema();

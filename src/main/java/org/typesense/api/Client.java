@@ -1,6 +1,7 @@
 package org.typesense.api;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Client {
     private Configuration configuration;
@@ -8,13 +9,13 @@ public class Client {
     private ApiCall apiCall;
 
     private Collections collections;
-    private HashMap<String, Collection> individualCollections;
+    private Map<String, Collection> individualCollections;
 
     private Aliases aliases;
-    private HashMap<String, Alias> individualAliases;
+    private Map<String, Alias> individualAliases;
 
     private Keys keys;
-    private HashMap<Long, Key> individualKeys;
+    private Map<Long, Key> individualKeys;
 
     public Health health;
     public Operations operations;
@@ -30,7 +31,7 @@ public class Client {
         this.aliases = new Aliases(this.apiCall);
         this.individualAliases = new HashMap<>();
         this.keys = new Keys(this.apiCall);
-        this.individualKeys = new HashMap<Long, Key>();
+        this.individualKeys = new HashMap<>();
         this.health = new Health(this.apiCall);
         this.operations = new Operations(this.apiCall);
         this.metrics = new Metrics(this.apiCall);
