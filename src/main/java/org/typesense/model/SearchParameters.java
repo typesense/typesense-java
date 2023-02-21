@@ -39,6 +39,24 @@ public class SearchParameters   {
   **/
   private String prefix = null;
   
+  @Schema(description = "If infix index is enabled for this field, infix searching can be done on a per-field basis by sending a comma separated string parameter called infix to the search query. This parameter can have 3 values; `off` infix search is disabled, which is default `always` infix search is performed along with regular search `fallback` infix search is performed if regular search does not produce results")
+ /**
+   * If infix index is enabled for this field, infix searching can be done on a per-field basis by sending a comma separated string parameter called infix to the search query. This parameter can have 3 values; `off` infix search is disabled, which is default `always` infix search is performed along with regular search `fallback` infix search is performed if regular search does not produce results  
+  **/
+  private String infix = null;
+  
+  @Schema(description = "There are also 2 parameters that allow you to control the extent of infix searching max_extra_prefix and max_extra_suffix which specify the maximum number of symbols before or after the query that can be present in the token. For example query \"K2100\" has 2 extra symbols in \"6PK2100\". By default, any number of prefixes/suffixes can be present for a match.")
+ /**
+   * There are also 2 parameters that allow you to control the extent of infix searching max_extra_prefix and max_extra_suffix which specify the maximum number of symbols before or after the query that can be present in the token. For example query \"K2100\" has 2 extra symbols in \"6PK2100\". By default, any number of prefixes/suffixes can be present for a match.  
+  **/
+  private Integer maxExtraPrefix = null;
+  
+  @Schema(description = "There are also 2 parameters that allow you to control the extent of infix searching max_extra_prefix and max_extra_suffix which specify the maximum number of symbols before or after the query that can be present in the token. For example query \"K2100\" has 2 extra symbols in \"6PK2100\". By default, any number of prefixes/suffixes can be present for a match.")
+ /**
+   * There are also 2 parameters that allow you to control the extent of infix searching max_extra_prefix and max_extra_suffix which specify the maximum number of symbols before or after the query that can be present in the token. For example query \"K2100\" has 2 extra symbols in \"6PK2100\". By default, any number of prefixes/suffixes can be present for a match.  
+  **/
+  private Integer maxExtraSuffix = null;
+  
   @Schema(example = "num_employees:>100 && country: [USA, UK]", description = "Filter conditions for refining youropen api validator search results. Separate multiple conditions with &&.")
  /**
    * Filter conditions for refining youropen api validator search results. Separate multiple conditions with &&.  
@@ -171,6 +189,12 @@ public class SearchParameters   {
   **/
   private String highlightFields = null;
   
+  @Schema(description = "Treat space as typo: search for q=basket ball if q=basketball is not found or vice-versa. Splitting/joining of tokens will only be attempted if the original query produces no results. To always trigger this behavior, set value to `always``. To disable, set value to `off`. Default is `fallback`. ")
+ /**
+   * Treat space as typo: search for q=basket ball if q=basketball is not found or vice-versa. Splitting/joining of tokens will only be attempted if the original query produces no results. To always trigger this behavior, set value to `always``. To disable, set value to `off`. Default is `fallback`.   
+  **/
+  private String splitJoinTokens = null;
+  
   @Schema(description = "You can index content from any logographic language into Typesense if you are able to segment / split the text into space-separated words yourself  before indexing and querying. Set this parameter to true to do the same ")
  /**
    * You can index content from any logographic language into Typesense if you are able to segment / split the text into space-separated words yourself  before indexing and querying. Set this parameter to true to do the same   
@@ -188,6 +212,18 @@ public class SearchParameters   {
    * Set this parameter to true to ensure that an exact match is ranked above the others   
   **/
   private Boolean prioritizeExactMatch = null;
+  
+  @Schema(description = "Control the number of words that Typesense considers for typo and prefix searching. ")
+ /**
+   * Control the number of words that Typesense considers for typo and prefix searching.   
+  **/
+  private Integer maxCandidates = null;
+  
+  @Schema(description = "Make Typesense prioritize documents where the query words appear earlier in the text. ")
+ /**
+   * Make Typesense prioritize documents where the query words appear earlier in the text.   
+  **/
+  private Boolean prioritizeTokenPosition = null;
   
   @Schema(description = "Setting this to true will make Typesense consider all prefixes and typo  corrections of the words in the query without stopping early when enough results are found  (drop_tokens_threshold and typo_tokens_threshold configurations are ignored). ")
  /**
@@ -293,6 +329,60 @@ public class SearchParameters   {
 
   public SearchParameters prefix(String prefix) {
     this.prefix = prefix;
+    return this;
+  }
+
+ /**
+   * If infix index is enabled for this field, infix searching can be done on a per-field basis by sending a comma separated string parameter called infix to the search query. This parameter can have 3 values; &#x60;off&#x60; infix search is disabled, which is default &#x60;always&#x60; infix search is performed along with regular search &#x60;fallback&#x60; infix search is performed if regular search does not produce results
+   * @return infix
+  **/
+  @JsonProperty("infix")
+  public String getInfix() {
+    return infix;
+  }
+
+  public void setInfix(String infix) {
+    this.infix = infix;
+  }
+
+  public SearchParameters infix(String infix) {
+    this.infix = infix;
+    return this;
+  }
+
+ /**
+   * There are also 2 parameters that allow you to control the extent of infix searching max_extra_prefix and max_extra_suffix which specify the maximum number of symbols before or after the query that can be present in the token. For example query \&quot;K2100\&quot; has 2 extra symbols in \&quot;6PK2100\&quot;. By default, any number of prefixes/suffixes can be present for a match.
+   * @return maxExtraPrefix
+  **/
+  @JsonProperty("max_extra_prefix")
+  public Integer getMaxExtraPrefix() {
+    return maxExtraPrefix;
+  }
+
+  public void setMaxExtraPrefix(Integer maxExtraPrefix) {
+    this.maxExtraPrefix = maxExtraPrefix;
+  }
+
+  public SearchParameters maxExtraPrefix(Integer maxExtraPrefix) {
+    this.maxExtraPrefix = maxExtraPrefix;
+    return this;
+  }
+
+ /**
+   * There are also 2 parameters that allow you to control the extent of infix searching max_extra_prefix and max_extra_suffix which specify the maximum number of symbols before or after the query that can be present in the token. For example query \&quot;K2100\&quot; has 2 extra symbols in \&quot;6PK2100\&quot;. By default, any number of prefixes/suffixes can be present for a match.
+   * @return maxExtraSuffix
+  **/
+  @JsonProperty("max_extra_suffix")
+  public Integer getMaxExtraSuffix() {
+    return maxExtraSuffix;
+  }
+
+  public void setMaxExtraSuffix(Integer maxExtraSuffix) {
+    this.maxExtraSuffix = maxExtraSuffix;
+  }
+
+  public SearchParameters maxExtraSuffix(Integer maxExtraSuffix) {
+    this.maxExtraSuffix = maxExtraSuffix;
     return this;
   }
 
@@ -693,6 +783,24 @@ public class SearchParameters   {
   }
 
  /**
+   * Treat space as typo: search for q&#x3D;basket ball if q&#x3D;basketball is not found or vice-versa. Splitting/joining of tokens will only be attempted if the original query produces no results. To always trigger this behavior, set value to &#x60;always&#x60;&#x60;. To disable, set value to &#x60;off&#x60;. Default is &#x60;fallback&#x60;. 
+   * @return splitJoinTokens
+  **/
+  @JsonProperty("split_join_tokens")
+  public String getSplitJoinTokens() {
+    return splitJoinTokens;
+  }
+
+  public void setSplitJoinTokens(String splitJoinTokens) {
+    this.splitJoinTokens = splitJoinTokens;
+  }
+
+  public SearchParameters splitJoinTokens(String splitJoinTokens) {
+    this.splitJoinTokens = splitJoinTokens;
+    return this;
+  }
+
+ /**
    * You can index content from any logographic language into Typesense if you are able to segment / split the text into space-separated words yourself  before indexing and querying. Set this parameter to true to do the same 
    * @return preSegmentedQuery
   **/
@@ -743,6 +851,42 @@ public class SearchParameters   {
 
   public SearchParameters prioritizeExactMatch(Boolean prioritizeExactMatch) {
     this.prioritizeExactMatch = prioritizeExactMatch;
+    return this;
+  }
+
+ /**
+   * Control the number of words that Typesense considers for typo and prefix searching. 
+   * @return maxCandidates
+  **/
+  @JsonProperty("max_candidates")
+  public Integer getMaxCandidates() {
+    return maxCandidates;
+  }
+
+  public void setMaxCandidates(Integer maxCandidates) {
+    this.maxCandidates = maxCandidates;
+  }
+
+  public SearchParameters maxCandidates(Integer maxCandidates) {
+    this.maxCandidates = maxCandidates;
+    return this;
+  }
+
+ /**
+   * Make Typesense prioritize documents where the query words appear earlier in the text. 
+   * @return prioritizeTokenPosition
+  **/
+  @JsonProperty("prioritize_token_position")
+  public Boolean isPrioritizeTokenPosition() {
+    return prioritizeTokenPosition;
+  }
+
+  public void setPrioritizeTokenPosition(Boolean prioritizeTokenPosition) {
+    this.prioritizeTokenPosition = prioritizeTokenPosition;
+  }
+
+  public SearchParameters prioritizeTokenPosition(Boolean prioritizeTokenPosition) {
+    this.prioritizeTokenPosition = prioritizeTokenPosition;
     return this;
   }
 
@@ -864,6 +1008,9 @@ public class SearchParameters   {
     sb.append("    queryBy: ").append(toIndentedString(queryBy)).append("\n");
     sb.append("    queryByWeights: ").append(toIndentedString(queryByWeights)).append("\n");
     sb.append("    prefix: ").append(toIndentedString(prefix)).append("\n");
+    sb.append("    infix: ").append(toIndentedString(infix)).append("\n");
+    sb.append("    maxExtraPrefix: ").append(toIndentedString(maxExtraPrefix)).append("\n");
+    sb.append("    maxExtraSuffix: ").append(toIndentedString(maxExtraSuffix)).append("\n");
     sb.append("    filterBy: ").append(toIndentedString(filterBy)).append("\n");
     sb.append("    sortBy: ").append(toIndentedString(sortBy)).append("\n");
     sb.append("    facetBy: ").append(toIndentedString(facetBy)).append("\n");
@@ -886,9 +1033,12 @@ public class SearchParameters   {
     sb.append("    pinnedHits: ").append(toIndentedString(pinnedHits)).append("\n");
     sb.append("    hiddenHits: ").append(toIndentedString(hiddenHits)).append("\n");
     sb.append("    highlightFields: ").append(toIndentedString(highlightFields)).append("\n");
+    sb.append("    splitJoinTokens: ").append(toIndentedString(splitJoinTokens)).append("\n");
     sb.append("    preSegmentedQuery: ").append(toIndentedString(preSegmentedQuery)).append("\n");
     sb.append("    enableOverrides: ").append(toIndentedString(enableOverrides)).append("\n");
     sb.append("    prioritizeExactMatch: ").append(toIndentedString(prioritizeExactMatch)).append("\n");
+    sb.append("    maxCandidates: ").append(toIndentedString(maxCandidates)).append("\n");
+    sb.append("    prioritizeTokenPosition: ").append(toIndentedString(prioritizeTokenPosition)).append("\n");
     sb.append("    exhaustiveSearch: ").append(toIndentedString(exhaustiveSearch)).append("\n");
     sb.append("    searchCutoffMs: ").append(toIndentedString(searchCutoffMs)).append("\n");
     sb.append("    useCache: ").append(toIndentedString(useCache)).append("\n");

@@ -16,33 +16,33 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 public class FacetCountsStats   {
   
   @Schema(description = "")
-  private Integer max = null;
+  private Double max = null;
   
   @Schema(description = "")
-  private Integer min = null;
+  private Double min = null;
   
   @Schema(description = "")
-  private Integer sum = null;
+  private Double sum = null;
   
   @Schema(description = "")
   private Integer totalValues = null;
   
   @Schema(description = "")
-  private Float avg = null;
+  private Double avg = null;
  /**
    * Get max
    * @return max
   **/
   @JsonProperty("max")
-  public Integer getMax() {
+  public Double getMax() {
     return max;
   }
 
-  public void setMax(Integer max) {
+  public void setMax(Double max) {
     this.max = max;
   }
 
-  public FacetCountsStats max(Integer max) {
+  public FacetCountsStats max(Double max) {
     this.max = max;
     return this;
   }
@@ -52,15 +52,15 @@ public class FacetCountsStats   {
    * @return min
   **/
   @JsonProperty("min")
-  public Integer getMin() {
+  public Double getMin() {
     return min;
   }
 
-  public void setMin(Integer min) {
+  public void setMin(Double min) {
     this.min = min;
   }
 
-  public FacetCountsStats min(Integer min) {
+  public FacetCountsStats min(Double min) {
     this.min = min;
     return this;
   }
@@ -70,15 +70,15 @@ public class FacetCountsStats   {
    * @return sum
   **/
   @JsonProperty("sum")
-  public Integer getSum() {
+  public Double getSum() {
     return sum;
   }
 
-  public void setSum(Integer sum) {
+  public void setSum(Double sum) {
     this.sum = sum;
   }
 
-  public FacetCountsStats sum(Integer sum) {
+  public FacetCountsStats sum(Double sum) {
     this.sum = sum;
     return this;
   }
@@ -106,15 +106,15 @@ public class FacetCountsStats   {
    * @return avg
   **/
   @JsonProperty("avg")
-  public Float getAvg() {
+  public Double getAvg() {
     return avg;
   }
 
-  public void setAvg(Float avg) {
+  public void setAvg(Double avg) {
     this.avg = avg;
   }
 
-  public FacetCountsStats avg(Float avg) {
+  public FacetCountsStats avg(Double avg) {
     this.avg = avg;
     return this;
   }

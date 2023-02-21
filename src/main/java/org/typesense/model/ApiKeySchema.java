@@ -18,6 +18,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 public class ApiKeySchema   {
   
   @Schema(description = "")
+  private String value = null;
+  
+  @Schema(required = true, description = "")
   private String description = null;
   
   @Schema(required = true, description = "")
@@ -28,6 +31,24 @@ public class ApiKeySchema   {
   
   @Schema(description = "")
   private Long expiresAt = null;
+ /**
+   * Get value
+   * @return value
+  **/
+  @JsonProperty("value")
+  public String getValue() {
+    return value;
+  }
+
+  public void setValue(String value) {
+    this.value = value;
+  }
+
+  public ApiKeySchema value(String value) {
+    this.value = value;
+    return this;
+  }
+
  /**
    * Get description
    * @return description
@@ -116,6 +137,7 @@ public class ApiKeySchema   {
     StringBuilder sb = new StringBuilder();
     sb.append("class ApiKeySchema {\n");
     
+    sb.append("    value: ").append(toIndentedString(value)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    actions: ").append(toIndentedString(actions)).append("\n");
     sb.append("    collections: ").append(toIndentedString(collections)).append("\n");

@@ -24,7 +24,7 @@ public class CollectionSchema   {
   **/
   private String name = null;
   
-  @Schema(example = "[{\"name\":\"company_name\",\"type\":\"string\",\"facet\":false},{\"name\":\"num_employees\",\"type\":\"int32\",\"facet\":false},{\"name\":\"country\",\"type\":\"string\",\"facet\":true}]", required = true, description = "A list of fields for querying, filtering and faceting")
+  @Schema(example = "[{\"name\":\"num_employees\",\"type\":\"int32\",\"facet\":false},{\"name\":\"company_name\",\"type\":\"string\",\"facet\":false},{\"name\":\"country\",\"type\":\"string\",\"facet\":true}]", required = true, description = "A list of fields for querying, filtering and faceting")
  /**
    * A list of fields for querying, filtering and faceting  
   **/
@@ -41,6 +41,12 @@ public class CollectionSchema   {
    * List of symbols or special characters to be used for  splitting the text into individual words in addition to space and new-line characters.   
   **/
   private List<String> tokenSeparators = null;
+  
+  @Schema(example = "true", description = "Enables experimental support at a collection level for nested object or object array fields. This field is only available if the Typesense server is version `0.24.0.rcn34` or later.")
+ /**
+   * Enables experimental support at a collection level for nested object or object array fields. This field is only available if the Typesense server is version `0.24.0.rcn34` or later.  
+  **/
+  private Boolean enableNestedFields = false;
   
   @Schema(description = "List of symbols or special characters to be indexed. ")
  /**
@@ -130,6 +136,24 @@ public class CollectionSchema   {
   }
 
  /**
+   * Enables experimental support at a collection level for nested object or object array fields. This field is only available if the Typesense server is version &#x60;0.24.0.rcn34&#x60; or later.
+   * @return enableNestedFields
+  **/
+  @JsonProperty("enable_nested_fields")
+  public Boolean isEnableNestedFields() {
+    return enableNestedFields;
+  }
+
+  public void setEnableNestedFields(Boolean enableNestedFields) {
+    this.enableNestedFields = enableNestedFields;
+  }
+
+  public CollectionSchema enableNestedFields(Boolean enableNestedFields) {
+    this.enableNestedFields = enableNestedFields;
+    return this;
+  }
+
+ /**
    * List of symbols or special characters to be indexed. 
    * @return symbolsToIndex
   **/
@@ -162,6 +186,7 @@ public class CollectionSchema   {
     sb.append("    fields: ").append(toIndentedString(fields)).append("\n");
     sb.append("    defaultSortingField: ").append(toIndentedString(defaultSortingField)).append("\n");
     sb.append("    tokenSeparators: ").append(toIndentedString(tokenSeparators)).append("\n");
+    sb.append("    enableNestedFields: ").append(toIndentedString(enableNestedFields)).append("\n");
     sb.append("    symbolsToIndex: ").append(toIndentedString(symbolsToIndex)).append("\n");
     sb.append("}");
     return sb.toString();

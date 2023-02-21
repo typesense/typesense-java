@@ -44,6 +44,24 @@ public class MultiSearchParameters   {
   **/
   private String prefix = null;
   
+  @Schema(description = "If infix index is enabled for this field, infix searching can be done on a per-field basis by sending a comma separated string parameter called infix to the search query. This parameter can have 3 values; `off` infix search is disabled, which is default `always` infix search is performed along with regular search `fallback` infix search is performed if regular search does not produce results")
+ /**
+   * If infix index is enabled for this field, infix searching can be done on a per-field basis by sending a comma separated string parameter called infix to the search query. This parameter can have 3 values; `off` infix search is disabled, which is default `always` infix search is performed along with regular search `fallback` infix search is performed if regular search does not produce results  
+  **/
+  private String infix = null;
+  
+  @Schema(description = "There are also 2 parameters that allow you to control the extent of infix searching max_extra_prefix and max_extra_suffix which specify the maximum number of symbols before or after the query that can be present in the token. For example query \"K2100\" has 2 extra symbols in \"6PK2100\". By default, any number of prefixes/suffixes can be present for a match.")
+ /**
+   * There are also 2 parameters that allow you to control the extent of infix searching max_extra_prefix and max_extra_suffix which specify the maximum number of symbols before or after the query that can be present in the token. For example query \"K2100\" has 2 extra symbols in \"6PK2100\". By default, any number of prefixes/suffixes can be present for a match.  
+  **/
+  private Integer maxExtraPrefix = null;
+  
+  @Schema(description = "There are also 2 parameters that allow you to control the extent of infix searching max_extra_prefix and max_extra_suffix which specify the maximum number of symbols before or after the query that can be present in the token. For example query \"K2100\" has 2 extra symbols in \"6PK2100\". By default, any number of prefixes/suffixes can be present for a match.")
+ /**
+   * There are also 2 parameters that allow you to control the extent of infix searching max_extra_prefix and max_extra_suffix which specify the maximum number of symbols before or after the query that can be present in the token. For example query \"K2100\" has 2 extra symbols in \"6PK2100\". By default, any number of prefixes/suffixes can be present for a match.  
+  **/
+  private Integer maxExtraSuffix = null;
+  
   @Schema(example = "num_employees:>100 && country: [USA, UK]", description = "Filter conditions for refining youropen api validator search results. Separate multiple conditions with &&.")
  /**
    * Filter conditions for refining youropen api validator search results. Separate multiple conditions with &&.  
@@ -298,6 +316,60 @@ public class MultiSearchParameters   {
 
   public MultiSearchParameters prefix(String prefix) {
     this.prefix = prefix;
+    return this;
+  }
+
+ /**
+   * If infix index is enabled for this field, infix searching can be done on a per-field basis by sending a comma separated string parameter called infix to the search query. This parameter can have 3 values; &#x60;off&#x60; infix search is disabled, which is default &#x60;always&#x60; infix search is performed along with regular search &#x60;fallback&#x60; infix search is performed if regular search does not produce results
+   * @return infix
+  **/
+  @JsonProperty("infix")
+  public String getInfix() {
+    return infix;
+  }
+
+  public void setInfix(String infix) {
+    this.infix = infix;
+  }
+
+  public MultiSearchParameters infix(String infix) {
+    this.infix = infix;
+    return this;
+  }
+
+ /**
+   * There are also 2 parameters that allow you to control the extent of infix searching max_extra_prefix and max_extra_suffix which specify the maximum number of symbols before or after the query that can be present in the token. For example query \&quot;K2100\&quot; has 2 extra symbols in \&quot;6PK2100\&quot;. By default, any number of prefixes/suffixes can be present for a match.
+   * @return maxExtraPrefix
+  **/
+  @JsonProperty("max_extra_prefix")
+  public Integer getMaxExtraPrefix() {
+    return maxExtraPrefix;
+  }
+
+  public void setMaxExtraPrefix(Integer maxExtraPrefix) {
+    this.maxExtraPrefix = maxExtraPrefix;
+  }
+
+  public MultiSearchParameters maxExtraPrefix(Integer maxExtraPrefix) {
+    this.maxExtraPrefix = maxExtraPrefix;
+    return this;
+  }
+
+ /**
+   * There are also 2 parameters that allow you to control the extent of infix searching max_extra_prefix and max_extra_suffix which specify the maximum number of symbols before or after the query that can be present in the token. For example query \&quot;K2100\&quot; has 2 extra symbols in \&quot;6PK2100\&quot;. By default, any number of prefixes/suffixes can be present for a match.
+   * @return maxExtraSuffix
+  **/
+  @JsonProperty("max_extra_suffix")
+  public Integer getMaxExtraSuffix() {
+    return maxExtraSuffix;
+  }
+
+  public void setMaxExtraSuffix(Integer maxExtraSuffix) {
+    this.maxExtraSuffix = maxExtraSuffix;
+  }
+
+  public MultiSearchParameters maxExtraSuffix(Integer maxExtraSuffix) {
+    this.maxExtraSuffix = maxExtraSuffix;
     return this;
   }
 
@@ -869,6 +941,9 @@ public class MultiSearchParameters   {
     sb.append("    queryBy: ").append(toIndentedString(queryBy)).append("\n");
     sb.append("    queryByWeights: ").append(toIndentedString(queryByWeights)).append("\n");
     sb.append("    prefix: ").append(toIndentedString(prefix)).append("\n");
+    sb.append("    infix: ").append(toIndentedString(infix)).append("\n");
+    sb.append("    maxExtraPrefix: ").append(toIndentedString(maxExtraPrefix)).append("\n");
+    sb.append("    maxExtraSuffix: ").append(toIndentedString(maxExtraSuffix)).append("\n");
     sb.append("    filterBy: ").append(toIndentedString(filterBy)).append("\n");
     sb.append("    sortBy: ").append(toIndentedString(sortBy)).append("\n");
     sb.append("    facetBy: ").append(toIndentedString(facetBy)).append("\n");
