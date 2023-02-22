@@ -1,6 +1,7 @@
 package org.typesense.api;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.*;
 import org.apache.logging.log4j.LogManager;
@@ -44,6 +45,7 @@ public class ApiCall {
         this.retryInterval = configuration.retryInterval;
 
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
         client = new OkHttpClient()
                 .newBuilder()
