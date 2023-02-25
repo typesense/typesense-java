@@ -55,7 +55,7 @@ public class Documents {
     }
 
     public String import_(String document, ImportDocumentsParameters queryParameters) throws Exception {
-            return this.apiCall.post(this.getEndPoint("import"),document, queryParameters,String.class);
+            return this.apiCall.postBulkImport(this.getEndPoint("import"),document, queryParameters,String.class);
     }
 
     public String import_(java.util.Collection<Map<String, Object>> documents, ImportDocumentsParameters queryParameters) throws Exception {
@@ -70,7 +70,7 @@ public class Documents {
             }
         }
         json = json.trim();
-        return this.apiCall.post(this.getEndPoint("import"),json,queryParameters, String.class);
+        return this.apiCall.postBulkImport(this.getEndPoint("import"),json,queryParameters, String.class);
     }
 
     public String getEndPoint(String target){

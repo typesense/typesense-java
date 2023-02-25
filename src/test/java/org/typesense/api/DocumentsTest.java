@@ -1,6 +1,7 @@
 package org.typesense.api;
 
 import junit.framework.TestCase;
+import org.junit.Assert;
 import org.typesense.api.exceptions.TypesenseError;
 import org.typesense.model.*;
 
@@ -121,7 +122,9 @@ public class DocumentsTest extends TestCase {
         documentList.add(document2);
 
         queryParameters.action("create");
-        System.out.println(this.client.collections("books").documents().import_(documentList, queryParameters));
+        String countriesImport = this.client.collections("books").documents().import_(documentList, queryParameters);
+        System.out.println(countriesImport);
+        Assert.assertFalse(countriesImport.contains("\"success\":false"));
     }
 
     public void testImportAsString() throws Exception {
@@ -129,7 +132,9 @@ public class DocumentsTest extends TestCase {
         queryParameters.action("create");
         String documentList = "{\"countryName\": \"India\", \"capital\": \"Washington\", \"gdp\": 5215}\n" +
                 "{\"countryName\": \"Iran\", \"capital\": \"London\", \"gdp\": 5215}";
-        System.out.println(this.client.collections("books").documents().import_(documentList, queryParameters));
+        String booksImport = this.client.collections("books").documents().import_(documentList, queryParameters);
+        System.out.println(booksImport);
+        Assert.assertFalse(booksImport.contains("\"success\":false"));
     }
 
     public void testExportDocuments() throws Exception {

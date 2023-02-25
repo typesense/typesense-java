@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.*;
+import okio.BufferedSink;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.typesense.api.exceptions.*;
@@ -139,6 +140,30 @@ public class ApiCall {
     <Q, R> R delete(String endpoint, Q queryParameters, Class<R> responseClass) throws Exception {
         Request.Builder rb = new Request.Builder().delete();
         return makeRequest(endpoint, queryParameters, rb, responseClass);
+    }
+
+    <B, Q, R> R postBulkImport(String endpoint, B body, Q queryParameters, Class<R> responseClass) throws Exception {
+        RequestBody requestBody = getRequestBodyForBulkImport(body);
+        Request.Builder rb = new Request.Builder().post(requestBody);
+        return makeRequest(endpoint, queryParameters, rb, responseClass);
+    }
+
+    private <B> RequestBody getRequestBodyForBulkImport(B body) {
+        return new RequestBody() {
+            @java.lang.Override
+            public void writeTo(BufferedSink bufferedSink) throws IOException {
+                // Write each JSON object as a separate line in the request body
+                String[] lines = body.toString().split("\n");
+                for (String line : lines) {
+                    bufferedSink.writeUtf8(line + "\n");
+                }
+            }
+
+            @java.lang.Override
+            public MediaType contentType() {
+                return MediaType.parse("application/json");
+            }
+        };
     }
 
     <Q, T> T makeRequest(String endpoint, Q queryParameters, Request.Builder requestBuilder,
