@@ -13,7 +13,7 @@ repositories {
 }
 
 group = 'org.typesense'
-version = '0.0.9-beta4'
+version = '0.0.9-beta6'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -23,12 +23,14 @@ shadowJar {
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
 
     manifest {
-        attributes "Main-Class": "org.typesense.api.Client"
+        attributes(
+            "Main-Class": "org.typesense.api.Client",
+            "Multi-Release": "true"
+        )
     }
 
     // @see https://youtrack.jetbrains.com/issue/KT-25709
     exclude("**/*.kotlin_metadata")
-    exclude("**/*.kotlin_builtins")
 
     // remove suffix `-all` as intellij can't find the library otherwise
     archiveClassifier.set("")
@@ -66,10 +68,9 @@ check.dependsOn integrationTest
 
 dependencies {
     implementation "javax.xml.bind:jaxb-api:2.3.1"
-    implementation "org.apache.logging.log4j:log4j-api:2.19.0"
-    implementation "org.apache.logging.log4j:log4j-core:2.19.0"
+    implementation "com.fasterxml.jackson.core:jackson-databind:2.14.1"
     implementation "io.swagger.core.v3:swagger-annotations:2.0.0"
-    implementation "com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.14.1"
+    implementation "org.apache.logging.log4j:log4j-core:2.19.0"
     implementation "com.squareup.okhttp3:okhttp:4.9.1"
 
     testImplementation "junit:junit:4.12"

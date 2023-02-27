@@ -136,6 +136,12 @@ public class ApiCall {
         return makeRequest(endpoint, queryParameters, rb, responseClass);
     }
 
+    <Q, R> R post(String endpoint, String body, Q queryParameters, Class<R> responseClass) throws Exception {
+        RequestBody requestBody = RequestBody.create(body, JSON);
+        Request.Builder rb = new Request.Builder().post(requestBody);
+        return makeRequest(endpoint, queryParameters, rb, responseClass);
+    }
+
     <Q, R> R delete(String endpoint, Q queryParameters, Class<R> responseClass) throws Exception {
         Request.Builder rb = new Request.Builder().delete();
         return makeRequest(endpoint, queryParameters, rb, responseClass);

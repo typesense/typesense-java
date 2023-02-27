@@ -7,6 +7,9 @@ public final class FieldTypes {
     public static final String FLOAT = "float";
     public static final String BOOL = "bool";
 
+    public static final String OBJECT = "object";
+    public static final String OBJECT_ARRAY = "object[]";
+
     public static final String STRING_ARRAY = "string[]";
     public static final String INT32_ARRAY = "int32[]";
     public static final String INT64_ARRAY = "int64[]";

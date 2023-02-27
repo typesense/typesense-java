@@ -3,7 +3,10 @@ package org.typesense.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.typesense.model.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Collection;
 
 public class Documents {
 
@@ -58,19 +61,21 @@ public class Documents {
             return this.apiCall.post(this.getEndPoint("import"),document, queryParameters,String.class);
     }
 
-    public String import_(java.util.Collection<Map<String, Object>> documents, ImportDocumentsParameters queryParameters) throws Exception {
+    public String import_(Collection<?> documents,
+                          ImportDocumentsParameters queryParameters) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        String json="";
-        for(Map<String, Object> document : documents){
+        List<String> jsonLines = new ArrayList<>();
+
+        for (Object document : documents) {
             try {
-                //Convert Map to JSON
-                json = json.concat(mapper.writeValueAsString(document) + "\n");
+                jsonLines.add(mapper.writeValueAsString(document));
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        json = json.trim();
-        return this.apiCall.post(this.getEndPoint("import"),json,queryParameters, String.class);
+
+        String reqBody = String.join("\n", jsonLines);
+        return this.apiCall.post(this.getEndPoint("import"), reqBody, queryParameters, String.class);
     }
 
     public String getEndPoint(String target){
