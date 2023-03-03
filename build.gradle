@@ -13,7 +13,7 @@ repositories {
 }
 
 group = 'org.typesense'
-version = '0.0.9-beta6'
+version = '0.0.9-beta9'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
