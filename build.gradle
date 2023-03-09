@@ -1,5 +1,3 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
 plugins {
     id 'java'
     id 'signing'
@@ -13,27 +11,17 @@ repositories {
 }
 
 group = 'org.typesense'
-version = '0.0.9-beta9'
+version = '0.0.10'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-shadowJar {
-    archiveBaseName.set("typesense-java")
-    mergeServiceFiles()
-    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
-
+jar {
     manifest {
         attributes(
             "Main-Class": "org.typesense.api.Client",
             "Multi-Release": "true"
         )
     }
-
-    // @see https://youtrack.jetbrains.com/issue/KT-25709
-    exclude("**/*.kotlin_metadata")
-
-    // remove suffix `-all` as intellij can't find the library otherwise
-    archiveClassifier.set("")
 }
 
 sourceSets {
