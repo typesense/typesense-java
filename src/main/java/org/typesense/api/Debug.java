@@ -11,7 +11,7 @@ public class Debug {
         this.apiCall = apiCall;
     }
 
-    public Map<String, String> retrieve() throws Exception {
+    public Map<String, Object> retrieve() throws Exception {
         return this.apiCall.get(RESOURCEPATH, null, Map.class);
     }
 }
