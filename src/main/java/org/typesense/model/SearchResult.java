@@ -36,9 +36,9 @@ public class SearchResult   {
   **/
   private Integer searchTimeMs = null;
   
-  @Schema(description = "The total number of pages")
+  @Schema(description = "The total number of documents in the collection")
  /**
-   * The total number of pages  
+   * The total number of documents in the collection  
   **/
   private Integer outOf = null;
   
@@ -125,7 +125,7 @@ public class SearchResult   {
   }
 
  /**
-   * The total number of pages
+   * The total number of documents in the collection
    * @return outOf
   **/
   @JsonProperty("out_of")

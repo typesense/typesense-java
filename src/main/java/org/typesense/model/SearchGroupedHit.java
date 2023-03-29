@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 public class SearchGroupedHit   {
   
   @Schema(required = true, description = "")
-  private List<String> groupKey = new ArrayList<String>();
+  private List<Object> groupKey = new ArrayList<Object>();
   
   @Schema(required = true, description = "The documents that matched the search query")
  /**
@@ -31,20 +31,20 @@ public class SearchGroupedHit   {
    * @return groupKey
   **/
   @JsonProperty("group_key")
-  public List<String> getGroupKey() {
+  public List<Object> getGroupKey() {
     return groupKey;
   }
 
-  public void setGroupKey(List<String> groupKey) {
+  public void setGroupKey(List<Object> groupKey) {
     this.groupKey = groupKey;
   }
 
-  public SearchGroupedHit groupKey(List<String> groupKey) {
+  public SearchGroupedHit groupKey(List<Object> groupKey) {
     this.groupKey = groupKey;
     return this;
   }
 
-  public SearchGroupedHit addGroupKeyItem(String groupKeyItem) {
+  public SearchGroupedHit addGroupKeyItem(Object groupKeyItem) {
     this.groupKey.add(groupKeyItem);
     return this;
   }

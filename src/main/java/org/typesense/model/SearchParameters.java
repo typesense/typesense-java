@@ -91,7 +91,7 @@ public class SearchParameters   {
  /**
    * The number of typographical errors (1 or 2) that would be tolerated. Default: 2   
   **/
-  private Integer numTypos = null;
+  private String numTypos = null;
   
   @Schema(description = "Results from this specific page number would be fetched.")
  /**
@@ -481,15 +481,15 @@ public class SearchParameters   {
    * @return numTypos
   **/
   @JsonProperty("num_typos")
-  public Integer getNumTypos() {
+  public String getNumTypos() {
     return numTypos;
   }
 
-  public void setNumTypos(Integer numTypos) {
+  public void setNumTypos(String numTypos) {
     this.numTypos = numTypos;
   }
 
-  public SearchParameters numTypos(Integer numTypos) {
+  public SearchParameters numTypos(String numTypos) {
     this.numTypos = numTypos;
     return this;
   }

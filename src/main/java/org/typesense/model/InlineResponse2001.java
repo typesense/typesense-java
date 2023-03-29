@@ -15,23 +15,26 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 public class InlineResponse2001   {
   
-  @Schema(description = "")
-  private String version = null;
+  @Schema(example = "1", required = true, description = "The number of documents that have been updated")
  /**
-   * Get version
-   * @return version
+   * The number of documents that have been updated  
   **/
-  @JsonProperty("version")
-  public String getVersion() {
-    return version;
+  private Integer numUpdated = null;
+ /**
+   * The number of documents that have been updated
+   * @return numUpdated
+  **/
+  @JsonProperty("num_updated")
+  public Integer getNumUpdated() {
+    return numUpdated;
   }
 
-  public void setVersion(String version) {
-    this.version = version;
+  public void setNumUpdated(Integer numUpdated) {
+    this.numUpdated = numUpdated;
   }
 
-  public InlineResponse2001 version(String version) {
-    this.version = version;
+  public InlineResponse2001 numUpdated(Integer numUpdated) {
+    this.numUpdated = numUpdated;
     return this;
   }
 
@@ -41,7 +44,7 @@ public class InlineResponse2001   {
     StringBuilder sb = new StringBuilder();
     sb.append("class InlineResponse2001 {\n");
     
-    sb.append("    version: ").append(toIndentedString(version)).append("\n");
+    sb.append("    numUpdated: ").append(toIndentedString(numUpdated)).append("\n");
     sb.append("}");
     return sb.toString();
   }
