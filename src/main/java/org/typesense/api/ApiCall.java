@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.typesense.api.exceptions.*;
 import org.typesense.model.ErrorResponse;
 import org.typesense.resources.Node;
@@ -30,7 +30,7 @@ public class ApiCall {
     private static int nodeIndex = 0;
 
     private static final String API_KEY_HEADER = "X-TYPESENSE-API-KEY";
-    private static final Logger logger = LogManager.getLogger(ApiCall.class);
+    private static final Logger logger = LoggerFactory.getLogger(ApiCall.class);
     private final OkHttpClient client;
     private final String apiKey;
     private final Duration retryInterval;
@@ -150,7 +150,6 @@ public class ApiCall {
     <Q, T> T makeRequest(String endpoint, Q queryParameters, Request.Builder requestBuilder,
                          Class<T> responseClass) throws Exception {
         int num_tries = 0;
-        Logger logger = LogManager.getLogger(ApiCall.class);
         Exception lastException = new TypesenseError("Unknown client error", 400);
 
         while (num_tries < this.configuration.numRetries) {
@@ -193,12 +192,14 @@ public class ApiCall {
 
                 this.setNodeHealthStatus(node, false);
                 lastException = e;
-                logger.trace("Request to " + node.host + " failed because: " + e.getMessage());
-                logger.trace("Sleeping for " + this.retryInterval.getSeconds() + "s and then retrying request");
+
+                logger.debug("Request to " + node.host + " failed because: " + e.getMessage());
+                logger.debug("Sleeping for " + this.retryInterval.getSeconds() + "s and then retrying request");
+
                 try {
                     Thread.sleep(this.retryInterval.getSeconds() * 1000);
-                } catch (InterruptedException interruptedException) {
-                    logger.error("Error while sleeping.", interruptedException);
+                } catch (InterruptedException ignored) {
+
                 }
             }
         }

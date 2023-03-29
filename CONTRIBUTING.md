@@ -22,7 +22,10 @@ Before making a PR to this repository look out for the following guidelines.
   ```
 - Run the following command:
   ```bash
-  java -jar swagger-codegen-cli-3.0.20.jar generate -i <path-to-spec> -l jaxrs-cxf-client -c <path-to-config.json> -o <out-dir>
+  java --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.net=ALL-UNNAMED \
+  --add-opens java.base/java.lang.reflect=ALL-UNNAMED --add-opens java.base/java.text=ALL-UNNAMED \
+  --add-opens java.desktop/java.awt.font=ALL-UNNAMED -jar ~/apps/swagger-codegen-cli-3.0.20.jar generate \
+  -i /path/to/typesense-api-spec/openapi.yml -l jaxrs-cxf-client -c config.json -o /tmp/model
   ```
 - Now, copy the content under ```<out-dir>/src/gen/java/org/typesense/model``` and replace it with the content of the ```typesense-java/src/main/java/org/typesense/model``` folder in the `typesense-java` client repository.
 - And then make the necessary changes in `api` folder.
