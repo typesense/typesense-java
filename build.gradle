@@ -22,6 +22,8 @@ jar {
             "Multi-Release": "true"
         )
     }
+
+    exclude "META-INF/DEPENDENCIES"
 }
 
 sourceSets {
