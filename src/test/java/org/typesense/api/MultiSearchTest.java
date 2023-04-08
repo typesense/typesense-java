@@ -1,8 +1,8 @@
 package org.typesense.api;
 
 import junit.framework.TestCase;
-import org.typesense.model.CollectionSchema;
-import org.typesense.model.Field;
+import org.junit.Assert;
+import org.typesense.model.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,26 +17,23 @@ public class MultiSearchTest extends TestCase {
     public void setUp() throws Exception {
         super.setUp();
         helper = new Helper();
-        helper.teardown();
         client = helper.getClient();
-        helper.createTestCollection();
-        helper.createTestDocument();
 
-        ArrayList<Field> fields = new ArrayList<>();
-        fields.add(new Field().name(".*").type(FieldTypes.AUTO).optional(true));
+        helper.teardown();
+
+        // create a collection with 2 fields: title and vec to store embeddings
+        List<Field> fields = new ArrayList<>();
+        fields.add(new Field().name("title").type(FieldTypes.STRING));
+        fields.add(new Field().name("vec").type(FieldTypes.FLOAT_ARRAY).numDim(4));
         CollectionSchema collectionSchema = new CollectionSchema();
-        collectionSchema.name("brands").fields(fields);
+        collectionSchema.name("embeddings").fields(fields);
         client.collections().create(collectionSchema);
 
-        String[] authors = {"shakspeare","william"};
-        Map<String, Object> hmap = new HashMap<>();
-        hmap.put("title","Romeo and juliet");
-        hmap.put("authors",authors);
-        hmap.put("publication_year",1666);
-        hmap.put("ratings_count",124);
-        hmap.put("average_rating",3.2);
-        hmap.put("id","1");
-        client.collections("brands").documents().create(hmap);
+        float[] vecVals = {0.12f, 0.45f, 0.87f, 0.18f};
+        Map<String, Object> doc = new HashMap<>();
+        doc.put("title", "Romeo and Juliet");
+        doc.put("vec",vecVals);
+        client.collections("embeddings").documents().create(doc);
     }
 
     public void tearDown() throws Exception {
@@ -45,33 +42,15 @@ public class MultiSearchTest extends TestCase {
     }
 
     public void testSearch() throws Exception {
-        Map<String,String > val1 = new HashMap<>();
-        Map<String,String > val2 = new HashMap<>();
+        MultiSearchCollectionParameters search1 = new MultiSearchCollectionParameters();
+        search1.setCollection("embeddings");
+        search1.setQ("*");
+        search1.setVectorQuery("vec:([0.96826,0.94,0.39557,0.306488], k:10)");
 
-        val1.put("collection","books");
-        val1.put("q","romeo");
-
-        val2.put("collection","brands");
-        val2.put("q","juliet");
-
-        List<Map<String, String>> list = new ArrayList<>();
-        list.add(val2);
-        list.add(val1);
-
-        Map<String, List<Map<String ,String>>> map = new HashMap<>();
-        map.put("searches",list);
-
-        /*ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            String json = objectMapper.writeValueAsString(maplist);
-            System.out.println(json);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }*/
-        Map<String,String> common_params = new HashMap<>();
-        common_params.put("query_by","title");
-
-        System.out.println(this.client.multiSearch.perform(map, common_params));
+        MultiSearchSearchesParameter multiSearchParameters = new MultiSearchSearchesParameter().addSearchesItem(search1);
+        MultiSearchResponse response = this.client.multiSearch.perform(multiSearchParameters, null);
+        Assert.assertEquals(1, response.getResults().size());
+        Assert.assertEquals(1, response.getResults().get(0).getHits().size());
+        Assert.assertEquals("0", response.getResults().get(0).getHits().get(0).getDocument().get("id"));
     }
-
 }
