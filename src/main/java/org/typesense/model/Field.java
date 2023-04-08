@@ -39,6 +39,9 @@ public class Field   {
   @Schema(example = "true", description = "")
   private Boolean infix = false;
   
+  @Schema(example = "256", description = "")
+  private Integer numDim = null;
+  
   @Schema(example = "true", description = "")
   private Boolean drop = null;
  /**
@@ -186,6 +189,24 @@ public class Field   {
   }
 
  /**
+   * Get numDim
+   * @return numDim
+  **/
+  @JsonProperty("num_dim")
+  public Integer getNumDim() {
+    return numDim;
+  }
+
+  public void setNumDim(Integer numDim) {
+    this.numDim = numDim;
+  }
+
+  public Field numDim(Integer numDim) {
+    this.numDim = numDim;
+    return this;
+  }
+
+ /**
    * Get drop
    * @return drop
   **/
@@ -217,6 +238,7 @@ public class Field   {
     sb.append("    locale: ").append(toIndentedString(locale)).append("\n");
     sb.append("    sort: ").append(toIndentedString(sort)).append("\n");
     sb.append("    infix: ").append(toIndentedString(infix)).append("\n");
+    sb.append("    numDim: ").append(toIndentedString(numDim)).append("\n");
     sb.append("    drop: ").append(toIndentedString(drop)).append("\n");
     sb.append("}");
     return sb.toString();

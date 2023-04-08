@@ -96,7 +96,7 @@ public class MultiSearchParameters   {
  /**
    * The number of typographical errors (1 or 2) that would be tolerated. Default: 2   
   **/
-  private Integer numTypos = null;
+  private String numTypos = null;
   
   @Schema(description = "Results from this specific page number would be fetched.")
  /**
@@ -247,6 +247,12 @@ public class MultiSearchParameters   {
    * Minimum word length for 2-typo correction to be applied.  The value of num_typos is still treated as the maximum allowed typos.   
   **/
   private Integer minLen2typo = null;
+  
+  @Schema(description = "Vector query expression for fetching documents \"closest\" to a given query/document vector. ")
+ /**
+   * Vector query expression for fetching documents \"closest\" to a given query/document vector.   
+  **/
+  private String vectorQuery = null;
  /**
    * The query text to search for in the collection. Use * as the search string to return all documents. This is typically useful when used in conjunction with filter_by.
    * @return q
@@ -468,15 +474,15 @@ public class MultiSearchParameters   {
    * @return numTypos
   **/
   @JsonProperty("num_typos")
-  public Integer getNumTypos() {
+  public String getNumTypos() {
     return numTypos;
   }
 
-  public void setNumTypos(Integer numTypos) {
+  public void setNumTypos(String numTypos) {
     this.numTypos = numTypos;
   }
 
-  public MultiSearchParameters numTypos(Integer numTypos) {
+  public MultiSearchParameters numTypos(String numTypos) {
     this.numTypos = numTypos;
     return this;
   }
@@ -931,6 +937,24 @@ public class MultiSearchParameters   {
     return this;
   }
 
+ /**
+   * Vector query expression for fetching documents \&quot;closest\&quot; to a given query/document vector. 
+   * @return vectorQuery
+  **/
+  @JsonProperty("vector_query")
+  public String getVectorQuery() {
+    return vectorQuery;
+  }
+
+  public void setVectorQuery(String vectorQuery) {
+    this.vectorQuery = vectorQuery;
+  }
+
+  public MultiSearchParameters vectorQuery(String vectorQuery) {
+    this.vectorQuery = vectorQuery;
+    return this;
+  }
+
 
   @Override
   public String toString() {
@@ -975,6 +999,7 @@ public class MultiSearchParameters   {
     sb.append("    cacheTtl: ").append(toIndentedString(cacheTtl)).append("\n");
     sb.append("    minLen1typo: ").append(toIndentedString(minLen1typo)).append("\n");
     sb.append("    minLen2typo: ").append(toIndentedString(minLen2typo)).append("\n");
+    sb.append("    vectorQuery: ").append(toIndentedString(vectorQuery)).append("\n");
     sb.append("}");
     return sb.toString();
   }

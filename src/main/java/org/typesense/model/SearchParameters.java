@@ -153,6 +153,12 @@ public class SearchParameters   {
   **/
   private String highlightEndTag = null;
   
+  @Schema(description = "Flag for enabling/disabling the deprecated, old highlight structure in the response. Default: true ")
+ /**
+   * Flag for enabling/disabling the deprecated, old highlight structure in the response. Default: true   
+  **/
+  private Boolean enableHighlightV1 = true;
+  
   @Schema(description = "Field values under this length will be fully highlighted, instead of showing a snippet of relevant portion. Default: 30 ")
  /**
    * Field values under this length will be fully highlighted, instead of showing a snippet of relevant portion. Default: 30   
@@ -260,6 +266,12 @@ public class SearchParameters   {
    * Minimum word length for 2-typo correction to be applied.  The value of num_typos is still treated as the maximum allowed typos.   
   **/
   private Integer minLen2typo = null;
+  
+  @Schema(description = "Vector query expression for fetching documents \"closest\" to a given query/document vector. ")
+ /**
+   * Vector query expression for fetching documents \"closest\" to a given query/document vector.   
+  **/
+  private String vectorQuery = null;
  /**
    * The query text to search for in the collection. Use * as the search string to return all documents. This is typically useful when used in conjunction with filter_by.
    * @return q
@@ -675,6 +687,24 @@ public class SearchParameters   {
   }
 
  /**
+   * Flag for enabling/disabling the deprecated, old highlight structure in the response. Default: true 
+   * @return enableHighlightV1
+  **/
+  @JsonProperty("enable_highlight_v1")
+  public Boolean isEnableHighlightV1() {
+    return enableHighlightV1;
+  }
+
+  public void setEnableHighlightV1(Boolean enableHighlightV1) {
+    this.enableHighlightV1 = enableHighlightV1;
+  }
+
+  public SearchParameters enableHighlightV1(Boolean enableHighlightV1) {
+    this.enableHighlightV1 = enableHighlightV1;
+    return this;
+  }
+
+ /**
    * Field values under this length will be fully highlighted, instead of showing a snippet of relevant portion. Default: 30 
    * @return snippetThreshold
   **/
@@ -998,6 +1028,24 @@ public class SearchParameters   {
     return this;
   }
 
+ /**
+   * Vector query expression for fetching documents \&quot;closest\&quot; to a given query/document vector. 
+   * @return vectorQuery
+  **/
+  @JsonProperty("vector_query")
+  public String getVectorQuery() {
+    return vectorQuery;
+  }
+
+  public void setVectorQuery(String vectorQuery) {
+    this.vectorQuery = vectorQuery;
+  }
+
+  public SearchParameters vectorQuery(String vectorQuery) {
+    this.vectorQuery = vectorQuery;
+    return this;
+  }
+
 
   @Override
   public String toString() {
@@ -1027,6 +1075,7 @@ public class SearchParameters   {
     sb.append("    highlightAffixNumTokens: ").append(toIndentedString(highlightAffixNumTokens)).append("\n");
     sb.append("    highlightStartTag: ").append(toIndentedString(highlightStartTag)).append("\n");
     sb.append("    highlightEndTag: ").append(toIndentedString(highlightEndTag)).append("\n");
+    sb.append("    enableHighlightV1: ").append(toIndentedString(enableHighlightV1)).append("\n");
     sb.append("    snippetThreshold: ").append(toIndentedString(snippetThreshold)).append("\n");
     sb.append("    dropTokensThreshold: ").append(toIndentedString(dropTokensThreshold)).append("\n");
     sb.append("    typoTokensThreshold: ").append(toIndentedString(typoTokensThreshold)).append("\n");
@@ -1045,6 +1094,7 @@ public class SearchParameters   {
     sb.append("    cacheTtl: ").append(toIndentedString(cacheTtl)).append("\n");
     sb.append("    minLen1typo: ").append(toIndentedString(minLen1typo)).append("\n");
     sb.append("    minLen2typo: ").append(toIndentedString(minLen2typo)).append("\n");
+    sb.append("    vectorQuery: ").append(toIndentedString(vectorQuery)).append("\n");
     sb.append("}");
     return sb.toString();
   }

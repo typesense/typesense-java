@@ -32,6 +32,18 @@ public class SearchHighlight   {
   **/
   private List<String> snippets = null;
   
+  @Schema(example = "<mark>Stark</mark> Industries is a major supplier of space equipment.", description = "Full field value with highlighting, present only for (non-array) string fields")
+ /**
+   * Full field value with highlighting, present only for (non-array) string fields  
+  **/
+  private String value = null;
+  
+  @Schema(example = "[\"<mark>Stark</mark> Industries\",\"<mark>Stark</mark> Corp\"]", description = "Full field value with highlighting, present only for (array) string[] fields")
+ /**
+   * Full field value with highlighting, present only for (array) string[] fields  
+  **/
+  private List<String> values = null;
+  
   @Schema(example = "1", description = "The indices property will be present only for string[] fields and will contain the corresponding indices of the snippets in the search field")
  /**
    * The indices property will be present only for string[] fields and will contain the corresponding indices of the snippets in the search field  
@@ -100,6 +112,47 @@ public class SearchHighlight   {
   }
 
  /**
+   * Full field value with highlighting, present only for (non-array) string fields
+   * @return value
+  **/
+  @JsonProperty("value")
+  public String getValue() {
+    return value;
+  }
+
+  public void setValue(String value) {
+    this.value = value;
+  }
+
+  public SearchHighlight value(String value) {
+    this.value = value;
+    return this;
+  }
+
+ /**
+   * Full field value with highlighting, present only for (array) string[] fields
+   * @return values
+  **/
+  @JsonProperty("values")
+  public List<String> getValues() {
+    return values;
+  }
+
+  public void setValues(List<String> values) {
+    this.values = values;
+  }
+
+  public SearchHighlight values(List<String> values) {
+    this.values = values;
+    return this;
+  }
+
+  public SearchHighlight addValuesItem(String valuesItem) {
+    this.values.add(valuesItem);
+    return this;
+  }
+
+ /**
    * The indices property will be present only for string[] fields and will contain the corresponding indices of the snippets in the search field
    * @return indices
   **/
@@ -154,6 +207,8 @@ public class SearchHighlight   {
     sb.append("    field: ").append(toIndentedString(field)).append("\n");
     sb.append("    snippet: ").append(toIndentedString(snippet)).append("\n");
     sb.append("    snippets: ").append(toIndentedString(snippets)).append("\n");
+    sb.append("    value: ").append(toIndentedString(value)).append("\n");
+    sb.append("    values: ").append(toIndentedString(values)).append("\n");
     sb.append("    indices: ").append(toIndentedString(indices)).append("\n");
     sb.append("    matchedTokens: ").append(toIndentedString(matchedTokens)).append("\n");
     sb.append("}");

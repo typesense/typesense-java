@@ -20,11 +20,17 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 public class SearchResultHit   {
   
-  @Schema(description = "Contains highlighted portions of the search fields")
+  @Schema(description = "(Deprecated) Contains highlighted portions of the search fields")
  /**
-   * Contains highlighted portions of the search fields  
+   * (Deprecated) Contains highlighted portions of the search fields  
   **/
   private List<SearchHighlight> highlights = null;
+  
+  @Schema(description = "Highlighted version of the matching document")
+ /**
+   * Highlighted version of the matching document  
+  **/
+  private Map<String, Object> highlight = null;
   
   @Schema(description = "Can be any key-value pair")
  /**
@@ -40,8 +46,14 @@ public class SearchResultHit   {
    * Can be any key-value pair  
   **/
   private Map<String, Integer> geoDistanceMeters = null;
+  
+  @Schema(description = "Distance between the query vector and matching document's vector value")
  /**
-   * Contains highlighted portions of the search fields
+   * Distance between the query vector and matching document's vector value  
+  **/
+  private Float vectorDistance = null;
+ /**
+   * (Deprecated) Contains highlighted portions of the search fields
    * @return highlights
   **/
   @JsonProperty("highlights")
@@ -60,6 +72,29 @@ public class SearchResultHit   {
 
   public SearchResultHit addHighlightsItem(SearchHighlight highlightsItem) {
     this.highlights.add(highlightsItem);
+    return this;
+  }
+
+ /**
+   * Highlighted version of the matching document
+   * @return highlight
+  **/
+  @JsonProperty("highlight")
+  public Map<String, Object> getHighlight() {
+    return highlight;
+  }
+
+  public void setHighlight(Map<String, Object> highlight) {
+    this.highlight = highlight;
+  }
+
+  public SearchResultHit highlight(Map<String, Object> highlight) {
+    this.highlight = highlight;
+    return this;
+  }
+
+  public SearchResultHit putHighlightItem(String key, Object highlightItem) {
+    this.highlight.put(key, highlightItem);
     return this;
   }
 
@@ -127,6 +162,24 @@ public class SearchResultHit   {
     return this;
   }
 
+ /**
+   * Distance between the query vector and matching document&#x27;s vector value
+   * @return vectorDistance
+  **/
+  @JsonProperty("vector_distance")
+  public Float getVectorDistance() {
+    return vectorDistance;
+  }
+
+  public void setVectorDistance(Float vectorDistance) {
+    this.vectorDistance = vectorDistance;
+  }
+
+  public SearchResultHit vectorDistance(Float vectorDistance) {
+    this.vectorDistance = vectorDistance;
+    return this;
+  }
+
 
   @Override
   public String toString() {
@@ -134,9 +187,11 @@ public class SearchResultHit   {
     sb.append("class SearchResultHit {\n");
     
     sb.append("    highlights: ").append(toIndentedString(highlights)).append("\n");
+    sb.append("    highlight: ").append(toIndentedString(highlight)).append("\n");
     sb.append("    document: ").append(toIndentedString(document)).append("\n");
     sb.append("    textMatch: ").append(toIndentedString(textMatch)).append("\n");
     sb.append("    geoDistanceMeters: ").append(toIndentedString(geoDistanceMeters)).append("\n");
+    sb.append("    vectorDistance: ").append(toIndentedString(vectorDistance)).append("\n");
     sb.append("}");
     return sb.toString();
   }
