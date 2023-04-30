@@ -1,21 +1,28 @@
 package org.typesense.api;
 
-import junit.framework.TestCase;
-import org.junit.Assert;
-import org.typesense.model.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.typesense.model.CollectionSchema;
+import org.typesense.model.Field;
+import org.typesense.model.MultiSearchCollectionParameters;
+import org.typesense.model.MultiSearchResponse;
+import org.typesense.model.MultiSearchSearchesParameter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
-public class MultiSearchTest extends TestCase {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class MultiSearchTest {
 
     private Client client;
     private Helper helper;
 
-    public void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         helper = new Helper();
         client = helper.getClient();
 
@@ -32,16 +39,17 @@ public class MultiSearchTest extends TestCase {
         float[] vecVals = {0.12f, 0.45f, 0.87f, 0.18f};
         Map<String, Object> doc = new HashMap<>();
         doc.put("title", "Romeo and Juliet");
-        doc.put("vec",vecVals);
+        doc.put("vec", vecVals);
         client.collections("embeddings").documents().create(doc);
     }
 
-    public void tearDown() throws Exception {
-        super.tearDown();
+    @AfterEach
+    void tearDown() throws Exception {
         helper.teardown();
     }
 
-    public void testSearch() throws Exception {
+    @Test
+    void testSearch() throws Exception {
         MultiSearchCollectionParameters search1 = new MultiSearchCollectionParameters();
         search1.setCollection("embeddings");
         search1.setQ("*");
@@ -49,8 +57,8 @@ public class MultiSearchTest extends TestCase {
 
         MultiSearchSearchesParameter multiSearchParameters = new MultiSearchSearchesParameter().addSearchesItem(search1);
         MultiSearchResponse response = this.client.multiSearch.perform(multiSearchParameters, null);
-        Assert.assertEquals(1, response.getResults().size());
-        Assert.assertEquals(1, response.getResults().get(0).getHits().size());
-        Assert.assertEquals("0", response.getResults().get(0).getHits().get(0).getDocument().get("id"));
+        assertEquals(1, response.getResults().size());
+        assertEquals(1, response.getResults().get(0).getHits().size());
+        assertEquals("0", response.getResults().get(0).getHits().get(0).getDocument().get("id"));
     }
 }

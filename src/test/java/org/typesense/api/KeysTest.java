@@ -1,7 +1,8 @@
 package org.typesense.api;
 
-import junit.framework.TestCase;
-import org.typesense.api.exceptions.TypesenseError;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.typesense.model.ApiKey;
 import org.typesense.model.ApiKeySchema;
 
@@ -9,15 +10,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class KeysTest extends TestCase {
+class KeysTest {
 
     private Client client;
     private Helper helper;
     private String testKey;
     private Long id;
 
-    public void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         helper = new Helper();
         helper.teardown();
         client = helper.getClient();
@@ -26,12 +27,13 @@ public class KeysTest extends TestCase {
         id = key.getId();
     }
 
-    public void tearDown() throws Exception {
-        super.tearDown();
+    @AfterEach
+    void tearDown() throws Exception {
         helper.teardown();
     }
 
-    public void testCreate() throws Exception {
+    @Test
+    void testCreate() throws Exception {
         ApiKeySchema apiKeySchema = new ApiKeySchema();
         List<String> actionValues = new ArrayList<>();
         List<String> collectionValues = new ArrayList<>();
@@ -44,7 +46,8 @@ public class KeysTest extends TestCase {
         System.out.println(client.keys().create(apiKeySchema));
     }
 
-    public void testCreateSearchOnly() throws Exception {
+    @Test
+    void testCreateSearchOnly() throws Exception {
         ApiKeySchema apiKeySchema = new ApiKeySchema();
         List<String> actionValues = new ArrayList<>();
         List<String> collectionValues = new ArrayList<>();
@@ -57,19 +60,23 @@ public class KeysTest extends TestCase {
         System.out.println(this.client.keys().create(apiKeySchema));
     }
 
-    public void testRetrieve() throws Exception {
+    @Test
+    void testRetrieve() throws Exception {
         System.out.println(this.client.keys(id).retrieve());
     }
 
-    public void testRetrieveAll() throws Exception {
+    @Test
+    void testRetrieveAll() throws Exception {
         System.out.println(client.keys().retrieve());
     }
 
-    public void testDelete() throws Exception {
+    @Test
+    void testDelete() throws Exception {
         System.out.println(this.client.keys(id).delete());
     }
 
-    public void testScopedKey(){
+    @Test
+    void testScopedKey(){
         HashMap<String, Object> parameters = new HashMap<>();
         parameters.put("filter_by", "company_id:124");
         System.out.println(this.client.keys().generateScopedSearchKey(testKey,parameters));

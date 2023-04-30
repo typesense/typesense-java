@@ -1,7 +1,8 @@
 package org.typesense.api;
 
-import junit.framework.TestCase;
-import org.typesense.api.exceptions.TypesenseError;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.typesense.model.SearchOverrideExclude;
 import org.typesense.model.SearchOverrideInclude;
 import org.typesense.model.SearchOverrideRule;
@@ -10,13 +11,13 @@ import org.typesense.model.SearchOverrideSchema;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OverridesTest extends TestCase {
+class OverridesTest {
 
     private Client client;
     private Helper helper;
 
-    public void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         helper = new Helper();
         helper.teardown();
         client = helper.getClient();
@@ -24,12 +25,13 @@ public class OverridesTest extends TestCase {
         helper.createTestOverrirde();
     }
 
-    public void tearDown() throws Exception {
-        super.tearDown();
+    @AfterEach
+    void tearDown() throws Exception {
         helper.teardown();
     }
 
-    public void testUpsert() throws Exception {
+    @Test
+    void testUpsert() throws Exception {
         SearchOverrideSchema searchOverrideSchema = new SearchOverrideSchema();
 
         List<SearchOverrideInclude> searchOverrideIncludes = new ArrayList<>();
@@ -46,15 +48,18 @@ public class OverridesTest extends TestCase {
         System.out.println(client.collections("books").overrides().upsert("apple", searchOverrideSchema));
     }
 
-    public void testRetrieveAll() throws Exception {
+    @Test
+    void testRetrieveAll() throws Exception {
         System.out.println(this.client.collections("books").overrides().retrieve());
     }
 
-    public void testRetrieve() throws Exception {
+    @Test
+    void testRetrieve() throws Exception {
         System.out.println(this.client.collections("books").overrides("customize-apple").retrieve());
     }
 
-    public void testDelete() throws Exception {
+    @Test
+    void testDelete() throws Exception {
         System.out.println(this.client.collections("books").overrides("customize-apple").delete());
     }
 }
