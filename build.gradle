@@ -2,8 +2,8 @@ plugins {
     id 'java'
     id 'signing'
     id 'maven-publish'
-    id('io.github.gradle-nexus.publish-plugin') version '1.1.0'
-    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id 'io.github.gradle-nexus.publish-plugin' version "${nexusPluginVersion}"
+    id 'com.github.johnrengelman.shadow' version "${shadowJarPluginVersion}"
 }
 
 repositories {
@@ -57,17 +57,23 @@ tasks.register('integrationTest', Test) {
 check.dependsOn integrationTest
 
 dependencies {
-    implementation "javax.xml.bind:jaxb-api:2.3.1"
-    implementation "com.fasterxml.jackson.core:jackson-databind:2.14.1"
-    implementation "io.swagger.core.v3:swagger-annotations:2.0.0"
-    implementation "org.slf4j:slf4j-api:2.0.5"
-    implementation "com.squareup.okhttp3:okhttp:4.9.1"
+    implementation "javax.xml.bind:jaxb-api:${javaxXmlBindVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonCoreVersion}"
+    implementation "io.swagger.core.v3:swagger-annotations:${swaggerCoreV3Version}"
+    implementation "org.slf4j:slf4j-api:${slf4jVersion}"
+    implementation "com.squareup.okhttp3:okhttp:${okhttp3Version}"
 
-    testImplementation "org.slf4j:slf4j-simple:2.0.5"
-    testImplementation "junit:junit:4.12"
-    testImplementation "org.hamcrest:hamcrest-all:1.3"
-    integrationTestImplementation "junit:junit:4.12"
-    integrationTestImplementation "org.hamcrest:hamcrest-all:1.3"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
+    testImplementation "org.hamcrest:hamcrest-all:${hamcrestVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}"
+
+    integrationTestImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
+    integrationTestImplementation "org.hamcrest:hamcrest-all:${hamcrestVersion}"
+    integrationTestRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}"
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
 }
 
 nexusPublishing {
