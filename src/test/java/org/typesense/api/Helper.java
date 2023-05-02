@@ -1,6 +1,18 @@
 package org.typesense.api;
 
-import org.typesense.model.*;
+import org.typesense.model.ApiKey;
+import org.typesense.model.ApiKeySchema;
+import org.typesense.model.ApiKeysResponse;
+import org.typesense.model.CollectionAlias;
+import org.typesense.model.CollectionAliasSchema;
+import org.typesense.model.CollectionAliasesResponse;
+import org.typesense.model.CollectionResponse;
+import org.typesense.model.CollectionSchema;
+import org.typesense.model.Field;
+import org.typesense.model.SearchOverrideInclude;
+import org.typesense.model.SearchOverrideRule;
+import org.typesense.model.SearchOverrideSchema;
+import org.typesense.model.SearchSynonymSchema;
 import org.typesense.resources.Node;
 
 import java.time.Duration;

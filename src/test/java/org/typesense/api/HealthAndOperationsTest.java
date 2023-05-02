@@ -1,49 +1,52 @@
 package org.typesense.api;
 
-import junit.framework.TestCase;
-import org.typesense.api.exceptions.TypesenseError;
-import org.typesense.resources.Node;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
-import java.util.ArrayList;
 import java.util.HashMap;
 
-public class HealthAndOperationsTest extends TestCase {
+class HealthAndOperationsTest {
 
     private Client client;
     private Helper helper;
 
-    public void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         helper = new Helper();
         helper.teardown();
         client = helper.getClient();
     }
 
-    public void tearDown() throws Exception {
-        super.tearDown();
+    @AfterEach
+    void tearDown() throws Exception {
         helper.teardown();
     }
 
-    public void testRetrieve() throws Exception {
+    @Test
+    void testRetrieve() throws Exception {
         System.out.println(this.client.health.retrieve());
     }
 
-    public void testPerformSnapshot() throws Exception {
+    @Test
+    void testPerformSnapshot() throws Exception {
         HashMap<String, String> query = new HashMap<>();
-        query.put("snapshot_path","/tmp/typesense-data-snapshot");
-        System.out.println(client.operations.perform("snapshot",query));
+        query.put("snapshot_path", "/tmp/typesense-data-snapshot");
+        System.out.println(client.operations.perform("snapshot", query));
     }
 
-    public void testPerformVote() throws Exception {
+    @Test
+    void testPerformVote() throws Exception {
         System.out.println(client.operations.perform("vote"));
     }
 
-    public void testMetrics() throws Exception {
+    @Test
+    void testMetrics() throws Exception {
         System.out.println(client.metrics.retrieve());
     }
 
-    public void testDebug() throws Exception {
+    @Test
+    void testDebug() throws Exception {
         System.out.println(client.debug.retrieve());
     }
 }

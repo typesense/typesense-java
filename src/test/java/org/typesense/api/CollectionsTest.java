@@ -1,6 +1,8 @@
 package org.typesense.api;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.typesense.model.CollectionResponse;
 import org.typesense.model.CollectionSchema;
 import org.typesense.model.Field;
@@ -8,42 +10,46 @@ import org.typesense.model.Field;
 import java.util.ArrayList;
 
 
-public class CollectionsTest extends TestCase {
+class CollectionsTest {
 
-    public Client client;
+    Client client;
     private Helper helper;
 
-    public void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         helper = new Helper();
         helper.teardown();
         this.client = helper.getClient();
     }
 
-    public void tearDown() throws Exception {
-        super.tearDown();
+    @AfterEach
+    void tearDown() throws Exception {
         helper.teardown();
     }
 
 
-    public void testRetrieveAllCollections() throws Exception {
+    @Test
+    void testRetrieveAllCollections() throws Exception {
         helper.createTestCollection();
         CollectionResponse[] collectionResponses = client.collections().retrieve();
         for(CollectionResponse c:collectionResponses)
             System.out.println(c);
     }
 
-    public void testRetrieveSingleCollection() throws Exception {
+    @Test
+    void testRetrieveSingleCollection() throws Exception {
         helper.createTestCollection();
         System.out.println(client.collections("books").retrieve());
     }
 
-    public void testDeleteCollection() throws Exception {
+    @Test
+    void testDeleteCollection() throws Exception {
         helper.createTestCollection();
         System.out.println(client.collections("books").delete());
     }
 
-    public void testCreateCollection() throws Exception {
+    @Test
+    void testCreateCollection() throws Exception {
 
         ArrayList<Field> fields = new ArrayList<>();
         fields.add(new Field().name("countryName").type(FieldTypes.STRING));

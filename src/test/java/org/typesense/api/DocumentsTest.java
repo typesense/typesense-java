@@ -1,38 +1,48 @@
 package org.typesense.api;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import junit.framework.TestCase;
-import org.junit.Assert;
-import org.typesense.model.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.typesense.api.exceptions.ObjectNotFound;
+import org.typesense.model.CollectionSchema;
+import org.typesense.model.DeleteDocumentsParameters;
+import org.typesense.model.ExportDocumentsParameters;
+import org.typesense.model.Field;
+import org.typesense.model.ImportDocumentsParameters;
+import org.typesense.model.SearchParameters;
+import org.typesense.model.SearchResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DocumentsTest extends TestCase {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.fail;
 
-    public Client client;
+class DocumentsTest {
+
+    Client client;
     private Helper helper;
 
-    public void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         helper = new Helper();
         this.client = helper.getClient();
         helper.teardown();
         helper.createTestCollection();
     }
 
-    public void testRetrieveDocument() throws Exception {
+    @Test
+    void testRetrieveDocument() throws Exception {
         helper.createTestDocument();
         Map<String, Object> resp = client.collections("books").documents("1").retrieve();
-        Assert.assertEquals(6, resp.size());
-        Assert.assertEquals("1", resp.get("id"));
+        assertEquals(6, resp.size());
+        assertEquals("1", resp.get("id"));
     }
 
-    public void testCreateDocument() throws Exception {
+    @Test
+    void testCreateDocument() throws Exception {
         String[] authors = {"shakspeare", "william"};
         HashMap<String, Object> hmap = new HashMap<>();
         hmap.put("title", "Romeo and juliet");
@@ -46,15 +56,16 @@ public class DocumentsTest extends TestCase {
         hmap.put("id", "1");
 
         Map<String, Object> resp = client.collections("books").documents().create(hmap);
-        Assert.assertEquals(9, resp.size());
-        Assert.assertEquals("1", resp.get("id"));
+        assertEquals(9, resp.size());
+        assertEquals("1", resp.get("id"));
     }
 
-    public void testUpsertDocument() throws Exception {
+    @Test
+    void testUpsertDocument() throws Exception {
         helper.createTestDocument();
 
         Map<String, Object> resp = client.collections("books").documents("1").retrieve();
-        Assert.assertEquals("Romeo and juliet", resp.get("title"));
+        assertEquals("Romeo and juliet", resp.get("title"));
 
         String[] authors = new String[]{"jk", "Rowling"};
         HashMap<String, Object> hmap = new HashMap<>();
@@ -69,16 +80,17 @@ public class DocumentsTest extends TestCase {
         hmap.put("id", "1");
 
         resp = client.collections("books").documents().upsert(hmap);
-        Assert.assertEquals(9, resp.size());
-        Assert.assertEquals("1", resp.get("id"));
-        Assert.assertEquals("harry potter", resp.get("title"));
+        assertEquals(9, resp.size());
+        assertEquals("1", resp.get("id"));
+        assertEquals("harry potter", resp.get("title"));
 
         // try fetching the document back
         resp = client.collections("books").documents("1").retrieve();
-        Assert.assertEquals("harry potter", resp.get("title"));
+        assertEquals("harry potter", resp.get("title"));
     }
 
-    public void testUpdateDocument() throws Exception {
+    @Test
+    void testUpdateDocument() throws Exception {
         helper.createTestDocument();
 
         String[] authors = new String[]{"JK Rowling"};
@@ -91,11 +103,12 @@ public class DocumentsTest extends TestCase {
 
         // try fetching the document back
         Map<String, Object> resp = client.collections("books").documents("1").retrieve();
-        Assert.assertEquals("harry potter", resp.get("title"));
-        Assert.assertEquals(2000, resp.get("publication_year"));
+        assertEquals("harry potter", resp.get("title"));
+        assertEquals(2000, resp.get("publication_year"));
     }
 
-    public void testDeleteDocument() throws Exception {
+    @Test
+    void testDeleteDocument() throws Exception {
         helper.createTestDocument();
         client.collections("books").documents("1").delete();
 
@@ -107,7 +120,8 @@ public class DocumentsTest extends TestCase {
         }
     }
 
-    public void testDeleteDocumentByQuery() throws Exception {
+    @Test
+    void testDeleteDocumentByQuery() throws Exception {
         helper.createTestDocument();
         DeleteDocumentsParameters deleteDocumentsParameters = new DeleteDocumentsParameters();
         deleteDocumentsParameters.filterBy("publication_year:=[1666]");
@@ -121,7 +135,8 @@ public class DocumentsTest extends TestCase {
         }
     }
 
-    public void testSearchDocuments() throws Exception {
+    @Test
+    void testSearchDocuments() throws Exception {
         helper.createTestDocument();
         SearchParameters searchParameters = new SearchParameters()
                 .q("romeo")
@@ -129,11 +144,12 @@ public class DocumentsTest extends TestCase {
                 .prefix("false,true");
 
         SearchResult searchResult = client.collections("books").documents().search(searchParameters);
-        Assert.assertEquals(1, searchResult.getFound().intValue());
-        Assert.assertEquals(1, searchResult.getHits().size());
+        assertEquals(1, searchResult.getFound().intValue());
+        assertEquals(1, searchResult.getHits().size());
     }
 
-    public void testImport() throws Exception {
+    @Test
+    void testImport() throws Exception {
         HashMap<String, Object> document1 = new HashMap<>();
         HashMap<String, Object> document2 = new HashMap<>();
         ImportDocumentsParameters queryParameters = new ImportDocumentsParameters();
@@ -152,28 +168,31 @@ public class DocumentsTest extends TestCase {
 
         String countriesImport = this.client.collections("books").documents()
                 .import_(documentList, queryParameters);
-        Assert.assertFalse(countriesImport.contains("\"success\":false"));
+        assertFalse(countriesImport.contains("\"success\":false"));
     }
 
-    public void testImportAsString() throws Exception {
+    @Test
+    void testImportAsString() throws Exception {
         ImportDocumentsParameters queryParameters = new ImportDocumentsParameters();
         queryParameters.action("create");
         String documentList = "{\"countryName\": \"India\", \"capital\": \"Washington\", \"gdp\": 5215}\n" +
                 "{\"countryName\": \"Iran\", \"capital\": \"London\", \"gdp\": 5215}";
         String booksImport = this.client.collections("books").documents().import_(documentList, queryParameters);
-        Assert.assertFalse(booksImport.contains("\"success\":false"));
+        assertFalse(booksImport.contains("\"success\":false"));
     }
 
-    public void testExportDocuments() throws Exception {
+    @Test
+    void testExportDocuments() throws Exception {
         helper.createTestDocument();
         ExportDocumentsParameters exportDocumentsParameters = new ExportDocumentsParameters();
         exportDocumentsParameters.setExcludeFields("id,publication_year,authors");
         String exportStr = client.collections("books").documents().export(exportDocumentsParameters);
         String expectedExportStr = "{\"average_rating\":3.2,\"ratings_count\":124,\"title\":\"Romeo and juliet\"}";
-        Assert.assertEquals(expectedExportStr, exportStr);
+        assertEquals(expectedExportStr, exportStr);
     }
 
-    public void testDirtyCreate() throws Exception {
+    @Test
+    void testDirtyCreate() throws Exception {
         helper.createTestDocument();
 
         ImportDocumentsParameters queryParameters = new ImportDocumentsParameters();
@@ -193,10 +212,11 @@ public class DocumentsTest extends TestCase {
 
         this.client.collections("books").documents().create(hmap, queryParameters);
         Map<String, Object> resp = client.collections("books").documents("1").retrieve();
-        Assert.assertEquals("1984", resp.get("title"));
+        assertEquals("1984", resp.get("title"));
     }
 
-    public void testNestedObjectImport() throws Exception {
+    @Test
+    void testNestedObjectImport() throws Exception {
         // create collection with nested objects support
         List<Field> fields = new ArrayList<>();
         fields.add(new Field().name("address").type(FieldTypes.OBJECT).optional(true));
@@ -215,7 +235,7 @@ public class DocumentsTest extends TestCase {
                         .addTag("weight", "LOW");
         docs.add(doc);
         String itemImport = this.client.collections("items").documents().import_(docs, queryParameters);
-        Assert.assertFalse(itemImport.contains("\"success\":false"));
+        assertFalse(itemImport.contains("\"success\":false"));
 
         // try searching on the nested document
         SearchParameters searchParameters = new SearchParameters()
@@ -223,7 +243,7 @@ public class DocumentsTest extends TestCase {
                 .queryBy("tags");
 
         SearchResult searchResult = client.collections("items").documents().search(searchParameters);
-        Assert.assertEquals(1, searchResult.getFound().intValue());
-        Assert.assertEquals(1, searchResult.getHits().size());
+        assertEquals(1, searchResult.getFound().intValue());
+        assertEquals(1, searchResult.getHits().size());
     }
 }
