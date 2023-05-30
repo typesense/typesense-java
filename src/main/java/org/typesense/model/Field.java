@@ -22,10 +22,10 @@ public class Field   {
   private String type = null;
   
   @Schema(example = "true", description = "")
-  private Boolean optional = false;
+  private Boolean optional = null;
   
   @Schema(example = "false", description = "")
-  private Boolean facet = false;
+  private Boolean facet = null;
   
   @Schema(example = "true", description = "")
   private Boolean index = true;
@@ -34,7 +34,7 @@ public class Field   {
   private String locale = null;
   
   @Schema(example = "true", description = "")
-  private Boolean sort = false;
+  private Boolean sort = null;
   
   @Schema(example = "true", description = "")
   private Boolean infix = false;
