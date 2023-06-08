@@ -50,7 +50,7 @@ public class ApiCall {
         client = new OkHttpClient()
                 .newBuilder()
                 .connectTimeout(configuration.connectionTimeout.getSeconds(), TimeUnit.SECONDS)
-                .readTimeout(configuration.connectionTimeout.getSeconds(), TimeUnit.SECONDS)
+                .readTimeout(configuration.readTimeout.getSeconds(), TimeUnit.SECONDS)
                 .build();
     }
 
