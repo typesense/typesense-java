@@ -61,6 +61,22 @@ class DocumentsTest {
     }
 
     @Test
+    void testUnknownPresetsDoNotFailSearches() throws Exception {
+        helper.createTestDocument();
+        Map<String, Object> resp = client.collections("books").documents("1").retrieve();
+        assertEquals("Romeo and juliet", resp.get("title"));
+
+        SearchParameters params = new SearchParameters()
+                .q("Romeo")
+                .queryBy("title")
+                .preset("non_existent_preset");
+
+        SearchResult searchResult = client.collections("books").documents().search(params);
+        assertEquals(1, searchResult.getFound().intValue());
+        assertEquals(1, searchResult.getHits().size());
+    }
+
+    @Test
     void testUpsertDocument() throws Exception {
         helper.createTestDocument();
 

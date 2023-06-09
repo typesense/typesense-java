@@ -207,6 +207,12 @@ public class SearchParameters   {
   **/
   private Boolean preSegmentedQuery = null;
   
+  @Schema(description = "Search using a bunch of search parameters by setting this parameter to the name of the existing Preset. ")
+ /**
+   * Search using a bunch of search parameters by setting this parameter to the name of the existing Preset.   
+  **/
+  private String preset = null;
+  
   @Schema(description = "If you have some overrides defined but want to disable all of them during query time, you can do that by setting this parameter to false ")
  /**
    * If you have some overrides defined but want to disable all of them during query time, you can do that by setting this parameter to false   
@@ -849,6 +855,24 @@ public class SearchParameters   {
   }
 
  /**
+   * Search using a bunch of search parameters by setting this parameter to the name of the existing Preset. 
+   * @return preset
+  **/
+  @JsonProperty("preset")
+  public String getPreset() {
+    return preset;
+  }
+
+  public void setPreset(String preset) {
+    this.preset = preset;
+  }
+
+  public SearchParameters preset(String preset) {
+    this.preset = preset;
+    return this;
+  }
+
+ /**
    * If you have some overrides defined but want to disable all of them during query time, you can do that by setting this parameter to false 
    * @return enableOverrides
   **/
@@ -1084,6 +1108,7 @@ public class SearchParameters   {
     sb.append("    highlightFields: ").append(toIndentedString(highlightFields)).append("\n");
     sb.append("    splitJoinTokens: ").append(toIndentedString(splitJoinTokens)).append("\n");
     sb.append("    preSegmentedQuery: ").append(toIndentedString(preSegmentedQuery)).append("\n");
+    sb.append("    preset: ").append(toIndentedString(preset)).append("\n");
     sb.append("    enableOverrides: ").append(toIndentedString(enableOverrides)).append("\n");
     sb.append("    prioritizeExactMatch: ").append(toIndentedString(prioritizeExactMatch)).append("\n");
     sb.append("    maxCandidates: ").append(toIndentedString(maxCandidates)).append("\n");
