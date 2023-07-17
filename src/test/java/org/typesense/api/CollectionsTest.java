@@ -3,9 +3,7 @@ package org.typesense.api;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.typesense.model.CollectionResponse;
-import org.typesense.model.CollectionSchema;
-import org.typesense.model.Field;
+import org.typesense.model.*;
 
 import java.util.ArrayList;
 
@@ -61,5 +59,24 @@ class CollectionsTest {
 
         CollectionResponse cr = client.collections().create(collectionSchema);
         System.out.println(cr);
+    }
+
+    @Test
+    void testCreateCollectionWithModel() throws Exception {
+        ArrayList<Field> fields = new ArrayList<>();
+        fields.add(new Field().name("title").type(FieldTypes.STRING));
+
+        ArrayList<String> embedFrom = new ArrayList<>();
+        embedFrom.add("title");
+
+        fields.add(new Field().name("embedding").type(FieldTypes.FLOAT_ARRAY).embed(
+            new FieldEmbed().from(embedFrom).modelConfig(new FieldEmbedModelConfig().modelName("ts/e5-small"))
+        ));
+
+        CollectionSchema collectionSchema = new CollectionSchema();
+        collectionSchema.name("titles").fields(fields);
+
+        //CollectionResponse cr = client.collections().create(collectionSchema);
+        //System.out.println(cr);
     }
 }

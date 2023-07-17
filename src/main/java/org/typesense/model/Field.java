@@ -1,5 +1,6 @@
 package org.typesense.model;
 
+import org.typesense.model.FieldEmbed;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import javax.xml.bind.annotation.XmlElement;
@@ -44,6 +45,9 @@ public class Field   {
   
   @Schema(example = "true", description = "")
   private Boolean drop = null;
+  
+  @Schema(description = "")
+  private FieldEmbed embed = null;
  /**
    * Get name
    * @return name
@@ -224,6 +228,24 @@ public class Field   {
     return this;
   }
 
+ /**
+   * Get embed
+   * @return embed
+  **/
+  @JsonProperty("embed")
+  public FieldEmbed getEmbed() {
+    return embed;
+  }
+
+  public void setEmbed(FieldEmbed embed) {
+    this.embed = embed;
+  }
+
+  public Field embed(FieldEmbed embed) {
+    this.embed = embed;
+    return this;
+  }
+
 
   @Override
   public String toString() {
@@ -240,6 +262,7 @@ public class Field   {
     sb.append("    infix: ").append(toIndentedString(infix)).append("\n");
     sb.append("    numDim: ").append(toIndentedString(numDim)).append("\n");
     sb.append("    drop: ").append(toIndentedString(drop)).append("\n");
+    sb.append("    embed: ").append(toIndentedString(embed)).append("\n");
     sb.append("}");
     return sb.toString();
   }
