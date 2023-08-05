@@ -259,6 +259,18 @@ public class MultiSearchParameters   {
    * Vector query expression for fetching documents \"closest\" to a given query/document vector.   
   **/
   private String vectorQuery = null;
+  
+  @Schema(description = "Timeout (in milliseconds) for fetching remote embeddings. ")
+ /**
+   * Timeout (in milliseconds) for fetching remote embeddings.   
+  **/
+  private Integer remoteEmbeddingTimeoutMs = null;
+  
+  @Schema(description = "Number of times to retry fetching remote embeddings. ")
+ /**
+   * Number of times to retry fetching remote embeddings.   
+  **/
+  private Integer remoteEmbeddingNumTries = null;
  /**
    * The query text to search for in the collection. Use * as the search string to return all documents. This is typically useful when used in conjunction with filter_by.
    * @return q
@@ -979,6 +991,42 @@ public class MultiSearchParameters   {
     return this;
   }
 
+ /**
+   * Timeout (in milliseconds) for fetching remote embeddings. 
+   * @return remoteEmbeddingTimeoutMs
+  **/
+  @JsonProperty("remote_embedding_timeout_ms")
+  public Integer getRemoteEmbeddingTimeoutMs() {
+    return remoteEmbeddingTimeoutMs;
+  }
+
+  public void setRemoteEmbeddingTimeoutMs(Integer remoteEmbeddingTimeoutMs) {
+    this.remoteEmbeddingTimeoutMs = remoteEmbeddingTimeoutMs;
+  }
+
+  public MultiSearchParameters remoteEmbeddingTimeoutMs(Integer remoteEmbeddingTimeoutMs) {
+    this.remoteEmbeddingTimeoutMs = remoteEmbeddingTimeoutMs;
+    return this;
+  }
+
+ /**
+   * Number of times to retry fetching remote embeddings. 
+   * @return remoteEmbeddingNumTries
+  **/
+  @JsonProperty("remote_embedding_num_tries")
+  public Integer getRemoteEmbeddingNumTries() {
+    return remoteEmbeddingNumTries;
+  }
+
+  public void setRemoteEmbeddingNumTries(Integer remoteEmbeddingNumTries) {
+    this.remoteEmbeddingNumTries = remoteEmbeddingNumTries;
+  }
+
+  public MultiSearchParameters remoteEmbeddingNumTries(Integer remoteEmbeddingNumTries) {
+    this.remoteEmbeddingNumTries = remoteEmbeddingNumTries;
+    return this;
+  }
+
 
   @Override
   public String toString() {
@@ -1025,6 +1073,8 @@ public class MultiSearchParameters   {
     sb.append("    minLen1typo: ").append(toIndentedString(minLen1typo)).append("\n");
     sb.append("    minLen2typo: ").append(toIndentedString(minLen2typo)).append("\n");
     sb.append("    vectorQuery: ").append(toIndentedString(vectorQuery)).append("\n");
+    sb.append("    remoteEmbeddingTimeoutMs: ").append(toIndentedString(remoteEmbeddingTimeoutMs)).append("\n");
+    sb.append("    remoteEmbeddingNumTries: ").append(toIndentedString(remoteEmbeddingNumTries)).append("\n");
     sb.append("}");
     return sb.toString();
   }
