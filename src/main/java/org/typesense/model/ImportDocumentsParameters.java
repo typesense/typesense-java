@@ -17,7 +17,11 @@ public class ImportDocumentsParameters   {
   
   @Schema(description = "")
   private String action = null;
-  
+
+  @Schema(description = "")
+  private Integer remoteEmbeddingBatchSize = null;
+
+
   @Schema(description = "")
   private Integer batchSize = null;
   public enum DirtyValuesEnum {
@@ -110,6 +114,20 @@ public class ImportDocumentsParameters   {
   }
 
 
+  @JsonProperty("remote_embedding_batch_size")
+  public Integer getRemoteEmbeddingBatchSize() {
+    return remoteEmbeddingBatchSize;
+  }
+
+  public void setRemoteEmbeddingBatchSize(Integer remoteEmbeddingBatchSize) {
+    this.remoteEmbeddingBatchSize = remoteEmbeddingBatchSize;
+  }
+
+  public ImportDocumentsParameters remoteEmbeddingBatchSize(Integer remoteEmbeddingBatchSize) {
+    this.remoteEmbeddingBatchSize = remoteEmbeddingBatchSize;
+    return this;
+  }
+
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
@@ -118,6 +136,7 @@ public class ImportDocumentsParameters   {
     sb.append("    action: ").append(toIndentedString(action)).append("\n");
     sb.append("    batchSize: ").append(toIndentedString(batchSize)).append("\n");
     sb.append("    dirtyValues: ").append(toIndentedString(dirtyValues)).append("\n");
+    sb.append("    remoteEmbeddingBatchSize: ").append(toIndentedString(remoteEmbeddingBatchSize)).append("\n");
     sb.append("}");
     return sb.toString();
   }
