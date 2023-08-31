@@ -5,6 +5,7 @@ public class TypesenseError extends Exception {
     public int status;
 
     public TypesenseError(String message, int status) {
+        super(message);
         this.message = message;
         this.status = status;
     }
