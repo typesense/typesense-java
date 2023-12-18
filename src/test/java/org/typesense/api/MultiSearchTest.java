@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.typesense.model.CollectionSchema;
 import org.typesense.model.Field;
 import org.typesense.model.MultiSearchCollectionParameters;
-import org.typesense.model.MultiSearchResponse;
+import org.typesense.model.MultiSearchResult;
 import org.typesense.model.MultiSearchSearchesParameter;
 
 import java.util.ArrayList;
@@ -56,7 +56,7 @@ class MultiSearchTest {
         search1.setVectorQuery("vec:([0.96826,0.94,0.39557,0.306488], k:10)");
 
         MultiSearchSearchesParameter multiSearchParameters = new MultiSearchSearchesParameter().addSearchesItem(search1);
-        MultiSearchResponse response = this.client.multiSearch.perform(multiSearchParameters, null);
+        MultiSearchResult response = this.client.multiSearch.perform(multiSearchParameters, null);
         assertEquals(1, response.getResults().size());
         assertEquals(1, response.getResults().get(0).getHits().size());
         assertEquals("0", response.getResults().get(0).getHits().get(0).getDocument().get("id"));

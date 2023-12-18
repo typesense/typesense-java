@@ -12,6 +12,7 @@ import org.typesense.model.SearchParameters;
 import org.typesense.model.SearchResult;
 
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

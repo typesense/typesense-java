@@ -1,10 +1,9 @@
 package org.typesense.api;
 
-import org.typesense.model.MultiSearchResponse;
+import org.typesense.model.MultiSearchResult;
 import org.typesense.model.MultiSearchSearchesParameter;
 
 import java.util.Map;
-import java.util.List;
 
 public class MultiSearch {
 
@@ -15,8 +14,8 @@ public class MultiSearch {
         this.apiCall = apiCall;
     }
 
-    public MultiSearchResponse perform(MultiSearchSearchesParameter multiSearchParameters,
-                                       Map<String, String> common_params) throws Exception {
-        return this.apiCall.post(MultiSearch.RESOURCEPATH, multiSearchParameters, common_params, MultiSearchResponse.class);
+    public MultiSearchResult perform(MultiSearchSearchesParameter multiSearchParameters,
+                                     Map<String, String> common_params) throws Exception {
+        return this.apiCall.post(MultiSearch.RESOURCEPATH, multiSearchParameters, common_params, MultiSearchResult.class);
     }
 }
