@@ -1,12 +1,16 @@
 package org.typesense.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.typesense.model.*;
-
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Collection;
+import org.typesense.model.DeleteDocumentsParameters;
+import org.typesense.model.ExportDocumentsParameters;
+import org.typesense.model.ImportDocumentsParameters;
+import org.typesense.model.SearchParameters;
+import org.typesense.model.SearchResult;
+import org.typesense.model.UpdateDocumentsParameters;
 
 public class Documents {
 
@@ -76,6 +80,18 @@ public class Documents {
 
         String reqBody = String.join("\n", jsonLines);
         return this.apiCall.post(this.getEndPoint("import"), reqBody, queryParameters, String.class);
+    }
+
+    /**
+     * <a href="https://typesense.org/docs/0.25.1/api/documents.html#update-by-query">>Update by query</a>
+     *
+     * @param document - Document
+     * @param updateDocumentsParameters - {@link UpdateDocumentsParameters}
+     * @return
+     * @throws Exception
+     */
+    public Map<String, Integer> update(Map<String, Object> document, UpdateDocumentsParameters updateDocumentsParameters) throws Exception {
+        return this.apiCall.patch(this.getEndPoint("/"), document, updateDocumentsParameters, Map.class);
     }
 
     public String getEndPoint(String target){
