@@ -1,5 +1,15 @@
 package org.typesense.api;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.typesense.api.exceptions.ObjectNotFound;
@@ -10,16 +20,7 @@ import org.typesense.model.Field;
 import org.typesense.model.ImportDocumentsParameters;
 import org.typesense.model.SearchParameters;
 import org.typesense.model.SearchResult;
-
-import java.util.ArrayList;
-import java.util.EmptyStackException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.fail;
+import org.typesense.model.UpdateDocumentsParameters;
 
 class DocumentsTest {
 
@@ -262,5 +263,21 @@ class DocumentsTest {
         SearchResult searchResult = client.collections("items").documents().search(searchParameters);
         assertEquals(1, searchResult.getFound().intValue());
         assertEquals(1, searchResult.getHits().size());
+    }
+
+    @Test
+    void testUpdateDocumentsByQuery() throws Exception {
+        helper.createTestDocument();
+
+        UpdateDocumentsParameters updateDocumentsParameters = new UpdateDocumentsParameters()
+                .filterBy("publication_year:1666");
+        Map<String, Object> fieldToAdd = new HashMap<>();
+        fieldToAdd.put("ratings_count", "200");
+        Map<String, Integer> response = client.collections("books").documents().update(fieldToAdd, updateDocumentsParameters);
+        assertThat(response.get("num_updated"), is(1));
+
+        // try fetching the document back
+        Map<String, Object> resp = client.collections("books").documents("1").retrieve();
+        assertThat(resp.get("ratings_count"), is(200));
     }
 }
