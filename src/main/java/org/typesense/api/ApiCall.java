@@ -58,7 +58,7 @@ public class ApiCall {
         return Duration.between(node.lastAccessTimestamp, LocalDateTime.now()).getSeconds() > configuration.healthCheckInterval.getSeconds();
     }
 
-    //Loops in a round-robin fashion to check for a healthy node and returns it
+    // Loops in a round-robin fashion to check for a healthy node and returns it
     Node getNode() {
         if (configuration.nearestNode != null) {
             if (isDueForHealthCheck((configuration.nearestNode)) || configuration.nearestNode.isHealthy) {
@@ -70,6 +70,7 @@ public class ApiCall {
         Node testNode;
 
         while (i < configuration.nodes.size()) {
+            nodeIndex = (nodeIndex + 1) % configuration.nodes.size();
             testNode = configuration.nodes.get(nodeIndex);
 
             if (testNode.isHealthy || isDueForHealthCheck((testNode))) {
@@ -77,7 +78,6 @@ public class ApiCall {
             }
 
             i += 1;
-            nodeIndex = (nodeIndex + 1) % configuration.nodes.size();
         }
 
         return configuration.nodes.get(nodeIndex);
