@@ -64,7 +64,7 @@ hmap.put("countryName","India");
 hmap.put("capital","Delhi");
 hmap.put("gdp", 10);
 
-client.collections("contryName").documents().create(hmap);
+client.collections("Countries").documents().create(hmap);
 ```
 
 ### Upserting a document
@@ -74,7 +74,7 @@ hmap.put("countryName","India");
 hmap.put("capital","Delhi");
 hmap.put("gdp", 5);
 
-client.collections("contryName").documents().upsert(hmap);
+client.collections("Countries").documents().upsert(hmap);
 ```
 
 ### Import batch of documents
@@ -85,7 +85,7 @@ queryParameters.action("create");
 String documentList = "{\"countryName\": \"India\", \"capital\": \"Washington\", \"gdp\": 5215}\n" +
                       "{\"countryName\": \"Iran\", \"capital\": \"London\", \"gdp\": 5215}";
 // Import your document as JSONL string from a file.
-client.collections("countries").documents().import_(documentList, queryParameters)
+client.collections("Countries").documents().import_(documentList, queryParameters)
 ```
 
 ### Search in a collection
@@ -94,24 +94,24 @@ SearchParameters searchParameters = new SearchParameters()
                                         .q("tokoyo")
                                         .queryBy("countryName,capital")
                                         .prefix("true,false");
-SearchResult searchResult = client.collections("countries").documents().search(searchParameters);
+SearchResult searchResult = client.collections("Countries").documents().search(searchParameters);
 ```
 
 ### Update a document
 ```java
 Map<String, Object> hmap = new HashMap<>();
 hmap.put("gdp", 8);
-client.collections("countries").documents("28").update(hmap);
+client.collections("Countries").documents("28").update(hmap);
 ```
 
 ### Retrieve a document
 ```java
-client.collections("countries").documents("28").retrieve();
+client.collections("Countries").documents("28").retrieve();
 ```
 
 ### Delete a document
 ```java
-client.collections("countries").documents("28").delete();
+client.collections("Countries").documents("28").delete();
 ```
 
 ### Delete documents using query
@@ -123,7 +123,7 @@ deleteDocumentsParameters.batchSize(10);
 
 ### Retrieve a collection
 ```java
-client.collections("countries").retrieve();
+client.collections("Countries").retrieve();
 ```
 
 ### Retrieve all collections
@@ -133,7 +133,7 @@ client.collections().retrieve();
 
 ### Drop a collection
 ```java
-client.collections("countries").delete();   
+client.collections("Countries").delete();   
 ```
 
 ### Export a collection
@@ -162,7 +162,7 @@ List<String> actionValues = new ArrayList<>();
 List<String> collectionValues = new ArrayList<>();
 
 actionValues.add("documents:search");
-collectionValues.add("countries");
+collectionValues.add("Countries");
 
 apiKeySchema.description("Search only Key").actions(actionValues).collections(collectionValues);
 
@@ -199,28 +199,28 @@ searchOverrideSchema.rule(new SearchOverrideRule().query("new york").match("exac
                     .includes(searchOverrideIncludes)
                     .excludes(searchOverrideExcludes);
 
-client.collections("countries").overrides().upsert("new-york", searchOverrideSchema)
+client.collections("Countries").overrides().upsert("new-york", searchOverrideSchema)
 ```
 
 ### Retrieve an Alias
 ```java
-client.collections("countries").overrides("new-york").retrieve();
+client.collections("Countries").overrides("new-york").retrieve();
 ```
 
 ### List all overrides
 ```java
-client.collections("countries").overrides().retrieve();
+client.collections("Countries").overrides().retrieve();
 ```
 
 ### Delete an override
 ```java
-client.collections("countries").overrides("new-york").delete();
+client.collections("Countries").overrides("new-york").delete();
 ```
 
 ### Upsert an Alias
 ```java
 CollectionAliasSchema collectionAliasSchema = new CollectionAliasSchema();
-collectionAliasSchema.collectionName("countries");
+collectionAliasSchema.collectionName("Countries");
 
 client.aliases().upsert("countries2", collectionAliasSchema)
 ```
@@ -245,7 +245,7 @@ client.aliases("countries2").delete();
 SearchSynonymSchema synonym = new SearchSynonymSchema();
 synonym.addSynonymsItem("France").addSynonymsItem("Germany").addSynonymsItem("Sweden");
 
-client.collections("countries").synonyms().upsert("country-synonyms",synonym)
+client.collections("Countries").synonyms().upsert("country-synonyms",synonym)
 ```
 
 ### Upsert a single-way synonym
@@ -254,22 +254,22 @@ SearchSynonymSchema synonym = new SearchSynonymSchema();
 synonym.root("europe");
 synonym.addSynonymsItem("France").addSynonymsItem("Germany").addSynonymsItem("Sweden");
 
-client.collections("countries").synonyms().upsert("continent-synonyms",synonym)
+client.collections("Countries").synonyms().upsert("continent-synonyms",synonym)
 ```
 
 ### Retrieve a synonym
 ```java
-client.collections("countries").synonyms("continent-synonyms").retrieve();
+client.collections("Countries").synonyms("continent-synonyms").retrieve();
 ```
 
 ### Retrieve all synonyms
 ```java
-client.collections("countries").synonyms().retrieve();
+client.collections("Countries").synonyms().retrieve();
 ```
 
 ### Delete a synonym
 ```java
-client.collections("countries").synonyms("continent-synonyms").delete();
+client.collections("Countries").synonyms("continent-synonyms").delete();
 ```
 
 ### Create snapshot (for backups)
