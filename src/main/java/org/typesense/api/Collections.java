@@ -16,6 +16,10 @@ public class Collections {
         return this.apiCall.post(RESOURCE_PATH, c, null, CollectionResponse.class);
     }
 
+    public CollectionResponse create(String schemaJson) throws Exception {
+        return this.apiCall.post(RESOURCE_PATH, schemaJson, null, CollectionResponse.class);
+    }
+
     public CollectionResponse[] retrieve() throws Exception {
         return this.apiCall.get(RESOURCE_PATH, null, CollectionResponse[].class);
     }

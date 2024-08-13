@@ -57,6 +57,15 @@ collectionSchema.name("Countries").fields(fields).defaultSortingField("gdp");
 client.collections().create(collectionSchema);
 ```
 
+### Create a new collection from JSON file
+```java
+String schemaJson = new String(
+    Files.readAllBytes(Paths.get("schema.json")),
+    StandardCharsets.UTF_8
+);
+client.collections().create(schemaJson);
+```
+
 ### Index a document
 ```java
 Map<String, Object> hmap = new HashMap<>();
