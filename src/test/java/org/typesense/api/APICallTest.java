@@ -20,7 +20,7 @@ class APICallTest {
         List<Node> nodes = new ArrayList<>();
         nodes.add(new Node("http","localhost","8108"));
         nodes.add(new Node("http","localhost","7108"));
-        nodes.add(new Node("http","localhost","2108"));
+        nodes.add(new Node("http","localhost","6108"));
         apiCall = new ApiCall(new Configuration(nodes, Duration.ofSeconds(3),"xyz"));
     }
 
