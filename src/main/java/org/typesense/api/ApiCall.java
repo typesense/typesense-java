@@ -61,7 +61,7 @@ public class ApiCall {
     // Loops in a round-robin fashion to check for a healthy node and returns it
     Node getNode() {
         if (configuration.nearestNode != null) {
-            if (isDueForHealthCheck((configuration.nearestNode)) || configuration.nearestNode.isHealthy) {
+            if (configuration.nearestNode.isHealthy || isDueForHealthCheck((configuration.nearestNode)) ) {
                 return configuration.nearestNode;
             }
         }
