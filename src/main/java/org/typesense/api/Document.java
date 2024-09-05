@@ -1,6 +1,7 @@
 package org.typesense.api;
 
 import java.util.Map;
+import org.typesense.api.utils.URLEncoding;
 
 public class Document {
     private String collectionName;
@@ -13,10 +14,11 @@ public class Document {
         this.documentId = documentId;
         this.apiCall = apiCall;
 
-        this.endpoint = Collections.RESOURCE_PATH + "/" +  this.collectionName + Documents.RESOURCE_PATH + "/" + this.documentId;
+        this.endpoint = Collections.RESOURCE_PATH + "/" + URLEncoding.encodeURIComponent(this.collectionName)
+                + Documents.RESOURCE_PATH + "/" + URLEncoding.encodeURIComponent(this.documentId);
     }
 
-    public Map<String,Object> retrieve() throws Exception {
+    public Map<String, Object> retrieve() throws Exception {
         return this.apiCall.get(endpoint, null, Map.class);
     }
 
@@ -24,7 +26,7 @@ public class Document {
         return this.apiCall.delete(this.endpoint, null, Map.class);
     }
 
-    public Map<String , Object> update(Map<String, Object> document) throws Exception {
+    public Map<String, Object> update(Map<String, Object> document) throws Exception {
         return this.apiCall.patch(this.endpoint, document, null, Map.class);
     }
 

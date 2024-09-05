@@ -1,5 +1,7 @@
 package org.typesense.api;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,6 +33,16 @@ class AliasesTest {
         collectionAliasSchema.collectionName("books_june11");
 
         System.out.println(client.aliases().upsert("books1", collectionAliasSchema));
+    }
+
+    @Test
+    void testUpsertWithURLEncodedName() throws Exception {
+        CollectionAliasSchema collectionAliasSchema = new CollectionAliasSchema();
+        collectionAliasSchema.collectionName("books_june11");
+
+        CollectionAlias res = client.aliases().upsert("books1 ~!@#$%^&*()_++-=/'", collectionAliasSchema);
+        assertEquals(res.getName(), "books1 ~!@#$%^&*()_++-=/'");
+        System.out.println(res);
     }
 
     @Test

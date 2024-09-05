@@ -1,5 +1,6 @@
 package org.typesense.api;
 
+import org.typesense.api.utils.URLEncoding;
 import org.typesense.model.SearchSynonym;
 
 public class Synonym {
@@ -22,7 +23,8 @@ public class Synonym {
         return this.apiCall.delete(this.getEndpoint(), null, SearchSynonym.class);
     }
 
-    public String getEndpoint(){
-        return Collections.RESOURCE_PATH + "/" + this.collectionName + Synonyms.RESOURCEPATH + "/" + this.synonymId;
+    public String getEndpoint() {
+        return Collections.RESOURCE_PATH + "/" + URLEncoding.encodeURIComponent(this.collectionName)
+                + Synonyms.RESOURCEPATH + "/" + URLEncoding.encodeURIComponent(this.synonymId);
     }
 }
