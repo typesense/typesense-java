@@ -1,0 +1,49 @@
+name: Test
+
+on:
+  push:
+    paths-ignore:
+      - '**/*.md'
+  pull_request:
+    paths-ignore:
+      - '**/*.md'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      typesense:
+        image: typesense/typesense:27.0
+        ports:
+          - 8108:8108/tcp
+        volumes:
+          - /tmp/typesense-server-data:/data
+        env:
+          TYPESENSE_DATA_DIR: '/data'
+          TYPESENSE_API_KEY: 'xyz'
+          TYPESENSE_ENABLE_CORS: true
+          TYPESENSE_URL: 'http://localhost:8108'
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+
+      - name: Fetch JSONL file
+        run: bash -c "curl https://gist.githubusercontent.com/harisarang/62a43d8a6c2dcf8d51ea4eab9d90c0c3/raw/090284f8c2aefaacba161b05cf2382836cadc31f/books.jsonl > /tmp/books.jsonl"
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 17
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Package
+          path: build/libs
