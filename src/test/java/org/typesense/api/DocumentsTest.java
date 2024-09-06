@@ -182,7 +182,7 @@ class DocumentsTest {
 
         documentList.add(document1);
         documentList.add(document2);
-        queryParameters.action("create");
+        queryParameters.action(ImportDocumentsParameters.ActionEnum.CREATE);
 
         String countriesImport = this.client.collections("books").documents()
                 .import_(documentList, queryParameters);
@@ -192,7 +192,7 @@ class DocumentsTest {
     @Test
     void testImportAsString() throws Exception {
         ImportDocumentsParameters queryParameters = new ImportDocumentsParameters();
-        queryParameters.action("create");
+        queryParameters.action(ImportDocumentsParameters.ActionEnum.CREATE);
         String documentList = "{\"countryName\": \"India\", \"capital\": \"Washington\", \"gdp\": 5215}\n" +
                 "{\"countryName\": \"Iran\", \"capital\": \"London\", \"gdp\": 5215}";
         String booksImport = this.client.collections("books").documents().import_(documentList, queryParameters);
@@ -215,7 +215,7 @@ class DocumentsTest {
 
         ImportDocumentsParameters queryParameters = new ImportDocumentsParameters();
         queryParameters.dirtyValues(ImportDocumentsParameters.DirtyValuesEnum.COERCE_OR_REJECT);
-        queryParameters.action("upsert");
+        queryParameters.action(ImportDocumentsParameters.ActionEnum.UPSERT);
 
         String[] authors = {"shakspeare", "william"};
         HashMap<String, Object> hmap = new HashMap<>();
@@ -245,7 +245,7 @@ class DocumentsTest {
         client.collections().create(collectionSchema);
 
         ImportDocumentsParameters queryParameters = new ImportDocumentsParameters();
-        queryParameters.action("create");
+        queryParameters.action(ImportDocumentsParameters.ActionEnum.CREATE);
 
         List<NestedDocument> docs = new ArrayList<>();
         NestedDocument doc = new NestedDocument("LA", "CA", "USA")

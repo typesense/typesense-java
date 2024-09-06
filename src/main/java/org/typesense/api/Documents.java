@@ -40,7 +40,7 @@ public class Documents {
 
     public Map<String, Object> upsert(Map<String, Object> document) throws Exception {
         ImportDocumentsParameters queryParameters = new ImportDocumentsParameters();
-        queryParameters.action("upsert");
+        queryParameters.action(ImportDocumentsParameters.ActionEnum.UPSERT);
 
         return this.apiCall.post(getEndPoint("/"),document,queryParameters,Map.class);
     }
