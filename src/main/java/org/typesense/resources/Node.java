@@ -25,6 +25,7 @@ public class Node {
         this.host = host;
         this.port = port;
         this.isHealthy = true;
+        this.lastAccessTimestamp = LocalDateTime.now();
 
         if (protocol == null) {
             throw new RuntimeException("Protocol cannot be null");
