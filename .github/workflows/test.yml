@@ -11,6 +11,9 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: ['8', '11', '17']
     services:
       typesense:
         image: typesense/typesense:27.0
@@ -23,7 +26,7 @@ jobs:
           TYPESENSE_API_KEY: 'xyz'
           TYPESENSE_ENABLE_CORS: true
           TYPESENSE_URL: 'http://localhost:8108'
-
+    name: Java ${{ matrix.Java }}
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
@@ -35,7 +38,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: 17
+          java-version: ${{ matrix.java }}
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
