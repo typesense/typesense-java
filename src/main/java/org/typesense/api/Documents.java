@@ -87,7 +87,7 @@ public class Documents {
 
     /**
      * <a href=
-     * "https://typesense.org/docs/0.25.1/api/documents.html#update-by-query">>Update
+     * "https://typesense.org/docs/0.25.1/api/documents.html#update-by-query">Update
      * by query</a>
      *
      * @param document                  - Document
