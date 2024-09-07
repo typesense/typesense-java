@@ -1,0 +1,49 @@
+name: Test
+
+on:
+  push:
+    paths-ignore:
+      - '**/*.md'
+  pull_request:
+    paths-ignore:
+      - '**/*.md'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: ['8', '11', '17']
+    services:
+      typesense:
+        image: typesense/typesense:27.0
+        ports:
+          - 8108:8108/tcp
+        volumes:
+          - /tmp/typesense-server-data:/data
+        env:
+          TYPESENSE_DATA_DIR: '/data'
+          TYPESENSE_API_KEY: 'xyz'
+          TYPESENSE_ENABLE_CORS: true
+          TYPESENSE_URL: 'http://localhost:8108'
+    name: Java ${{ matrix.Java }}
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: ${{ matrix.java }}
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Java ${{ matrix.Java }}
+          path: build/libs
