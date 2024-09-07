@@ -94,6 +94,7 @@ swaggerSources {
 }
 
 swaggerSources.typesense.code.dependsOn downloadApiSpec
+sourcesJar.dependsOn swaggerSources.typesense.code
 compileJava.dependsOn swaggerSources.typesense.code
 sourceSets.main.java.srcDir "${swaggerSources.typesense.code.outputDir}/src/main/java"
 sourceSets.main.resources.srcDir "${swaggerSources.typesense.code.outputDir}/src/main/resources"
