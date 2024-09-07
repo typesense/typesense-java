@@ -31,9 +31,6 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v4
 
-      - name: Fetch JSONL file
-        run: bash -c "curl https://gist.githubusercontent.com/harisarang/62a43d8a6c2dcf8d51ea4eab9d90c0c3/raw/090284f8c2aefaacba161b05cf2382836cadc31f/books.jsonl > /tmp/books.jsonl"
-
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
