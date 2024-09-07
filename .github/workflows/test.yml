@@ -48,5 +48,5 @@ jobs:
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Package
+          name: Java ${{ matrix.Java }}
           path: build/libs
