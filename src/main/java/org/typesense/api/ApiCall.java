@@ -61,7 +61,7 @@ public class ApiCall {
     // Loops in a round-robin fashion to check for a healthy node and returns it
     Node getNode() {
         if (configuration.nearestNode != null) {
-            if (configuration.nearestNode.isHealthy || isDueForHealthCheck((configuration.nearestNode)) ) {
+            if (isDueForHealthCheck((configuration.nearestNode)) || configuration.nearestNode.isHealthy) {
                 return configuration.nearestNode;
             }
         }
@@ -181,8 +181,7 @@ public class ApiCall {
             } catch (Exception e) {
                 boolean handleError = (e instanceof ServerError) ||
                                       (e instanceof ServiceUnavailable) ||
-                                      (e instanceof SocketTimeoutException) ||
-                                      (e instanceof java.net.UnknownHostException) ||
+                                      (e.getClass().getPackage().getName().startsWith("java.net")) ||
                                       (e instanceof SSLException);
 
                 if(!handleError) {
