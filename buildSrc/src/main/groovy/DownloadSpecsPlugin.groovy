@@ -12,7 +12,12 @@ class DownloadSpecsPlugin implements Plugin<Project> {
     void apply(Project project) {
         project.tasks.register("downloadApiSpec") {
             println('Downloading spec')
-            new File("${project.buildDir}/openapi.yml").withOutputStream { out ->
+            File file = new File("${project.buildDir}/openapi.yml")
+            if (!file.getParentFile().exists())
+                file.getParentFile().mkdirs();
+            if (!file.exists())
+                file.createNewFile();
+            file.withOutputStream { out ->
                 new URL(specUrl).withInputStream { from -> out << from }
             }
         }

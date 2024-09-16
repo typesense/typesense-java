@@ -4,3 +4,4 @@
 .out/
 **/books.jsonl
 config.json
+/bin

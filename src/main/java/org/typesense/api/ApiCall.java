@@ -55,6 +55,7 @@ public class ApiCall {
         this.nodes = configuration.nodes;
         this.apiKey = configuration.apiKey;
         this.retryInterval = configuration.retryInterval;
+        nodeIndex = 0;
 
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);

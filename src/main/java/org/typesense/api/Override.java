@@ -1,5 +1,6 @@
 package org.typesense.api;
 
+import org.typesense.api.utils.URLEncoding;
 import org.typesense.model.SearchOverride;
 
 public class Override {
@@ -22,7 +23,8 @@ public class Override {
         return this.apiCall.delete(this.getEndpoint(), null, SearchOverride.class);
     }
 
-    public String getEndpoint(){
-        return Collections.RESOURCE_PATH + "/" + this.collectionName + "/" + Overrides.RESOURCEPATH + "/" + this.overrideId;
+    public String getEndpoint() {
+        return Collections.RESOURCE_PATH + "/" + URLEncoding.encodeURIComponent(this.collectionName) + "/"
+                + Overrides.RESOURCEPATH + "/" + URLEncoding.encodeURIComponent(this.overrideId);
     }
 }
