@@ -184,7 +184,8 @@ public class ApiCall {
                                       (e instanceof ServiceUnavailable) ||
                                       (e instanceof SocketTimeoutException) ||
                                       (e instanceof java.net.UnknownHostException) ||
-                                      (e instanceof SSLException);
+                                      (e instanceof SSLException) ||
+                                      (e instanceof java.net.ConnectException);
 
                 if(!handleError) {
                     // we just throw and move on
