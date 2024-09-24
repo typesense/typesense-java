@@ -107,6 +107,8 @@ dependencies {
     implementation group: 'javax.annotation', name: 'javax.annotation-api', version: '1.3.2'
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
+    testImplementation "org.mockito:mockito-core:${mokitoVerion}"
+    testImplementation "org.mockito:mockito-junit-jupiter:${mokitoVerion}"
     testImplementation "org.hamcrest:hamcrest-all:${hamcrestVersion}"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}"
 

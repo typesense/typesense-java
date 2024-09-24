@@ -38,6 +38,18 @@ public class ApiCall {
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private final ObjectMapper mapper = new ObjectMapper();
 
+    public ApiCall(Configuration configuration, OkHttpClient client) {
+        this.configuration = configuration;
+        this.nodes = configuration.nodes;
+        this.apiKey = configuration.apiKey;
+        this.retryInterval = configuration.retryInterval;
+
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+
+        this.client = client;
+    }
+
     public ApiCall(Configuration configuration) {
         this.configuration = configuration;
         this.nodes = configuration.nodes;
@@ -49,10 +61,10 @@ public class ApiCall {
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
         client = new OkHttpClient()
-                .newBuilder()
-                .connectTimeout(configuration.connectionTimeout.getSeconds(), TimeUnit.SECONDS)
-                .readTimeout(configuration.readTimeout.getSeconds(), TimeUnit.SECONDS)
-                .build();
+            .newBuilder()
+            .connectTimeout(configuration.connectionTimeout.getSeconds(), TimeUnit.SECONDS)
+            .readTimeout(configuration.readTimeout.getSeconds(), TimeUnit.SECONDS)
+            .build();
     }
 
     boolean isDueForHealthCheck(Node node) {
@@ -62,7 +74,7 @@ public class ApiCall {
     // Loops in a round-robin fashion to check for a healthy node and returns it
     Node getNode() {
         if (configuration.nearestNode != null) {
-            if (configuration.nearestNode.isHealthy || isDueForHealthCheck((configuration.nearestNode)) ) {
+            if (isDueForHealthCheck((configuration.nearestNode)) || configuration.nearestNode.isHealthy) {
                 return configuration.nearestNode;
             }
         }
@@ -182,8 +194,7 @@ public class ApiCall {
             } catch (Exception e) {
                 boolean handleError = (e instanceof ServerError) ||
                                       (e instanceof ServiceUnavailable) ||
-                                      (e instanceof SocketTimeoutException) ||
-                                      (e instanceof java.net.UnknownHostException) ||
+                                      (e.getClass().getPackage().getName().startsWith("java.net")) ||
                                       (e instanceof SSLException);
 
                 if(!handleError) {
