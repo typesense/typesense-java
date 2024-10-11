@@ -10,10 +10,10 @@ import org.typesense.api.utils.URLEncoding;
 import org.typesense.model.DeleteDocumentsParameters;
 import org.typesense.model.ExportDocumentsParameters;
 import org.typesense.model.ImportDocumentsParameters;
+import org.typesense.model.IndexAction;
 import org.typesense.model.SearchParameters;
 import org.typesense.model.SearchResult;
 import org.typesense.model.UpdateDocumentsParameters;
-import org.typesense.model.ImportDocumentsParameters.ActionEnum;
 
 public class Documents {
 
@@ -43,7 +43,7 @@ public class Documents {
 
     public Map<String, Object> upsert(Map<String, Object> document) throws Exception {
         ImportDocumentsParameters queryParameters = new ImportDocumentsParameters();
-        queryParameters.action(ImportDocumentsParameters.ActionEnum.UPSERT);
+        queryParameters.action(IndexAction.UPSERT);
 
         return this.apiCall.post(getEndPoint("/"), document, queryParameters, Map.class);
     }
