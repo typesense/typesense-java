@@ -15,13 +15,14 @@ import org.junit.jupiter.api.Test;
 import org.typesense.api.exceptions.ObjectNotFound;
 import org.typesense.model.CollectionSchema;
 import org.typesense.model.DeleteDocumentsParameters;
+import org.typesense.model.DirtyValues;
 import org.typesense.model.ExportDocumentsParameters;
 import org.typesense.model.Field;
 import org.typesense.model.ImportDocumentsParameters;
+import org.typesense.model.IndexAction;
 import org.typesense.model.SearchParameters;
 import org.typesense.model.SearchResult;
 import org.typesense.model.UpdateDocumentsParameters;
-import org.typesense.model.ImportDocumentsParameters.ActionEnum;
 
 class DocumentsTest {
 
@@ -183,7 +184,7 @@ class DocumentsTest {
 
                 documentList.add(document1);
                 documentList.add(document2);
-                queryParameters.action(ImportDocumentsParameters.ActionEnum.CREATE);
+                queryParameters.action(IndexAction.CREATE);
 
                 String countriesImport = this.client.collections("books").documents()
                                 .import_(documentList, queryParameters);
@@ -193,7 +194,7 @@ class DocumentsTest {
         @Test
         void testImportAsString() throws Exception {
                 ImportDocumentsParameters queryParameters = new ImportDocumentsParameters();
-                queryParameters.action(ImportDocumentsParameters.ActionEnum.CREATE);
+                queryParameters.action(IndexAction.CREATE);
                 String documentList = "{\"countryName\": \"India\", \"capital\": \"Washington\", \"gdp\": 5215}\n" +
                                 "{\"countryName\": \"Iran\", \"capital\": \"London\", \"gdp\": 5215}";
                 String booksImport = this.client.collections("books").documents().import_(documentList,
@@ -216,8 +217,8 @@ class DocumentsTest {
                 helper.createTestDocument();
 
                 ImportDocumentsParameters queryParameters = new ImportDocumentsParameters();
-                queryParameters.dirtyValues(ImportDocumentsParameters.DirtyValuesEnum.COERCE_OR_REJECT);
-                queryParameters.action(ImportDocumentsParameters.ActionEnum.UPSERT);
+                queryParameters.dirtyValues(DirtyValues.COERCE_OR_REJECT);
+                queryParameters.action(IndexAction.UPSERT);
 
                 String[] authors = { "shakspeare", "william" };
                 HashMap<String, Object> hmap = new HashMap<>();
@@ -247,7 +248,7 @@ class DocumentsTest {
                 client.collections().create(collectionSchema);
 
                 ImportDocumentsParameters queryParameters = new ImportDocumentsParameters();
-                queryParameters.action(ImportDocumentsParameters.ActionEnum.CREATE);
+                queryParameters.action(IndexAction.CREATE);
 
                 List<NestedDocument> docs = new ArrayList<>();
                 NestedDocument doc = new NestedDocument("LA", "CA", "USA")
