@@ -192,6 +192,20 @@ AnalyticsRuleSchema rule = client.analytics().rules("failed-searches").retrieve(
 client.analytics().rules("failed-searches").delete();
 ```
 
+#### Create an analytics event
+```java
+AnalyticsEventCreateSchema analyticsEvent = new AnalyticsEventCreateSchema()
+        .type("conversion")
+        .name("purchase_made")
+        .data(Map.of(
+                "product_id", "123",
+                "user_id", "user_456",
+                "amount", "99.99"
+        ));
+
+client.analytics().events().create(analyticsEvent);
+```
+
 ### Create an API key
 ```java
 ApiKeySchema apiKeySchema = new ApiKeySchema();

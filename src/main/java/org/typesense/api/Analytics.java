@@ -7,11 +7,13 @@ public class Analytics {
     private final ApiCall apiCall;
     private final AnalyticsRules rules;
     private final Map<String, AnalyticsRule> individualRules;
+    private final AnalyticsEvents events;
 
     public Analytics(ApiCall apiCall) {
         this.apiCall = apiCall;
         this.rules = new AnalyticsRules(this.apiCall);
         this.individualRules = new HashMap<>();
+        this.events = new AnalyticsEvents(this.apiCall);
     }
 
     public AnalyticsRules rules() {
@@ -27,5 +29,9 @@ public class Analytics {
 
         retVal = this.individualRules.get(ruleId);
         return retVal;
+    }
+
+    public AnalyticsEvents events() {
+        return this.events;
     }
 }

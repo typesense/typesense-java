@@ -9,6 +9,7 @@ import java.util.List;
 import org.typesense.model.AnalyticsRuleParameters;
 import org.typesense.model.AnalyticsRuleParametersDestination;
 import org.typesense.model.AnalyticsRuleParametersSource;
+import org.typesense.model.AnalyticsRuleParametersSourceEvents;
 import org.typesense.model.AnalyticsRuleSchema;
 import org.typesense.model.AnalyticsRuleUpsertSchema;
 import org.typesense.model.ApiKey;
@@ -113,7 +114,11 @@ public class Helper {
                 .type(AnalyticsRuleUpsertSchema.TypeEnum.NOHITS_QUERIES)
                 .params(new AnalyticsRuleParameters()
                         .source(new AnalyticsRuleParametersSource()
-                                .collections(Arrays.asList("books")))
+                                .collections(Arrays.asList("books"))
+                                .events(Arrays.asList(
+                                        new AnalyticsRuleParametersSourceEvents()
+                                                .type("search")
+                                                .name("products_search_event"))))
                         .destination(new AnalyticsRuleParametersDestination()
                                 .collection("queries")));
 
