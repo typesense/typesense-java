@@ -1,6 +1,6 @@
 package org.typesense.api;
 
-import java.util.Map;
+import java.util.HashMap;
 
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,12 +32,13 @@ public class AnalyticsEventsTest {
 
     @Test
     void testCreate() throws Exception {
+        HashMap<String, Object> eventData = new HashMap<>();
+        eventData.put("q", "running shoes");
+        eventData.put("user_id", "1234");
         AnalyticsEventCreateSchema analyticsEvent = new AnalyticsEventCreateSchema()
                 .type("search")
                 .name("products_search_event")
-                .data(Map.of(
-                        "q", "running shoes",
-                        "user_id", "1234"));
+                .data(eventData);
 
         AnalyticsEventCreateResponse result = this.client.analytics().events().create(analyticsEvent);
         assertNotNull(result);
