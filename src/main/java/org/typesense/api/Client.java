@@ -21,6 +21,9 @@ public class Client {
 
     private Analytics analytics;
 
+    private Stopwords stopwords;
+    private Map<String, StopwordsSet> individualStopwordsSets;
+
     public Health health;
     public Operations operations;
     public Metrics metrics;
@@ -42,6 +45,8 @@ public class Client {
         this.debug = new Debug(this.apiCall);
         this.multiSearch = new MultiSearch(this.apiCall);
         this.analytics = new Analytics(this.apiCall);
+        this.stopwords = new Stopwords(this.apiCall);
+        this.individualStopwordsSets = new HashMap<>();
     }
 
     public Collection collections(String name){
@@ -93,5 +98,20 @@ public class Client {
 
     public Analytics analytics(){
         return this.analytics;
+    }
+
+    public Stopwords stopwords() {
+        return this.stopwords;
+    }
+
+    public StopwordsSet stopwords(String stopwordsSetId) {
+        StopwordsSet retVal;
+
+        if (!this.individualStopwordsSets.containsKey(stopwordsSetId)) {
+            this.individualStopwordsSets.put(stopwordsSetId, new StopwordsSet(stopwordsSetId, this.apiCall));
+        }
+
+        retVal = this.individualStopwordsSets.get(stopwordsSetId);
+        return retVal;
     }
 }

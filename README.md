@@ -206,6 +206,34 @@ AnalyticsEventCreateSchema analyticsEvent = new AnalyticsEventCreateSchema()
 client.analytics().events().create(analyticsEvent);
 ```
 
+### Upsert a stopwords set
+```java
+List<String> stopwords = new ArrayList<>();
+stopwords.add("the");
+stopwords.add("of");
+stopwords.add("and");
+
+StopwordsSetUpsertSchema stopwordsSet = new StopwordsSetUpsertSchema();
+stopwordsSet.stopwords(stopwords);
+
+client.stopwords().upsert("common-words", stopwordsSet);
+```
+
+### Retrieve a stopwords set
+```java
+StopwordsSetRetrieveSchema set = client.stopwords("common-words").retrieve();
+```
+
+### Retrieve all stopwords sets
+```java
+StopwordsSetsRetrieveAllSchema sets = client.stopwords().retrieve();
+```
+
+### Delete a stopwords set
+```java
+client.stopwords("common-words").delete();
+```
+
 ### Create an API key
 ```java
 ApiKeySchema apiKeySchema = new ApiKeySchema();
