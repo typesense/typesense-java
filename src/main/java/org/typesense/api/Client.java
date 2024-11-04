@@ -1,5 +1,6 @@
 package org.typesense.api;
 
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +17,9 @@ public class Client {
 
     private Keys keys;
     private Map<Long, Key> individualKeys;
+
+
+    private Analytics analytics;
 
     public Health health;
     public Operations operations;
@@ -37,6 +41,7 @@ public class Client {
         this.metrics = new Metrics(this.apiCall);
         this.debug = new Debug(this.apiCall);
         this.multiSearch = new MultiSearch(this.apiCall);
+        this.analytics = new Analytics(this.apiCall);
     }
 
     public Collection collections(String name){
@@ -84,5 +89,9 @@ public class Client {
 
         retVal = this.individualKeys.get(id);
         return retVal;
+    }
+
+    public Analytics analytics(){
+        return this.analytics;
     }
 }

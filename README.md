@@ -150,6 +150,62 @@ client.collections("Countries").delete();
 client.collections("Countries").documents().export();
 ```
 
+### Create an analytics rule
+```java
+AnalyticsRuleSchema analyticsRule = new AnalyticsRuleSchema();
+analyticsRule.setName("popular-queries");
+analyticsRule.setType(AnalyticsRuleSchema.TypeEnum.POPULAR_QUERIES);
+analyticsRule.setParams(new AnalyticsRuleParameters()
+        .source(new AnalyticsRuleParametersSource()
+                .collections(Arrays.asList("Countries")))
+        .destination(new AnalyticsRuleParametersDestination()
+                .collection("top_searches")));
+
+client.analytics().rules().create(analyticsRule);
+```
+
+### Upsert an analytics rule
+```java
+AnalyticsRuleUpsertSchema analyticsRule = new AnalyticsRuleUpsertSchema()
+        .type(AnalyticsRuleUpsertSchema.TypeEnum.NOHITS_QUERIES)
+        .params(new AnalyticsRuleParameters()
+                .source(new AnalyticsRuleParametersSource()
+                        .collections(Arrays.asList("Countries")))
+                .destination(new AnalyticsRuleParametersDestination()
+                        .collection("failed_searches")));
+
+client.analytics().rules().upsert("failed-searches", analyticsRule);
+```
+
+### Retrieve all analytics rules
+```java
+AnalyticsRulesRetrieveSchema rules = client.analytics().rules().retrieve();
+```
+
+### Retrieve a single analytics rule
+```java
+AnalyticsRuleSchema rule = client.analytics().rules("failed-searches").retrieve();
+```
+
+### Delete an analytics rule
+```java
+client.analytics().rules("failed-searches").delete();
+```
+
+#### Create an analytics event
+```java
+AnalyticsEventCreateSchema analyticsEvent = new AnalyticsEventCreateSchema()
+        .type("conversion")
+        .name("purchase_made")
+        .data(Map.of(
+                "product_id", "123",
+                "user_id", "user_456",
+                "amount", "99.99"
+        ));
+
+client.analytics().events().create(analyticsEvent);
+```
+
 ### Create an API key
 ```java
 ApiKeySchema apiKeySchema = new ApiKeySchema();
