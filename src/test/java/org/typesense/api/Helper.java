@@ -25,6 +25,9 @@ import org.typesense.model.SearchOverrideInclude;
 import org.typesense.model.SearchOverrideRule;
 import org.typesense.model.SearchOverrideSchema;
 import org.typesense.model.SearchSynonymSchema;
+import org.typesense.model.StopwordsSetSchema;
+import org.typesense.model.StopwordsSetUpsertSchema;
+import org.typesense.model.StopwordsSetsRetrieveAllSchema;
 import org.typesense.resources.Node;
 
 public class Helper {
@@ -125,6 +128,18 @@ public class Helper {
         client.analytics().rules().upsert("analytics-rule", analyticsRuleSchema);
     }
 
+    public void createTestStopwordsSet() throws Exception {
+        List<String> stopwords = new ArrayList<>();
+        stopwords.add("the");
+        stopwords.add("of");
+        stopwords.add("and");
+
+        StopwordsSetUpsertSchema stopwordsSetSchema = new StopwordsSetUpsertSchema();
+        stopwordsSetSchema.stopwords(stopwords);
+
+        client.stopwords().upsert("common-words", stopwordsSetSchema);
+    }
+
     public void teardown() throws Exception {
         CollectionResponse[] collectionResponses = client.collections().retrieve();
         for (CollectionResponse c : collectionResponses) {
@@ -144,6 +159,11 @@ public class Helper {
         ApiKeysResponse apiKeysResponse = client.keys().retrieve();
         for (ApiKey k : apiKeysResponse.getKeys()) {
             client.keys(k.getId()).delete();
+        }
+
+        StopwordsSetsRetrieveAllSchema stopwords = client.stopwords().retrieve();
+        for (StopwordsSetSchema s : stopwords.getStopwords()) {
+            client.stopwords(s.getId()).delete();
         }
     }
 }
