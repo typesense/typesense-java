@@ -20,6 +20,8 @@ import org.typesense.model.CollectionAliasSchema;
 import org.typesense.model.CollectionAliasesResponse;
 import org.typesense.model.CollectionResponse;
 import org.typesense.model.CollectionSchema;
+import org.typesense.model.ConversationModelCreateSchema;
+import org.typesense.model.ConversationModelSchema;
 import org.typesense.model.Field;
 import org.typesense.model.SearchOverrideInclude;
 import org.typesense.model.SearchOverrideRule;
@@ -50,6 +52,34 @@ public class Helper {
         collectionSchema.name("books").fields(fields);
 
         client.collections().create(collectionSchema);
+    }
+
+    public void createConversationCollection() throws Exception {
+        List<Field> fields = new ArrayList<>();
+        fields.add(new Field().name("conversation_id").type(FieldTypes.STRING));
+        fields.add(new Field().name("model_id").type(FieldTypes.STRING));
+        fields.add(new Field().name("timestamp").type(FieldTypes.INT32));
+        fields.add(new Field().name("role").type(FieldTypes.STRING).index(false));
+        fields.add(new Field().name("message").type(FieldTypes.STRING).index(false));
+
+        CollectionSchema collectionSchema = new CollectionSchema();
+        collectionSchema.name("conversations").fields(fields);
+
+        client.collections().create(collectionSchema);
+    }
+
+    public void createTestConversationModel() throws Exception {
+        ConversationModelCreateSchema model = new ConversationModelCreateSchema();
+        model.setId("conv-model");
+        model.setHistoryCollection("conversations");
+        model.setSystemPrompt(
+                "You are an assistant for question-answering. You can only make conversations based on the provided context. If a response cannot be formed strictly using the provided context, politely say you do not have knowledge about that topic.");
+        model.setApiKey(System.getenv("OPENAI_API_KEY"));
+        model.setConversationModelCreateSchemaModelName("openai/gpt-3.5-turbo");
+        model.setConversationModelCreateSchemaMaxBytes(16384);
+        model.setConversationModelCreateSchemaHistoryCollection("conversations");
+
+        client.conversations().models().create(model);
     }
 
     public void createTestQueryCollection() throws Exception {
@@ -164,6 +194,11 @@ public class Helper {
         StopwordsSetsRetrieveAllSchema stopwords = client.stopwords().retrieve();
         for (StopwordsSetSchema s : stopwords.getStopwords()) {
             client.stopwords(s.getId()).delete();
+        }
+
+        ConversationModelSchema[] models = client.conversations().models().retrieve();
+        for (ConversationModelSchema s : models) {
+            client.conversations().models(s.getConversationModelSchemaId()).delete();
         }
     }
 }
