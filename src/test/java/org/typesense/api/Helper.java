@@ -21,9 +21,13 @@ import org.typesense.model.CollectionAliasesResponse;
 import org.typesense.model.CollectionResponse;
 import org.typesense.model.CollectionSchema;
 import org.typesense.model.Field;
+import org.typesense.model.PresetSchema;
+import org.typesense.model.PresetUpsertSchema;
+import org.typesense.model.PresetsRetrieveSchema;
 import org.typesense.model.SearchOverrideInclude;
 import org.typesense.model.SearchOverrideRule;
 import org.typesense.model.SearchOverrideSchema;
+import org.typesense.model.SearchParameters;
 import org.typesense.model.SearchSynonymSchema;
 import org.typesense.model.StopwordsSetSchema;
 import org.typesense.model.StopwordsSetUpsertSchema;
@@ -140,6 +144,17 @@ public class Helper {
         client.stopwords().upsert("common-words", stopwordsSetSchema);
     }
 
+    public void createTestPreset() throws Exception {
+        SearchParameters params = new SearchParameters()
+                .q("Romeo")
+                .queryBy("title");
+
+        PresetUpsertSchema preset = new PresetUpsertSchema()
+                .value(params);
+
+        client.presets().upsert("listing_view", preset);
+    }
+
     public void teardown() throws Exception {
         CollectionResponse[] collectionResponses = client.collections().retrieve();
         for (CollectionResponse c : collectionResponses) {
@@ -164,6 +179,11 @@ public class Helper {
         StopwordsSetsRetrieveAllSchema stopwords = client.stopwords().retrieve();
         for (StopwordsSetSchema s : stopwords.getStopwords()) {
             client.stopwords(s.getId()).delete();
+        }
+
+        PresetsRetrieveSchema presets = client.presets().retrieve();
+        for (PresetSchema p : presets.getPresets()) {
+            client.presets(p.getName()).delete();
         }
     }
 }

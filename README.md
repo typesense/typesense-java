@@ -234,6 +234,34 @@ StopwordsSetsRetrieveAllSchema sets = client.stopwords().retrieve();
 client.stopwords("common-words").delete();
 ```
 
+### Create or update a search preset
+```java
+SearchParameters params = new SearchParameters()
+        .q("bestseller")
+        .queryBy("title,author")
+        .sortBy("ratings_count:desc");
+
+PresetUpsertSchema preset = new PresetUpsertSchema()
+        .value(params);
+
+client.presets().upsert("bestsellers_view", preset);
+```
+
+### Retrieve a search preset
+```java
+PresetSchema preset = client.presets("bestsellers_view").retrieve();
+```
+
+### Retrieve all search presets
+```java
+PresetsRetrieveSchema presets = client.presets().retrieve();
+```
+
+### Delete a search preset
+```java
+client.presets("bestsellers_view").delete();
+```
+
 ### Create an API key
 ```java
 ApiKeySchema apiKeySchema = new ApiKeySchema();
