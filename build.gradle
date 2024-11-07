@@ -120,7 +120,11 @@ dependencies {
 }
 
 tasks.withType(Test).configureEach {
-    useJUnitPlatform()
+    useJUnitPlatform {
+        if (System.getenv('CI')) {
+            excludeTags 'excludeFromCI'
+        }
+    }
 }
 
 swaggerSources {
