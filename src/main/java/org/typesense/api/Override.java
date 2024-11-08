@@ -2,6 +2,7 @@ package org.typesense.api;
 
 import org.typesense.api.utils.URLEncoding;
 import org.typesense.model.SearchOverride;
+import org.typesense.model.SearchOverrideDeleteResponse;
 
 public class Override {
 
@@ -19,8 +20,8 @@ public class Override {
         return this.apiCall.get(this.getEndpoint(), null, SearchOverride.class);
     }
 
-    public SearchOverride delete() throws Exception {
-        return this.apiCall.delete(this.getEndpoint(), null, SearchOverride.class);
+    public SearchOverrideDeleteResponse delete() throws Exception {
+        return this.apiCall.delete(this.getEndpoint(), null, SearchOverrideDeleteResponse.class);
     }
 
     public String getEndpoint() {
