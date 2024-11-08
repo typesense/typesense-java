@@ -1,7 +1,7 @@
 package org.typesense.api;
 
-import org.typesense.interfaces.ApiKeyDeleteResponse;
 import org.typesense.model.ApiKey;
+import org.typesense.model.ApiKeyDeleteResponse;
 
 public class Key {
 
