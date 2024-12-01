@@ -7,6 +7,9 @@ import org.typesense.model.*;
 
 import java.util.ArrayList;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 
 class CollectionsTest {
 
@@ -32,18 +35,31 @@ class CollectionsTest {
         CollectionResponse[] collectionResponses = client.collections().retrieve();
         for(CollectionResponse c:collectionResponses)
             System.out.println(c);
+
+        assertNotNull(collectionResponses);
+        assertEquals(1, collectionResponses.length);
     }
 
     @Test
     void testRetrieveSingleCollection() throws Exception {
         helper.createTestCollection();
-        System.out.println(client.collections("books").retrieve());
+        CollectionResponse books = client.collections("books").retrieve();
+        System.out.println(books);
+
+        assertNotNull(books);
+        assertEquals("books", books.getName());
+        assertEquals(0, books.getNumDocuments());
     }
 
     @Test
     void testDeleteCollection() throws Exception {
         helper.createTestCollection();
-        System.out.println(client.collections("books").delete());
+        CollectionResponse books = client.collections("books").delete();
+        System.out.println(books);
+
+        assertNotNull(books);
+        assertEquals("books", books.getName());
+        assertEquals(0, books.getNumDocuments());
     }
 
     @Test
@@ -59,6 +75,11 @@ class CollectionsTest {
 
         CollectionResponse cr = client.collections().create(collectionSchema);
         System.out.println(cr);
+
+        assertNotNull(cr);
+        assertEquals("Countries", cr.getName());
+        assertEquals(0, cr.getNumDocuments());
+        assertEquals(3, cr.getFields().size());
     }
 
     @Test
@@ -76,7 +97,17 @@ class CollectionsTest {
         CollectionSchema collectionSchema = new CollectionSchema();
         collectionSchema.name("titles").fields(fields);
 
-        //CollectionResponse cr = client.collections().create(collectionSchema);
-        //System.out.println(cr);
+        CollectionResponse cr = client.collections().create(collectionSchema);
+        System.out.println(cr);
+
+        assertNotNull(cr);
+        assertEquals("titles", cr.getName());
+        assertEquals(0, cr.getNumDocuments());
+        assertEquals(2, cr.getFields().size());
+        FieldEmbed fieldEmbed = cr.getFields().stream().filter(f -> f.getName().equals("embedding")).map(Field::getEmbed)
+            .findFirst()
+            .orElse(null);
+        assertNotNull(fieldEmbed);
+        assertEquals("ts/e5-small", fieldEmbed.getModelConfig().getModelName());
     }
 }
