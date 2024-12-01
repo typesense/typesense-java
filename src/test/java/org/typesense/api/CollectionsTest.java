@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.typesense.model.*;
 
 import java.util.ArrayList;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

@@ -2,7 +2,7 @@ package org.typesense.api;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -117,11 +117,11 @@ public class Helper {
                 .type(AnalyticsRuleUpsertSchema.TypeEnum.NOHITS_QUERIES)
                 .params(new AnalyticsRuleParameters()
                         .source(new AnalyticsRuleParametersSource()
-                                .collections(Arrays.asList("books"))
-                                .events(Arrays.asList(
-                                        new AnalyticsRuleParametersSourceEvents()
-                                                .type("search")
-                                                .name("products_search_event"))))
+                                .collections(Collections.singletonList("books"))
+                                .events(Collections.singletonList(
+                                    new AnalyticsRuleParametersSourceEvents()
+                                        .type("search")
+                                        .name("products_search_event"))))
                         .destination(new AnalyticsRuleParametersDestination()
                                 .collection("queries")));
 
