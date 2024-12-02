@@ -14,18 +14,6 @@ jobs:
     strategy:
       matrix:
         java: ['8', '11', '17']
-    services:
-      typesense:
-        image: typesense/typesense:27.0
-        ports:
-          - 8108:8108/tcp
-        volumes:
-          - /tmp/typesense-server-data:/data
-        env:
-          TYPESENSE_DATA_DIR: '/data'
-          TYPESENSE_API_KEY: 'xyz'
-          TYPESENSE_ENABLE_CORS: true
-          TYPESENSE_URL: 'http://localhost:8108'
     name: Java ${{ matrix.Java }}
     steps:
       - name: Checkout sources

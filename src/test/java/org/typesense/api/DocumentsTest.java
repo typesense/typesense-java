@@ -10,8 +10,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.typesense.TypesenseContainer;
 import org.typesense.api.exceptions.ObjectNotFound;
 import org.typesense.model.CollectionSchema;
 import org.typesense.model.DeleteDocumentsParameters;
@@ -24,17 +29,25 @@ import org.typesense.model.SearchParameters;
 import org.typesense.model.SearchResult;
 import org.typesense.model.UpdateDocumentsParameters;
 
+@Testcontainers
 class DocumentsTest {
+
+        @Container
+        static TypesenseContainer typesense = new TypesenseContainer(Helper.IMAGE);
 
         Client client;
         private Helper helper;
 
         @BeforeEach
         void setUp() throws Exception {
-                helper = new Helper();
+                helper = new Helper(typesense);
                 this.client = helper.getClient();
-                helper.teardown();
                 helper.createTestCollection();
+        }
+
+        @AfterEach
+        void tearDown() throws Exception {
+                helper.teardown();
         }
 
         @Test

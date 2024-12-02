@@ -8,21 +8,27 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.typesense.TypesenseContainer;
 import org.typesense.model.StopwordsSetRetrieveSchema;
 import org.typesense.model.StopwordsSetSchema;
 import org.typesense.model.StopwordsSetUpsertSchema;
 import org.typesense.model.StopwordsSetsRetrieveAllSchema;
 
+@Testcontainers
 public class StopwordsTest {
+
+    @Container
+    static TypesenseContainer typesense = new TypesenseContainer(Helper.IMAGE);
 
     private Client client;
     private Helper helper;
 
     @BeforeEach
     void setUp() throws Exception {
-        helper = new Helper();
+        helper = new Helper(typesense);
         client = helper.getClient();
-        helper.teardown();
         helper.createTestCollection();
     }
 

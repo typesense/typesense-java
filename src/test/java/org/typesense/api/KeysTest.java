@@ -3,6 +3,9 @@ package org.typesense.api;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.typesense.TypesenseContainer;
 import org.typesense.model.ApiKey;
 import org.typesense.model.ApiKeySchema;
 
@@ -10,7 +13,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@Testcontainers
 class KeysTest {
+
+    @Container
+    static TypesenseContainer typesense = new TypesenseContainer(Helper.IMAGE);
 
     private Client client;
     private Helper helper;
@@ -19,8 +26,7 @@ class KeysTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        helper = new Helper();
-        helper.teardown();
+        helper = new Helper(typesense);
         client = helper.getClient();
         ApiKey key = helper.createTestKey();
         testKey = key.getValue();
