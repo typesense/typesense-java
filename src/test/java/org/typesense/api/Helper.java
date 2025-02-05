@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import org.testcontainers.typesense.TypesenseContainer;
 import org.typesense.model.AnalyticsRuleParameters;
 import org.typesense.model.AnalyticsRuleParametersDestination;
 import org.typesense.model.AnalyticsRuleParametersSource;
@@ -31,13 +32,16 @@ import org.typesense.model.StopwordsSetsRetrieveAllSchema;
 import org.typesense.resources.Node;
 
 public class Helper {
+    
+    final static String IMAGE = "typesense/typesense:27.0";
+    
     private final Client client;
 
-    Helper() {
+    Helper(TypesenseContainer container) {
         List<Node> nodes = new ArrayList<>();
-        nodes.add(new Node("http", "localhost", "8108"));
+        nodes.add(new Node("http", container.getHost(), container.getHttpPort()));
 
-        Configuration configuration = new Configuration(nodes, Duration.ofSeconds(3), "xyz");
+        Configuration configuration = new Configuration(nodes, Duration.ofSeconds(3), container.getApiKey());
 
         this.client = new Client(configuration);
     }

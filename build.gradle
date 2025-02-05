@@ -110,6 +110,8 @@ dependencies {
     testImplementation "org.mockito:mockito-core:${mokitoVerion}"
     testImplementation "org.mockito:mockito-junit-jupiter:${mokitoVerion}"
     testImplementation "org.hamcrest:hamcrest-all:${hamcrestVersion}"
+    testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
+    testImplementation "org.testcontainers:typesense:${testcontainersVersion}"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}"
 
     integrationTestImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
