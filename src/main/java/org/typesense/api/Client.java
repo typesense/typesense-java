@@ -21,6 +21,8 @@ public class Client {
 
     private Analytics analytics;
 
+    private Stemming stemming;
+
     private Stopwords stopwords;
     private Map<String, StopwordsSet> individualStopwordsSets;
 
@@ -45,6 +47,7 @@ public class Client {
         this.debug = new Debug(this.apiCall);
         this.multiSearch = new MultiSearch(this.apiCall);
         this.analytics = new Analytics(this.apiCall);
+        this.stemming = new Stemming(this.apiCall);
         this.stopwords = new Stopwords(this.apiCall);
         this.individualStopwordsSets = new HashMap<>();
     }
@@ -98,6 +101,10 @@ public class Client {
 
     public Analytics analytics(){
         return this.analytics;
+    }
+
+    public Stemming stemming(){
+        return this.stemming;
     }
 
     public Stopwords stopwords() {
