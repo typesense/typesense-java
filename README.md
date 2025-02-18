@@ -8,7 +8,7 @@ The client is available on Maven central:
 
 ```groovy
 dependencies {
-    implementation 'org.typesense:typesense-java:1.2.0'
+    implementation 'org.typesense:typesense-java:1.3.0'
 }
 ```
 
@@ -16,7 +16,7 @@ dependencies {
 <dependency>
     <groupId>org.typesense</groupId>
     <artifactId>typesense-java</artifactId>
-    <version>1.2.0</version>
+    <version>1.3.0</version>
 </dependency>
 ```
 
