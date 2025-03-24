@@ -26,6 +26,7 @@ import org.typesense.model.SearchOverrideInclude;
 import org.typesense.model.SearchOverrideRule;
 import org.typesense.model.SearchOverrideSchema;
 import org.typesense.model.SearchSynonymSchema;
+import org.typesense.model.StemmingDictionaryWords;
 import org.typesense.model.StopwordsSetSchema;
 import org.typesense.model.StopwordsSetUpsertSchema;
 import org.typesense.model.StopwordsSetsRetrieveAllSchema;
@@ -142,6 +143,16 @@ public class Helper {
         stopwordsSetSchema.stopwords(stopwords);
 
         client.stopwords().upsert("common-words", stopwordsSetSchema);
+    }
+
+
+    public void createStemmingDictionary() throws Exception{
+        List<StemmingDictionaryWords> stemmingDictionaryWords = new ArrayList<>();
+
+        stemmingDictionaryWords.add(new StemmingDictionaryWords().word("ran").root("run"));
+        stemmingDictionaryWords.add(new StemmingDictionaryWords().word("running").root("run"));
+
+        client.stemming().dictionaries().upsert("irregular-plurals", stemmingDictionaryWords);
     }
 
     public void teardown() throws Exception {
