@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 
 public class ApiCall {
@@ -32,7 +33,7 @@ public class ApiCall {
     private static final String API_KEY_HEADER = "X-TYPESENSE-API-KEY";
     private static final Logger logger = LoggerFactory.getLogger(ApiCall.class);
     private final OkHttpClient client;
-    private final String apiKey;
+    private final Supplier<String> apiKey;
     private final Duration retryInterval;
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -175,7 +176,7 @@ public class ApiCall {
                 String fullUrl = populateQueryParameters(url, queryParameters).toString();
                 Request request = requestBuilder
                                   .url(fullUrl)
-                                  .header(API_KEY_HEADER, apiKey)
+                                  .header(API_KEY_HEADER, apiKey.get())
                                   .build();
 
                 Response response = client.newCall(request).execute();

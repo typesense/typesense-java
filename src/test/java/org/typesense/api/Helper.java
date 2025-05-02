@@ -38,7 +38,7 @@ public class Helper {
         List<Node> nodes = new ArrayList<>();
         nodes.add(new Node("http", "localhost", "8108"));
 
-        Configuration configuration = new Configuration(nodes, Duration.ofSeconds(3), "xyz");
+        Configuration configuration = new Configuration(nodes, Duration.ofSeconds(3), () -> "xyz");
 
         this.client = new Client(configuration);
     }

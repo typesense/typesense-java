@@ -53,12 +53,12 @@ class APICallTest {
     }
 
     void setUpNoNearestNode() {
-        apiCall = new ApiCall(new Configuration(nodes, Duration.ofSeconds(3), "xyz"), client);
+        apiCall = new ApiCall(new Configuration(nodes, Duration.ofSeconds(3), () -> "xyz"), client);
     }
 
     void setUpNearestNode() {
         nearestNode = new Node("http", "localhost", "0000");
-        apiCall = new ApiCall(new Configuration(nearestNode, nodes, Duration.ofSeconds(3), "xyz"), client);
+        apiCall = new ApiCall(new Configuration(nearestNode, nodes, Duration.ofSeconds(3), () -> "xyz"), client);
     }
 
     @AfterEach

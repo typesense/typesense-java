@@ -4,6 +4,7 @@ import org.typesense.resources.Node;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class Configuration {
 
@@ -14,7 +15,7 @@ public class Configuration {
     public Duration healthCheckInterval;
     public int numRetries;
     public Duration retryInterval;
-    public String apiKey;
+    public Supplier<String> apiKey;
     public boolean sendApiKeyAsQueryParam;
 
     /**
@@ -24,7 +25,7 @@ public class Configuration {
      * @param apiKey String describing the apiKey
      */
 
-    public Configuration(List<Node> nodes, Duration connectionTimeout, String apiKey) {
+    public Configuration(List<Node> nodes, Duration connectionTimeout, Supplier<String> apiKey) {
         this.nodes = nodes;
         this.connectionTimeout = connectionTimeout;
         this.readTimeout = connectionTimeout;
@@ -43,7 +44,7 @@ public class Configuration {
      * @param readTimeout Duration in seconds
      * @param apiKey String describing the apiKey
      */
-    public Configuration(List<Node> nodes, Duration connectionTimeout, Duration readTimeout, String apiKey) {
+    public Configuration(List<Node> nodes, Duration connectionTimeout, Duration readTimeout, Supplier<String> apiKey) {
         this.nodes = nodes;
         this.connectionTimeout = connectionTimeout;
         this.readTimeout = readTimeout;
@@ -55,7 +56,7 @@ public class Configuration {
         this.sendApiKeyAsQueryParam = false;
     }
 
-    public Configuration(Node nearestNode, List<Node> nodes, Duration connectionTimeout, String apiKey) {
+    public Configuration(Node nearestNode, List<Node> nodes, Duration connectionTimeout, Supplier<String> apiKey) {
         this(nodes,connectionTimeout,apiKey);
         this.nearestNode = nearestNode;
     }

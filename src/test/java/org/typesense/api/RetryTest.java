@@ -17,7 +17,7 @@ class RetryTest {
     void setUp() throws Exception {
         ArrayList<Node> nodes = new ArrayList<>();
         nodes.add(new Node("http", "unknownhost123", "8108"));
-        Configuration configuration = new Configuration(nodes, Duration.ofSeconds(1), "xyz");
+        Configuration configuration = new Configuration(nodes, Duration.ofSeconds(1), () -> "xyz");
         configuration.numRetries = 2;
         configuration.retryInterval = Duration.ofSeconds(2);
         this.client = new Client(configuration);
