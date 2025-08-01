@@ -7,12 +7,10 @@ import okhttp3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.typesense.api.exceptions.*;
-import org.typesense.model.ErrorResponse;
 import org.typesense.resources.Node;
 
 import javax.net.ssl.SSLException;
 import java.io.IOException;
-import java.net.SocketTimeoutException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,7 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
 
 public class ApiCall {
 
@@ -61,14 +58,15 @@ public class ApiCall {
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
         client = new OkHttpClient()
-            .newBuilder()
-            .connectTimeout(configuration.connectionTimeout.getSeconds(), TimeUnit.SECONDS)
-            .readTimeout(configuration.readTimeout.getSeconds(), TimeUnit.SECONDS)
-            .build();
+                .newBuilder()
+                .connectTimeout(configuration.connectionTimeout.getSeconds(), TimeUnit.SECONDS)
+                .readTimeout(configuration.readTimeout.getSeconds(), TimeUnit.SECONDS)
+                .build();
     }
 
     boolean isDueForHealthCheck(Node node) {
-        return Duration.between(node.lastAccessTimestamp, LocalDateTime.now()).getSeconds() > configuration.healthCheckInterval.getSeconds();
+        return Duration.between(node.lastAccessTimestamp, LocalDateTime.now())
+                .getSeconds() > configuration.healthCheckInterval.getSeconds();
     }
 
     // Loops in a round-robin fashion to check for a healthy node and returns it
@@ -161,7 +159,7 @@ public class ApiCall {
     }
 
     <Q, T> T makeRequest(String endpoint, Q queryParameters, Request.Builder requestBuilder,
-                         Class<T> responseClass) throws Exception {
+            Class<T> responseClass) throws Exception {
         int num_tries = 0;
         Exception lastException = new TypesenseError("Unknown client error", 400);
 
@@ -174,9 +172,9 @@ public class ApiCall {
                 String url = URI + endpoint;
                 String fullUrl = populateQueryParameters(url, queryParameters).toString();
                 Request request = requestBuilder
-                                  .url(fullUrl)
-                                  .header(API_KEY_HEADER, apiKey)
-                                  .build();
+                        .url(fullUrl)
+                        .header(API_KEY_HEADER, apiKey)
+                        .build();
 
                 Response response = client.newCall(request).execute();
 
@@ -193,11 +191,11 @@ public class ApiCall {
 
             } catch (Exception e) {
                 boolean handleError = (e instanceof ServerError) ||
-                                      (e instanceof ServiceUnavailable) ||
-                                      (e.getClass().getPackage().getName().startsWith("java.net")) ||
-                                      (e instanceof SSLException);
+                        (e instanceof ServiceUnavailable) ||
+                        (e.getClass().getPackage().getName().startsWith("java.net")) ||
+                        (e instanceof SSLException);
 
-                if(!handleError) {
+                if (!handleError) {
                     // we just throw and move on
                     throw e;
                 }
@@ -233,7 +231,7 @@ public class ApiCall {
                             value.append(",");
                     }
                     httpBuilder.addQueryParameter(entry.getKey(), value.toString());
-                } else if (entry.getValue() != null){
+                } else if (entry.getValue() != null) {
                     httpBuilder.addQueryParameter(entry.getKey(), entry.getValue().toString());
                 }
             }
@@ -272,3 +270,10 @@ public class ApiCall {
 
 }
 
+class ErrorResponse {
+    private String message = null;
+
+    public String getMessage() {
+        return message;
+    }
+}
