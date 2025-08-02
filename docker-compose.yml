@@ -1,17 +1,17 @@
-version: "3"
+version: '3'
 
 services:
   typesense:
-    image: typesense/typesense:0.24.1
-    container_name: "typesense"
+    image: typesense/typesense:29.0
+    container_name: 'typesense'
     ports:
-      - "8108:8108"
+      - '8108:8108'
     volumes:
       - data-dir:/data
     environment:
       TYPESENSE_DATA_DIR: /data
       TYPESENSE_API_KEY: xyz
-    restart: "no"
+    restart: 'no'
 
 volumes:
   data-dir:
