@@ -26,6 +26,9 @@ public class Client {
     private Stopwords stopwords;
     private Map<String, StopwordsSet> individualStopwordsSets;
 
+    private SynonymSets synonymSets;
+    private Map<String, SynonymSet> individualSynonymSets;
+
     public Health health;
     public Operations operations;
     public Metrics metrics;
@@ -50,6 +53,8 @@ public class Client {
         this.stemming = new Stemming(this.apiCall);
         this.stopwords = new Stopwords(this.apiCall);
         this.individualStopwordsSets = new HashMap<>();
+        this.synonymSets = new SynonymSets(this.apiCall);
+        this.individualSynonymSets = new HashMap<>();
     }
 
     public Collection collections(String name){
@@ -119,6 +124,21 @@ public class Client {
         }
 
         retVal = this.individualStopwordsSets.get(stopwordsSetId);
+        return retVal;
+    }
+
+    public SynonymSets synonymSets() {
+        return this.synonymSets;
+    }
+
+    public SynonymSet synonymSet(String synonymSetName) {
+        SynonymSet retVal;
+
+        if (!this.individualSynonymSets.containsKey(synonymSetName)) {
+            this.individualSynonymSets.put(synonymSetName, new SynonymSet(synonymSetName, this.apiCall));
+        }
+
+        retVal = this.individualSynonymSets.get(synonymSetName);
         return retVal;
     }
 }
