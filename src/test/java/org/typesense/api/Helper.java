@@ -226,5 +226,13 @@ public class Helper {
         for (StopwordsSetSchema s : stopwords.getStopwords()) {
             client.stopwords(s.getId()).delete();
         }
+
+        try {
+            SynonymSetSchema[] synonymSets = client.synonymSets().retrieve();
+            for (SynonymSetSchema s : synonymSets) {
+                client.synonymSet(s.getName()).delete();
+            }
+        } catch (Exception e) {
+        }
     }
 }
