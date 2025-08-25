@@ -3,6 +3,15 @@ package org.typesense.api;
 import org.typesense.api.utils.URLEncoding;
 import org.typesense.model.SearchSynonym;
 
+/**
+ * @deprecated This class is deprecated and will be removed in a future version.
+ * Use {@link SynonymSet} instead for the new synonym sets API.
+ * 
+ * Note: The old synonyms API is only available on Typesense v29.0 and below.
+ * For Typesense v30.0 and above, use the new synonym sets API.
+ */
+@Deprecated
+
 public class Synonym {
 
     private String collectionName;

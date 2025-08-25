@@ -66,11 +66,31 @@ public class Collection {
         return retVal;
     }
 
+    /**
+     * @deprecated This method is deprecated and will be removed in a future version.
+     * Use {@link Client#synonymSets()} instead for the new synonym sets API.
+     * 
+     * Note: The old synonyms API is only available on Typesense v29.0 and below.
+     * For Typesense v30.0 and above, use the new synonym sets API.
+     */
+    @Deprecated
     public Synonyms synonyms() {
+        System.err.println("DEPRECATED: Using deprecated synonyms API. This API is only available on Typesense v29.0 and below. " +
+                          "For Typesense v30.0 and above, use the new synonym sets API via Client.synonymSets().");
         return this.synonyms;
     }
 
+    /**
+     * @deprecated This method is deprecated and will be removed in a future version.
+     * Use {@link Client#synonymSet(String)} instead for the new synonym sets API.
+     * 
+     * Note: The old synonyms API is only available on Typesense v29.0 and below.
+     * For Typesense v30.0 and above, use the new synonym sets API.
+     */
+    @Deprecated
     public Synonym synonyms(String synonymId) {
+        System.err.println("DEPRECATED: Using deprecated synonyms API. This API is only available on Typesense v29.0 and below. " +
+                          "For Typesense v30.0 and above, use the new synonym sets API via Client.synonymSet(String).");
         Synonym retVal;
 
         if (!this.individualSynonyms.containsKey(synonymId)) {
