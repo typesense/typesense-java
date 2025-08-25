@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.typesense.model.AnalyticsRuleParameters;
 import org.typesense.model.AnalyticsRuleParametersDestination;
@@ -33,6 +34,41 @@ import org.typesense.resources.Node;
 
 public class Helper {
     private final Client client;
+
+    public static boolean isV30OrAbove(Client client) {
+        try {
+            Map<String, Object> debugResponse = client.debug.retrieve();
+            if (debugResponse == null) {
+                return false;
+            }
+            
+            Object version = debugResponse.get("version");
+            if (version == null) {
+                return false;
+            }
+            
+            String versionStr = version.toString();
+            if ("nightly".equals(versionStr)) {
+                return true;
+            }
+            
+            if (!versionStr.startsWith("v")) {
+                return false;
+            }
+            
+            String numberedVersion = versionStr.substring(1);
+            String[] parts = numberedVersion.split("\\.");
+            if (parts.length == 0) {
+                return false;
+            }
+            
+            int majorVersion = Integer.parseInt(parts[0]);
+            return majorVersion >= 30;
+            
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
     Helper() {
         List<Node> nodes = new ArrayList<>();
