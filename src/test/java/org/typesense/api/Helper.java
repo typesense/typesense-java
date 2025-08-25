@@ -30,6 +30,10 @@ import org.typesense.model.StemmingDictionaryWords;
 import org.typesense.model.StopwordsSetSchema;
 import org.typesense.model.StopwordsSetUpsertSchema;
 import org.typesense.model.StopwordsSetsRetrieveAllSchema;
+import org.typesense.model.SynonymItemSchema;
+import org.typesense.model.SynonymSetCreateSchema;
+import org.typesense.model.SynonymSetSchema;
+import org.typesense.model.SynonymSetsRetrieveSchema;
 import org.typesense.resources.Node;
 
 public class Helper {
@@ -185,6 +189,16 @@ public class Helper {
         stemmingDictionaryWords.add(new StemmingDictionaryWords().word("running").root("run"));
 
         client.stemming().dictionaries().upsert("irregular-plurals", stemmingDictionaryWords);
+    }
+
+    public SynonymSetCreateSchema createTestSynonymSetData() {
+        SynonymItemSchema synonymItem = new SynonymItemSchema();
+        synonymItem.setId("dummy");
+        synonymItem.setSynonyms(List.of("foo", "bar", "baz"));
+
+        SynonymSetCreateSchema synonymSetData = new SynonymSetCreateSchema();
+        synonymSetData.setItems(List.of(synonymItem));
+        return synonymSetData;
     }
 
     public void teardown() throws Exception {
