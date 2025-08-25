@@ -14,6 +14,11 @@ class SynonymsTest {
     void setUp() throws Exception {
         helper = new Helper();
         client = helper.getClient();
+
+        if (Helper.isV30OrAbove(client)) {
+            org.junit.jupiter.api.Assumptions.assumeTrue(false, "Skipping test - requires Typesense v30 or above");
+        }
+
         helper.teardown();
         helper.createTestCollection();
         helper.createTestSynonym();
