@@ -7,12 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.typesense.model.AnalyticsRuleParameters;
-import org.typesense.model.AnalyticsRuleParametersDestination;
-import org.typesense.model.AnalyticsRuleParametersSource;
-import org.typesense.model.AnalyticsRuleParametersSourceEvents;
-import org.typesense.model.AnalyticsRuleSchema;
-import org.typesense.model.AnalyticsRuleUpsertSchema;
 import org.typesense.model.ApiKey;
 import org.typesense.model.ApiKeySchema;
 import org.typesense.model.ApiKeysResponse;
@@ -35,6 +29,10 @@ import org.typesense.model.SynonymSetCreateSchema;
 import org.typesense.model.SynonymSetSchema;
 import org.typesense.model.SynonymSetsRetrieveSchema;
 import org.typesense.resources.Node;
+import org.typesense.model.AnalyticsRuleCreate;
+import org.typesense.model.AnalyticsRuleCreateParams;
+import org.typesense.model.AnalyticsRule;
+import org.typesense.api.AnalyticsRules;
 
 public class Helper {
     private final Client client;
@@ -104,6 +102,15 @@ public class Helper {
         client.collections().create(collectionSchema);
     }
 
+    public void createTestQueryDocument() throws Exception {
+        HashMap<String, Object> hmap = new HashMap<>();
+        hmap.put("q", "running shoes");
+        hmap.put("count", 42);
+        hmap.put("id", "query1");
+
+        client.collections("queries").documents().create(hmap);
+    }
+
     public void createTestDocument() throws Exception {
         String[] authors = { "shakspeare", "william" };
         HashMap<String, Object> hmap = new HashMap<>();
@@ -153,20 +160,36 @@ public class Helper {
         client.collections("books").synonyms().upsert("coat-synonyms", synonym);
     }
 
-    public void createTestAnalyticsRule() throws Exception {
-        AnalyticsRuleUpsertSchema analyticsRuleSchema = new AnalyticsRuleUpsertSchema()
-                .type(AnalyticsRuleUpsertSchema.TypeEnum.NOHITS_QUERIES)
-                .params(new AnalyticsRuleParameters()
-                        .source(new AnalyticsRuleParametersSource()
-                                .collections(Arrays.asList("books"))
-                                .events(Arrays.asList(
-                                        new AnalyticsRuleParametersSourceEvents()
-                                                .type("search")
-                                                .name("products_search_event"))))
-                        .destination(new AnalyticsRuleParametersDestination()
-                                .collection("queries")));
+    public void createTestAnalyticsCollection() throws Exception {
+        List<Field> fields = new ArrayList<>();
+        fields.add(new Field().name("rule_name").type(FieldTypes.STRING));
+        fields.add(new Field().name("event_type").type(FieldTypes.STRING));
+        fields.add(new Field().name("counter_value").type(FieldTypes.INT32));
+        fields.add(new Field().name("timestamp").type(FieldTypes.INT64));
 
-        client.analytics().rules().upsert("analytics-rule", analyticsRuleSchema);
+        CollectionSchema collectionSchema = new CollectionSchema();
+        collectionSchema.name("analytics_data").fields(fields);
+
+        client.collections().create(collectionSchema);
+    }
+
+    public String createTestAnalyticsRule() throws Exception {
+        String ruleName = "analytics-rule-" + System.currentTimeMillis();
+        
+        AnalyticsRuleCreate analyticsRule = new AnalyticsRuleCreate()
+                .name(ruleName)
+                .type(AnalyticsRuleCreate.TypeEnum.COUNTER)
+                .collection("analytics_data")
+                .eventType("click")
+                .params(new AnalyticsRuleCreateParams()
+                        .counterField("num_employees")
+                        .weight(1));
+
+        List<AnalyticsRuleCreate> rules = new ArrayList<>();
+        rules.add(analyticsRule);
+
+        client.analytics().rules().create(rules);
+        return ruleName;
     }
 
     public void createTestStopwordsSet() throws Exception {
@@ -213,8 +236,11 @@ public class Helper {
         }
 
         AnalyticsRules analyticsRules = client.analytics().rules();
-        for (AnalyticsRuleSchema r : analyticsRules.retrieve().getRules()) {
-            client.analytics().rules(r.getName()).delete();
+        List<AnalyticsRule> rules = analyticsRules.retrieve();
+        if (rules != null) {
+            for (AnalyticsRule r : rules) {
+                client.analytics().rules(r.getName()).delete();
+            }
         }
 
         ApiKeysResponse apiKeysResponse = client.keys().retrieve();
