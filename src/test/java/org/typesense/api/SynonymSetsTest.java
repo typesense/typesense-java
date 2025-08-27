@@ -1,6 +1,7 @@
 package org.typesense.api;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,7 +50,7 @@ class SynonymSetsTest {
         assertEquals(synonymSetName, result.getName());
         assertEquals(1, result.getItems().size());
         assertEquals("dummy", result.getItems().get(0).getId());
-        assertEquals(List.of("foo", "bar", "baz"), result.getItems().get(0).getSynonyms());
+        assertEquals(Arrays.asList("foo", "bar", "baz"), result.getItems().get(0).getSynonyms());
     }
 
     @Test
@@ -74,6 +75,6 @@ class SynonymSetsTest {
         assertEquals(synonymSetName, foundSynonymSet.getName());
         assertEquals(1, foundSynonymSet.getItems().size());
         assertEquals("dummy", foundSynonymSet.getItems().get(0).getId());
-        assertEquals(List.of("foo", "bar", "baz"), foundSynonymSet.getItems().get(0).getSynonyms());
+        assertEquals(Arrays.asList("foo", "bar", "baz"), foundSynonymSet.getItems().get(0).getSynonyms());
     }
 } 

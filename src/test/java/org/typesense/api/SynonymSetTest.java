@@ -9,6 +9,7 @@ import org.typesense.model.SynonymSetSchema;
 import org.typesense.model.SynonymSetDeleteSchema;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -52,7 +53,7 @@ class SynonymSetTest {
         assertNotNull(result);
         assertEquals(1, result.getItems().size());
         assertEquals("dummy", result.getItems().get(0).getId());
-        assertEquals(List.of("foo", "bar", "baz"), result.getItems().get(0).getSynonyms());
+        assertEquals(Arrays.asList("foo", "bar", "baz"), result.getItems().get(0).getSynonyms());
     }
 
     @Test
@@ -64,7 +65,7 @@ class SynonymSetTest {
         List<SynonymItemSchema> items = new ArrayList<>();
         SynonymItemSchema item = new SynonymItemSchema();
         item.setId("dummy");
-        item.setSynonyms(List.of("foo", "bar", "baz", "qux"));
+        item.setSynonyms(Arrays.asList("foo", "bar", "baz", "qux"));
         items.add(item);
         updatedData.setItems(items);
 
@@ -73,7 +74,7 @@ class SynonymSetTest {
         assertEquals(synonymSetName, result.getName());
         assertEquals(1, result.getItems().size());
         assertEquals("dummy", result.getItems().get(0).getId());
-        assertEquals(List.of("foo", "bar", "baz", "qux"), result.getItems().get(0).getSynonyms());
+        assertEquals(Arrays.asList("foo", "bar", "baz", "qux"), result.getItems().get(0).getSynonyms());
     }
 
     @Test

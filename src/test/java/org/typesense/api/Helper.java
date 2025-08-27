@@ -2,11 +2,10 @@ package org.typesense.api;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Arrays;
 import org.typesense.model.ApiKey;
 import org.typesense.model.ApiKeySchema;
 import org.typesense.model.ApiKeysResponse;
@@ -217,10 +216,10 @@ public class Helper {
     public SynonymSetCreateSchema createTestSynonymSetData() {
         SynonymItemSchema synonymItem = new SynonymItemSchema();
         synonymItem.setId("dummy");
-        synonymItem.setSynonyms(List.of("foo", "bar", "baz"));
+        synonymItem.setSynonyms(Arrays.asList("foo", "bar", "baz"));
 
         SynonymSetCreateSchema synonymSetData = new SynonymSetCreateSchema();
-        synonymSetData.setItems(List.of(synonymItem));
+        synonymSetData.setItems(Arrays.asList(synonymItem));
         return synonymSetData;
     }
 
