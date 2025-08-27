@@ -226,19 +226,25 @@ public class Helper {
     public void teardown() throws Exception {
         CollectionResponse[] collectionResponses = client.collections().retrieve();
         for (CollectionResponse c : collectionResponses) {
-            client.collections(c.getName()).delete();
+            if (c.getName() != null) {
+                client.collections(c.getName()).delete();
+            }
         }
 
         CollectionAliasesResponse collectionAliasesResponse = client.aliases().retrieve();
         for (CollectionAlias a : collectionAliasesResponse.getAliases()) {
-            client.aliases(a.getName()).delete();
+            if (a.getName() != null) {
+                client.aliases(a.getName()).delete();
+            }
         }
 
         AnalyticsRules analyticsRules = client.analytics().rules();
         List<AnalyticsRule> rules = analyticsRules.retrieve();
         if (rules != null) {
             for (AnalyticsRule r : rules) {
-                client.analytics().rules(r.getName()).delete();
+                if (r.getName() != null) {
+                    client.analytics().rules(r.getName()).delete();
+                }
             }
         }
 
@@ -255,7 +261,9 @@ public class Helper {
         try {
             SynonymSetSchema[] synonymSets = client.synonymSets().retrieve();
             for (SynonymSetSchema s : synonymSets) {
-                client.synonymSet(s.getName()).delete();
+                if (s.getName() != null) {
+                    client.synonymSet(s.getName()).delete();
+                }
             }
         } catch (Exception e) {
         }
