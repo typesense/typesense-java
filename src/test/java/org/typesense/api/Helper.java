@@ -15,9 +15,6 @@ import org.typesense.model.CollectionAliasesResponse;
 import org.typesense.model.CollectionResponse;
 import org.typesense.model.CollectionSchema;
 import org.typesense.model.Field;
-import org.typesense.model.SearchOverrideInclude;
-import org.typesense.model.SearchOverrideRule;
-import org.typesense.model.SearchOverrideSchema;
 import org.typesense.model.SearchSynonymSchema;
 import org.typesense.model.StemmingDictionaryWords;
 import org.typesense.model.StopwordsSetSchema;
@@ -141,15 +138,6 @@ public class Helper {
         collectionValues.add("*");
         apiKeySchema.description("Admin Key").actions(actionValues).collections(collectionValues);
         return client.keys().create(apiKeySchema);
-    }
-
-    public void createTestOverrirde() throws Exception {
-        SearchOverrideSchema searchOverrideSchema = new SearchOverrideSchema();
-        List<SearchOverrideInclude> searchOverrideIncludes = new ArrayList<>();
-        searchOverrideIncludes.add(new SearchOverrideInclude().id("422").position(1));
-        searchOverrideSchema.rule(new SearchOverrideRule().query("apple").match(SearchOverrideRule.MatchEnum.EXACT))
-                .includes(searchOverrideIncludes);
-        client.collections("books").overrides().upsert("customize-apple", searchOverrideSchema);
     }
 
     public void createTestSynonym() throws Exception {
