@@ -24,6 +24,11 @@ import org.typesense.model.SynonymItemSchema;
 import org.typesense.model.SynonymSetCreateSchema;
 import org.typesense.model.SynonymSetSchema;
 import org.typesense.model.SynonymSetsRetrieveSchema;
+import org.typesense.model.CurationItemCreateSchema;
+import org.typesense.model.CurationSetCreateSchema;
+import org.typesense.model.CurationRule;
+import org.typesense.model.CurationInclude;
+import org.typesense.model.CurationExclude;
 import org.typesense.resources.Node;
 import org.typesense.model.AnalyticsRuleCreate;
 import org.typesense.model.AnalyticsRuleCreateParams;
@@ -209,6 +214,36 @@ public class Helper {
         SynonymSetCreateSchema synonymSetData = new SynonymSetCreateSchema();
         synonymSetData.setItems(Arrays.asList(synonymItem));
         return synonymSetData;
+    }
+
+    public CurationSetCreateSchema createTestCurationSetData() {
+        CurationRule rule = new CurationRule();
+        rule.setQuery("apple");
+        rule.setMatch(CurationRule.MatchEnum.EXACT);
+
+        CurationInclude include1 = new CurationInclude();
+        include1.setId("422");
+        include1.setPosition(1);
+        CurationInclude include2 = new CurationInclude();
+        include2.setId("54");
+        include2.setPosition(2);
+
+        CurationExclude exclude1 = new CurationExclude();
+        exclude1.setId("287");
+
+        CurationItemCreateSchema curationItem = new CurationItemCreateSchema();
+        curationItem.setId("dummy");
+        curationItem.setRule(rule);
+        curationItem.setIncludes(Arrays.asList(include1, include2));
+        curationItem.setExcludes(Arrays.asList(exclude1));
+        curationItem.setRemoveMatchedTokens(true);
+        curationItem.setFilterBy("category:=Electronics");
+        curationItem.setStopProcessing(true);
+
+        CurationSetCreateSchema curationSetData = new CurationSetCreateSchema();
+        curationSetData.setItems(Arrays.asList(curationItem));
+        curationSetData.setDescription("Test curation set");
+        return curationSetData;
     }
 
     public void teardown() throws Exception {
