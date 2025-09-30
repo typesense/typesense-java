@@ -21,9 +21,6 @@ public class Collection {
     private Synonyms synonyms;
     private Map<String, Synonym> individualSynonyms;
 
-    private Overrides overrides;
-    private Map<String, Override> individualOverrides;
-
     private final String endpoint;
 
     Collection(String name, ApiCall apiCall, Configuration configuration) {
@@ -35,8 +32,6 @@ public class Collection {
         this.individualDocuments = new HashMap<>();
         this.synonyms = new Synonyms(this.name, this.apiCall);
         this.individualSynonyms = new HashMap<>();
-        this.overrides = new Overrides(this.name, this.apiCall);
-        this.individualOverrides = new HashMap<>();
     }
 
     public CollectionResponse retrieve() throws Exception {
@@ -98,21 +93,6 @@ public class Collection {
         }
 
         retVal = this.individualSynonyms.get(synonymId);
-        return retVal;
-    }
-
-    public Overrides overrides() {
-        return this.overrides;
-    }
-
-    public Override overrides(String overrideId) {
-        Override retVal;
-
-        if (!this.individualOverrides.containsKey(overrideId)) {
-            this.individualOverrides.put(overrideId, new Override(this.name, overrideId, this.apiCall));
-        }
-
-        retVal = this.individualOverrides.get(overrideId);
         return retVal;
     }
 }
