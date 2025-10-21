@@ -55,11 +55,11 @@ public class Helper {
                 return true;
             }
             
-            if (!versionStr.startsWith("v")) {
-                return false;
+            String numberedVersion = versionStr;
+            if (versionStr.startsWith("v")) {
+                numberedVersion = versionStr.substring(1);
             }
             
-            String numberedVersion = versionStr.substring(1);
             String[] parts = numberedVersion.split("\\.");
             if (parts.length == 0) {
                 return false;
