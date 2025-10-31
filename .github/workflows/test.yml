@@ -16,7 +16,7 @@ jobs:
         java: ['8', '11', '17']
     services:
       typesense:
-        image: typesense/typesense:28.0.rc36
+        image: typesense/typesense:30.0.alpha1
         ports:
           - 8108:8108/tcp
         volumes:

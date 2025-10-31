@@ -7,22 +7,34 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.typesense.model.AnalyticsEvent;
 import org.typesense.model.AnalyticsEventCreateResponse;
-import org.typesense.model.AnalyticsEventCreateSchema;
+import org.typesense.model.AnalyticsEventData;
 
 public class AnalyticsEventsTest {
 
     private Client client;
     private Helper helper;
+    
+    private String ruleName;
 
     @BeforeEach
     void setUp() throws Exception {
         helper = new Helper();
         client = helper.getClient();
+        
+        if (!Helper.isV30OrAbove(client)) {
+            org.junit.jupiter.api.Assumptions.assumeTrue(false, "Skipping test - requires Typesense v30 or above");
+        }
+        
         helper.teardown();
         helper.createTestCollection();
         helper.createTestQueryCollection();
-        helper.createTestAnalyticsRule();
+        helper.createTestQueryDocument();
+        helper.createTestAnalyticsCollection();
+        String ruleName = helper.createTestAnalyticsRule();
+        
+        this.ruleName = ruleName;
     }
 
     @AfterEach
@@ -32,17 +44,19 @@ public class AnalyticsEventsTest {
 
     @Test
     void testCreate() throws Exception {
-        HashMap<String, Object> eventData = new HashMap<>();
-        eventData.put("q", "running shoes");
-        eventData.put("user_id", "1234");
-        AnalyticsEventCreateSchema analyticsEvent = new AnalyticsEventCreateSchema()
-                .type("search")
-                .name("products_search_event")
+        
+        AnalyticsEventData eventData = new AnalyticsEventData()
+                .q("running shoes")
+                .userId("1234")
+                .docId("query1");
+        
+        AnalyticsEvent analyticsEvent = new AnalyticsEvent()
+                .eventType("search")
+                .name(ruleName)
                 .data(eventData);
 
         AnalyticsEventCreateResponse result = this.client.analytics().events().create(analyticsEvent);
         assertNotNull(result);
         assertEquals(true, result.isOk());
-
     }
 }

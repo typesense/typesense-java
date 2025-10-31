@@ -28,6 +28,12 @@ public class Client {
     private Stopwords stopwords;
     private Map<String, StopwordsSet> individualStopwordsSets;
 
+    private SynonymSets synonymSets;
+    private Map<String, SynonymSet> individualSynonymSets;
+
+    private CurationSets curationSets;
+    private Map<String, CurationSet> individualCurationSets;
+
     public Health health;
     public Operations operations;
     public Metrics metrics;
@@ -72,6 +78,10 @@ public class Client {
         this.stemming = new Stemming(this.apiCall);
         this.stopwords = new Stopwords(this.apiCall);
         this.individualStopwordsSets = new HashMap<>();
+        this.synonymSets = new SynonymSets(this.apiCall);
+        this.individualSynonymSets = new HashMap<>();
+        this.curationSets = new CurationSets(this.apiCall);
+        this.individualCurationSets = new HashMap<>();
     }
 
     public Collection collections(String name){
@@ -141,6 +151,36 @@ public class Client {
         }
 
         retVal = this.individualStopwordsSets.get(stopwordsSetId);
+        return retVal;
+    }
+
+    public SynonymSets synonymSets() {
+        return this.synonymSets;
+    }
+
+    public SynonymSet synonymSet(String synonymSetName) {
+        SynonymSet retVal;
+
+        if (!this.individualSynonymSets.containsKey(synonymSetName)) {
+            this.individualSynonymSets.put(synonymSetName, new SynonymSet(synonymSetName, this.apiCall));
+        }
+
+        retVal = this.individualSynonymSets.get(synonymSetName);
+        return retVal;
+    }
+
+    public CurationSets curationSets() {
+        return this.curationSets;
+    }
+
+    public CurationSet curationSet(String curationSetName) {
+        CurationSet retVal;
+
+        if (!this.individualCurationSets.containsKey(curationSetName)) {
+            this.individualCurationSets.put(curationSetName, new CurationSet(curationSetName, this.apiCall));
+        }
+
+        retVal = this.individualCurationSets.get(curationSetName);
         return retVal;
     }
 }

@@ -2,16 +2,10 @@ package org.typesense.api;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-
-import org.typesense.model.AnalyticsRuleParameters;
-import org.typesense.model.AnalyticsRuleParametersDestination;
-import org.typesense.model.AnalyticsRuleParametersSource;
-import org.typesense.model.AnalyticsRuleParametersSourceEvents;
-import org.typesense.model.AnalyticsRuleSchema;
-import org.typesense.model.AnalyticsRuleUpsertSchema;
+import java.util.Map;
+import java.util.Arrays;
 import org.typesense.model.ApiKey;
 import org.typesense.model.ApiKeySchema;
 import org.typesense.model.ApiKeysResponse;
@@ -21,18 +15,63 @@ import org.typesense.model.CollectionAliasesResponse;
 import org.typesense.model.CollectionResponse;
 import org.typesense.model.CollectionSchema;
 import org.typesense.model.Field;
-import org.typesense.model.SearchOverrideInclude;
-import org.typesense.model.SearchOverrideRule;
-import org.typesense.model.SearchOverrideSchema;
 import org.typesense.model.SearchSynonymSchema;
 import org.typesense.model.StemmingDictionaryWords;
 import org.typesense.model.StopwordsSetSchema;
 import org.typesense.model.StopwordsSetUpsertSchema;
 import org.typesense.model.StopwordsSetsRetrieveAllSchema;
+import org.typesense.model.SynonymItemSchema;
+import org.typesense.model.SynonymSetCreateSchema;
+import org.typesense.model.SynonymSetSchema;
+import org.typesense.model.SynonymSetsRetrieveSchema;
+import org.typesense.model.CurationItemCreateSchema;
+import org.typesense.model.CurationSetCreateSchema;
+import org.typesense.model.CurationRule;
+import org.typesense.model.CurationInclude;
+import org.typesense.model.CurationExclude;
 import org.typesense.resources.Node;
+import org.typesense.model.AnalyticsRuleCreate;
+import org.typesense.model.AnalyticsRuleCreateParams;
+import org.typesense.model.AnalyticsRule;
+import org.typesense.api.AnalyticsRules;
 
 public class Helper {
     private final Client client;
+
+    public static boolean isV30OrAbove(Client client) {
+        try {
+            Map<String, Object> debugResponse = client.debug.retrieve();
+            if (debugResponse == null) {
+                return false;
+            }
+            
+            Object version = debugResponse.get("version");
+            if (version == null) {
+                return false;
+            }
+            
+            String versionStr = version.toString();
+            if ("nightly".equals(versionStr)) {
+                return true;
+            }
+            
+            String numberedVersion = versionStr;
+            if (versionStr.startsWith("v")) {
+                numberedVersion = versionStr.substring(1);
+            }
+            
+            String[] parts = numberedVersion.split("\\.");
+            if (parts.length == 0) {
+                return false;
+            }
+            
+            int majorVersion = Integer.parseInt(parts[0]);
+            return majorVersion >= 30;
+            
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
     Helper() {
         List<Node> nodes = new ArrayList<>();
@@ -62,6 +101,15 @@ public class Helper {
         collectionSchema.name("queries").fields(fields);
 
         client.collections().create(collectionSchema);
+    }
+
+    public void createTestQueryDocument() throws Exception {
+        HashMap<String, Object> hmap = new HashMap<>();
+        hmap.put("q", "running shoes");
+        hmap.put("count", 42);
+        hmap.put("id", "query1");
+
+        client.collections("queries").documents().create(hmap);
     }
 
     public void createTestDocument() throws Exception {
@@ -97,15 +145,6 @@ public class Helper {
         return client.keys().create(apiKeySchema);
     }
 
-    public void createTestOverrirde() throws Exception {
-        SearchOverrideSchema searchOverrideSchema = new SearchOverrideSchema();
-        List<SearchOverrideInclude> searchOverrideIncludes = new ArrayList<>();
-        searchOverrideIncludes.add(new SearchOverrideInclude().id("422").position(1));
-        searchOverrideSchema.rule(new SearchOverrideRule().query("apple").match(SearchOverrideRule.MatchEnum.EXACT))
-                .includes(searchOverrideIncludes);
-        client.collections("books").overrides().upsert("customize-apple", searchOverrideSchema);
-    }
-
     public void createTestSynonym() throws Exception {
         SearchSynonymSchema synonym = new SearchSynonymSchema();
         synonym.addSynonymsItem("blazer").addSynonymsItem("coat").addSynonymsItem("jacket");
@@ -113,20 +152,36 @@ public class Helper {
         client.collections("books").synonyms().upsert("coat-synonyms", synonym);
     }
 
-    public void createTestAnalyticsRule() throws Exception {
-        AnalyticsRuleUpsertSchema analyticsRuleSchema = new AnalyticsRuleUpsertSchema()
-                .type(AnalyticsRuleUpsertSchema.TypeEnum.NOHITS_QUERIES)
-                .params(new AnalyticsRuleParameters()
-                        .source(new AnalyticsRuleParametersSource()
-                                .collections(Arrays.asList("books"))
-                                .events(Arrays.asList(
-                                        new AnalyticsRuleParametersSourceEvents()
-                                                .type("search")
-                                                .name("products_search_event"))))
-                        .destination(new AnalyticsRuleParametersDestination()
-                                .collection("queries")));
+    public void createTestAnalyticsCollection() throws Exception {
+        List<Field> fields = new ArrayList<>();
+        fields.add(new Field().name("rule_name").type(FieldTypes.STRING));
+        fields.add(new Field().name("event_type").type(FieldTypes.STRING));
+        fields.add(new Field().name("counter_value").type(FieldTypes.INT32));
+        fields.add(new Field().name("timestamp").type(FieldTypes.INT64));
 
-        client.analytics().rules().upsert("analytics-rule", analyticsRuleSchema);
+        CollectionSchema collectionSchema = new CollectionSchema();
+        collectionSchema.name("analytics_data").fields(fields);
+
+        client.collections().create(collectionSchema);
+    }
+
+    public String createTestAnalyticsRule() throws Exception {
+        String ruleName = "analytics-rule-" + System.currentTimeMillis();
+        
+        AnalyticsRuleCreate analyticsRule = new AnalyticsRuleCreate()
+                .name(ruleName)
+                .type(AnalyticsRuleCreate.TypeEnum.COUNTER)
+                .collection("analytics_data")
+                .eventType("click")
+                .params(new AnalyticsRuleCreateParams()
+                        .counterField("num_employees")
+                        .weight(1));
+
+        List<AnalyticsRuleCreate> rules = new ArrayList<>();
+        rules.add(analyticsRule);
+
+        client.analytics().rules().create(rules);
+        return ruleName;
     }
 
     public void createTestStopwordsSet() throws Exception {
@@ -151,20 +206,69 @@ public class Helper {
         client.stemming().dictionaries().upsert("irregular-plurals", stemmingDictionaryWords);
     }
 
+    public SynonymSetCreateSchema createTestSynonymSetData() {
+        SynonymItemSchema synonymItem = new SynonymItemSchema();
+        synonymItem.setId("dummy");
+        synonymItem.setSynonyms(Arrays.asList("foo", "bar", "baz"));
+
+        SynonymSetCreateSchema synonymSetData = new SynonymSetCreateSchema();
+        synonymSetData.setItems(Arrays.asList(synonymItem));
+        return synonymSetData;
+    }
+
+    public CurationSetCreateSchema createTestCurationSetData() {
+        CurationRule rule = new CurationRule();
+        rule.setQuery("apple");
+        rule.setMatch(CurationRule.MatchEnum.EXACT);
+
+        CurationInclude include1 = new CurationInclude();
+        include1.setId("422");
+        include1.setPosition(1);
+        CurationInclude include2 = new CurationInclude();
+        include2.setId("54");
+        include2.setPosition(2);
+
+        CurationExclude exclude1 = new CurationExclude();
+        exclude1.setId("287");
+
+        CurationItemCreateSchema curationItem = new CurationItemCreateSchema();
+        curationItem.setId("dummy");
+        curationItem.setRule(rule);
+        curationItem.setIncludes(Arrays.asList(include1, include2));
+        curationItem.setExcludes(Arrays.asList(exclude1));
+        curationItem.setRemoveMatchedTokens(true);
+        curationItem.setFilterBy("category:=Electronics");
+        curationItem.setStopProcessing(true);
+
+        CurationSetCreateSchema curationSetData = new CurationSetCreateSchema();
+        curationSetData.setItems(Arrays.asList(curationItem));
+        curationSetData.setDescription("Test curation set");
+        return curationSetData;
+    }
+
     public void teardown() throws Exception {
         CollectionResponse[] collectionResponses = client.collections().retrieve();
         for (CollectionResponse c : collectionResponses) {
-            client.collections(c.getName()).delete();
+            if (c.getName() != null) {
+                client.collections(c.getName()).delete();
+            }
         }
 
         CollectionAliasesResponse collectionAliasesResponse = client.aliases().retrieve();
         for (CollectionAlias a : collectionAliasesResponse.getAliases()) {
-            client.aliases(a.getName()).delete();
+            if (a.getName() != null) {
+                client.aliases(a.getName()).delete();
+            }
         }
 
         AnalyticsRules analyticsRules = client.analytics().rules();
-        for (AnalyticsRuleSchema r : analyticsRules.retrieve().getRules()) {
-            client.analytics().rules(r.getName()).delete();
+        List<AnalyticsRule> rules = analyticsRules.retrieve();
+        if (rules != null) {
+            for (AnalyticsRule r : rules) {
+                if (r.getName() != null) {
+                    client.analytics().rules(r.getName()).delete();
+                }
+            }
         }
 
         ApiKeysResponse apiKeysResponse = client.keys().retrieve();
@@ -175,6 +279,16 @@ public class Helper {
         StopwordsSetsRetrieveAllSchema stopwords = client.stopwords().retrieve();
         for (StopwordsSetSchema s : stopwords.getStopwords()) {
             client.stopwords(s.getId()).delete();
+        }
+
+        try {
+            SynonymSetSchema[] synonymSets = client.synonymSets().retrieve();
+            for (SynonymSetSchema s : synonymSets) {
+                if (s.getName() != null) {
+                    client.synonymSet(s.getName()).delete();
+                }
+            }
+        } catch (Exception e) {
         }
     }
 }
