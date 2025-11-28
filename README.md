@@ -26,6 +26,9 @@ import org.typesense.model.*;
 import org.typesense.resources.*;
 ```
 
+## Compatibility
+`typesense-java` is compatible with Java versions 8+ and Android SDK versions 26+
+
 ## Usage
 
 ### Create a new client
