@@ -2,6 +2,7 @@ package org.typesense.api;
 
 import org.typesense.api.utils.URLEncoding;
 import org.typesense.model.SearchSynonym;
+import org.typesense.model.SearchSynonymDeleteResponse;
 
 /**
  * @deprecated This class is deprecated and will be removed in a future version.
@@ -28,8 +29,8 @@ public class Synonym {
         return this.apiCall.get(this.getEndpoint(), null, SearchSynonym.class);
     }
 
-    public SearchSynonym delete() throws Exception {
-        return this.apiCall.delete(this.getEndpoint(), null, SearchSynonym.class);
+    public SearchSynonymDeleteResponse delete() throws Exception {
+        return this.apiCall.delete(this.getEndpoint(), null, SearchSynonymDeleteResponse.class);
     }
 
     public String getEndpoint() {
