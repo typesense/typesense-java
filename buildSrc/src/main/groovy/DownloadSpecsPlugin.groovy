@@ -68,11 +68,46 @@ class DownloadSpecsPlugin implements Plugin<Project> {
         
                 if (content.contains(allOfBlock)) {
                     content = content.replace(allOfBlock, replacement)
-                    file.text = content
                     println('Successfully patched SynonymItemSchema')
                 } else {
                     println('Warning: SynonymItemSchema allOf block not found, skipping patch')
                 }
+
+                // Patch: Add rerank_hybrid_matches to SearchParameters
+                // The server accepts this parameter for all search endpoints (single and multi),
+                // but the spec only defines it on MultiSearchCollectionParameters.
+                println('Patching OpenAPI spec: adding rerank_hybrid_matches to SearchParameters')
+                String searchParamsAnchor = '''\
+        conversation_id:
+          description: >
+            The Id of a previous conversation to continue, this tells Typesense to include prior context when communicating with the LLM.
+          type: string
+
+    MultiSearchParameters:'''
+
+                String searchParamsReplacement = '''\
+        conversation_id:
+          description: >
+            The Id of a previous conversation to continue, this tells Typesense to include prior context when communicating with the LLM.
+          type: string
+        rerank_hybrid_matches:
+          type: boolean
+          description: >
+            When true, computes both text match and vector distance scores for all matches in hybrid search.
+            Documents found only through keyword search will get a vector distance score, and
+            documents found only through vector search will get a text match score.
+          default: false
+
+    MultiSearchParameters:'''
+
+                if (content.contains(searchParamsAnchor)) {
+                    content = content.replace(searchParamsAnchor, searchParamsReplacement)
+                    println('Successfully added rerank_hybrid_matches to SearchParameters')
+                } else {
+                    println('Warning: SearchParameters anchor not found, skipping rerank_hybrid_matches patch')
+                }
+
+                file.text = content
             }
         }
     }
