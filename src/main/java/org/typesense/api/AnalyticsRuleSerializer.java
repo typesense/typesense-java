@@ -17,6 +17,9 @@ public class AnalyticsRuleSerializer {
     
     private final ObjectMapper objectMapper;
     
+    /**
+     * Creates a new AnalyticsRuleSerializer instance.
+     */
     public AnalyticsRuleSerializer() {
         this.objectMapper = new ObjectMapper();
         this.objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

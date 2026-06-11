@@ -1,5 +1,8 @@
 package org.typesense.api;
 
+/**
+ * Typesense field types API wrapper.
+ */
 public final class FieldTypes {
     public static final String STRING = "string";
     public static final String INT32 = "int32";

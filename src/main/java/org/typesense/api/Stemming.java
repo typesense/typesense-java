@@ -3,12 +3,19 @@ package org.typesense.api;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Typesense stemming API wrapper.
+ */
 public class Stemming {
     private final ApiCall apiCall;
     private final StemmingDictionaries dictionaries;
     private final Map<String, StemmingDictionary> individualDictionaries;
 
 
+    /**
+     * Creates a new Stemming instance.
+     * @param apiCall the {@code ApiCall} instance used to send requests
+     */
     public Stemming(ApiCall apiCall) {
         this.apiCall = apiCall;
         this.dictionaries = new StemmingDictionaries(this.apiCall);

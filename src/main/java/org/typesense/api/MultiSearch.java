@@ -6,11 +6,18 @@ import org.typesense.model.MultiSearchSearchesParameter;
 
 import java.util.Map;
 
+/**
+ * Typesense multi search API wrapper.
+ */
 public class MultiSearch {
 
     private ApiCall apiCall;
     public static final String RESOURCEPATH = "/multi_search";
 
+    /**
+     * Creates a new MultiSearch instance.
+     * @param apiCall the {@code ApiCall} instance used to send requests
+     */
     public MultiSearch(ApiCall apiCall) {
         this.apiCall = apiCall;
     }

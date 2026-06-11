@@ -5,6 +5,9 @@ import org.typesense.resources.Node;
 import java.time.Duration;
 import java.util.List;
 
+/**
+ * Typesense configuration API wrapper.
+ */
 public class Configuration {
 
     public List<Node> nodes;
@@ -24,6 +27,12 @@ public class Configuration {
      * @param apiKey String describing the apiKey
      */
 
+    /**
+     * Creates a new Configuration instance.
+     * @param nodes the {@code List<Node>} nodes
+     * @param connectionTimeout the {@code Duration} connection timeout
+     * @param apiKey the {@code String} api key
+     */
     public Configuration(List<Node> nodes, Duration connectionTimeout, String apiKey) {
         this.nodes = nodes;
         this.connectionTimeout = connectionTimeout;
@@ -55,6 +64,13 @@ public class Configuration {
         this.sendApiKeyAsQueryParam = false;
     }
 
+    /**
+     * Creates a new Configuration instance.
+     * @param nearestNode the {@code Node} nearest node
+     * @param nodes the {@code List<Node>} nodes
+     * @param connectionTimeout the {@code Duration} connection timeout
+     * @param apiKey the {@code String} api key
+     */
     public Configuration(Node nearestNode, List<Node> nodes, Duration connectionTimeout, String apiKey) {
         this(nodes,connectionTimeout,apiKey);
         this.nearestNode = nearestNode;

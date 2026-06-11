@@ -3,12 +3,19 @@ package org.typesense.api;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Typesense analytics API wrapper.
+ */
 public class Analytics {
     private final ApiCall apiCall;
     private final AnalyticsRules rules;
     private final Map<String, AnalyticsRule> individualRules;
     private final AnalyticsEvents events;
 
+    /**
+     * Creates a new Analytics instance.
+     * @param apiCall the {@code ApiCall} instance used to send requests
+     */
     public Analytics(ApiCall apiCall) {
         this.apiCall = apiCall;
         this.rules = new AnalyticsRules(this.apiCall);

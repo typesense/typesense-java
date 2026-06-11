@@ -19,6 +19,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Typesense api call API wrapper.
+ */
 public class ApiCall {
 
     private final Configuration configuration;
@@ -35,6 +38,11 @@ public class ApiCall {
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private final ObjectMapper mapper = new ObjectMapper();
 
+    /**
+     * Creates a new ApiCall instance.
+     * @param configuration the client configuration
+     * @param client the HTTP client
+     */
     public ApiCall(Configuration configuration, OkHttpClient client) {
         this.configuration = configuration;
         this.nodes = configuration.nodes;
@@ -47,6 +55,10 @@ public class ApiCall {
         this.client = client;
     }
 
+    /**
+     * Creates a new ApiCall instance.
+     * @param configuration the client configuration
+     */
     public ApiCall(Configuration configuration) {
         this.configuration = configuration;
         this.nodes = configuration.nodes;

@@ -20,6 +20,11 @@ public class Synonyms {
     private ApiCall apiCall;
     public final static String RESOURCEPATH = "/synonyms";
 
+    /**
+     * Creates a new Synonyms instance.
+     * @param collectionName the {@code String} path parameter
+     * @param apiCall the {@code ApiCall} instance used to send requests
+     */
     public Synonyms(String collectionName, ApiCall apiCall) {
         this.collectionName = collectionName;
         this.apiCall = apiCall;

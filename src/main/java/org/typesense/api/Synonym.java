@@ -18,6 +18,12 @@ public class Synonym {
     private String synonymId;
     private ApiCall apiCall;
 
+    /**
+     * Creates a new Synonym instance.
+     * @param collectionName the {@code String} path parameter
+     * @param synonymId the {@code String} path parameter
+     * @param apiCall the {@code ApiCall} instance used to send requests
+     */
     public Synonym(String collectionName, String synonymId, ApiCall apiCall) {
         this.collectionName = collectionName;
         this.synonymId = synonymId;

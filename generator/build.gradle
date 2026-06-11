@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+dependencies {
+    implementation 'com.github.javaparser:javaparser-core:3.25.10'
+    implementation 'org.yaml:snakeyaml:2.2'
+}
+
+application {
+    mainClass = 'org.typesense.docgen.DocGen'
+}
+
+tasks.named('run') {
+    // Pass spec + wrapper dir via -PspecPath / -PwrapperDir or rely on defaults.
+    def specPath = project.findProperty('specPath') ?: "${rootDir}/../../api-spec/openapi.yml"
+    def wrapperDir = project.findProperty('wrapperDir') ?: "${rootDir}/../src/main/java/org/typesense/api"
+    args = [specPath, wrapperDir]
+}

@@ -7,6 +7,9 @@ import org.typesense.model.CollectionUpdateSchema;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Typesense collection API wrapper.
+ */
 public class Collection {
 
     private final Configuration configuration;
@@ -34,14 +37,57 @@ public class Collection {
         this.individualSynonyms = new HashMap<>();
     }
 
+    /**
+     * Retrieve a single collection.
+     *
+     * <p>
+     * Retrieve the details of a collection, given its name.
+     *
+     * <p>
+     * HTTP: GET /collections/{collectionName}
+     *
+     * @return the {@code CollectionResponse} response
+     * @throws Exception if the request fails
+     *
+     * @see <a href="https://typesense.org/docs/latest/api/collections.html">Typesense docs</a>
+     */
     public CollectionResponse retrieve() throws Exception {
         return this.apiCall.get(endpoint, null, CollectionResponse.class);
     }
 
+    /**
+     * Update a collection.
+     *
+     * <p>
+     * Update a collection's schema to modify the fields and their types.
+     *
+     * <p>
+     * HTTP: PATCH /collections/{collectionName}
+     *
+     * @param c the {@code CollectionUpdateSchema} request body
+     * @return the {@code CollectionUpdateSchema} response
+     * @throws Exception if the request fails
+     *
+     * @see <a href="https://typesense.org/docs/latest/api/collections.html">Typesense docs</a>
+     */
     public CollectionUpdateSchema update(CollectionUpdateSchema c) throws Exception {
         return this.apiCall.patch(endpoint, c, null, CollectionUpdateSchema.class);
     }
 
+    /**
+     * Delete a collection.
+     *
+     * <p>
+     * Permanently drops a collection. This action cannot be undone. For large collections, this might have an impact on read latencies.
+     *
+     * <p>
+     * HTTP: DELETE /collections/{collectionName}
+     *
+     * @return the {@code CollectionResponse} response
+     * @throws Exception if the request fails
+     *
+     * @see <a href="https://typesense.org/docs/latest/api/collections.html">Typesense docs</a>
+     */
     public CollectionResponse delete() throws Exception {
         return this.apiCall.delete(endpoint, null, CollectionResponse.class);
     }

@@ -2,11 +2,18 @@ package org.typesense.api;
 
 import java.util.Map;
 
+/**
+ * Typesense operations API wrapper.
+ */
 public class Operations {
 
     private ApiCall apiCall;
     public static final String RESOUCEPATH = "/operations";
 
+    /**
+     * Creates a new Operations instance.
+     * @param apiCall the {@code ApiCall} instance used to send requests
+     */
     public Operations(ApiCall apiCall) {
         this.apiCall = apiCall;
     }

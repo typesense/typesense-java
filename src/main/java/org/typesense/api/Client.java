@@ -6,6 +6,9 @@ import okhttp3.OkHttpClient;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Typesense client API wrapper.
+ */
 public class Client {
     private Configuration configuration;
 
@@ -40,6 +43,11 @@ public class Client {
     public Debug debug;
     public MultiSearch multiSearch;
 
+    /**
+     * Creates a new Client instance.
+     * @param configuration the client configuration
+     * @param okHttpClient the HTTP client
+     */
     public Client(Configuration configuration, OkHttpClient okHttpClient){
         this.configuration = configuration;
         this.apiCall = new ApiCall(configuration, okHttpClient);
@@ -60,6 +68,10 @@ public class Client {
         this.individualStopwordsSets = new HashMap<>();
     }
 
+    /**
+     * Creates a new Client instance.
+     * @param configuration the client configuration
+     */
     public Client(Configuration configuration){
         this.configuration = configuration;
         this.apiCall = new ApiCall(configuration);
