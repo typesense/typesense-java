@@ -41,28 +41,16 @@ public class Client {
     public MultiSearch multiSearch;
 
     public Client(Configuration configuration, OkHttpClient okHttpClient){
-        this.configuration = configuration;
-        this.apiCall = new ApiCall(configuration, okHttpClient);
-        collections = new Collections(apiCall);
-        this.individualCollections = new HashMap<>();
-        this.aliases = new Aliases(this.apiCall);
-        this.individualAliases = new HashMap<>();
-        this.keys = new Keys(this.apiCall);
-        this.individualKeys = new HashMap<>();
-        this.health = new Health(this.apiCall);
-        this.operations = new Operations(this.apiCall);
-        this.metrics = new Metrics(this.apiCall);
-        this.debug = new Debug(this.apiCall);
-        this.multiSearch = new MultiSearch(this.apiCall);
-        this.analytics = new Analytics(this.apiCall);
-        this.stemming = new Stemming(this.apiCall);
-        this.stopwords = new Stopwords(this.apiCall);
-        this.individualStopwordsSets = new HashMap<>();
+        this(configuration, new ApiCall(configuration, okHttpClient));
     }
 
     public Client(Configuration configuration){
+        this(configuration, new ApiCall(configuration));
+    }
+
+    private Client(Configuration configuration, ApiCall apiCall){
         this.configuration = configuration;
-        this.apiCall = new ApiCall(configuration);
+        this.apiCall = apiCall;
         collections = new Collections(apiCall);
         this.individualCollections = new HashMap<>();
         this.aliases = new Aliases(this.apiCall);
